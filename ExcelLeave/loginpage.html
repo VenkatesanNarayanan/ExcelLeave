@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>ExcelLeave</title>
+			<link rel="stylesheet" type="text/css" href="loginpage.css" media="screen"/> 
+			<link rel="stylesheet" type="text/css" href="site-demos.css" />
+			<script type="text/javascript" src="jquery.js"></script>
+			<script type="text/javascript" src="jquery.validate.js"></script>
+			<script type="text/javasrcipt" src="jquery.validate.min.js"></script>
+			
+			<script type="text/javascript" src="additional-methods.min.js"></script>
+			<script type="text/javascript">
+				$(document).ready(function()
+				{
+					jQuery.validator.SetDefaults({
+						debug:true,
+						success: "valid"
+				});
+				$('#myform').validate({
+					rules: {
+						email: {
+							required: true,
+							email: true
+					},
+					pword: {
+						required : true,
+					},
+					messages: {
+						email: "Please enter a valid email address",
+						pword: "Please provide the password"
+					},
+
+
+
+				 }
+				});
+				});
+
+	
+	</script>
+
+		</head>
+	<body>
+		<div id="login">
+			<h1><strong>Welcome to ExcelLeave.</strong> Please login.</h1>
+			<form id="myform" method="post">
+				<fieldset>
+					<input type="text" id="email" name="email" required value="Email" onBlur="if(this.value=='')this.value='Email'" onFocus="if(this.value=='Email')this.value='' "><br>
+					<input type="password" id="pword" name="pword" required value="Password" onBlur="if(this.value=='')this.value='Password'" onFocus="if(this.value=='Password')this.value='' "><br>
+					<p><a href="#">Forgot Password?</a></p><br>
+					<input type="submit" id="button"  value="Login" /> 
+				</fieldset>
+			</form>
+			
+	</div> 
+</body>
+</html>
+
+
