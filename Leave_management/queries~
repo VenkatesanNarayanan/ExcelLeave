@@ -1,0 +1,33 @@
+1. a. insert into LeaveRequestBatch(BatchId,FromDate,ToDate,Message) values('msg1','1-1-2014','4-1-2014','sister marriage');
+   b. insert into LeaveRequest(EmployeeId,BatchId,LeaveDate) values(123,'msg1','1-1-2014');
+
+2. select distinct Emp.Email,Mang.Email,LeaveBatch.FromDate,LeaveBatch.ToDate,LeaveBatch.Message from Employee as Emp 
+	join EmployeeManager as EmpMan on Emp.EmployeeId=EmpMan.EmployeeId 
+	  join Employee as Mang on EmpMan.ManagerEmployeeId=Mang.EmployeeId 
+ 	    join LeaveRequest as LeavReq on Emp.EmployeeId=LeaveRequest.EmployeeId 
+		join LeaveRequestBatch as LeaveBatch on LeavReq.BatchId=LeaveBatch.BatchId;
+
+
+3. select AvailablePersonalLeaves from EmployeeLeave where EmployeeId=1;
+
+
+4. select string_agg(LBatch.FromDate,','),string_agg(LBatch.ToDate,','),string_agg(LBatch.Message,','),string_agg(LReq.LeaveStatus,',') 
+	from LeaveRequest as LReq 
+		join LeaveRequestBatch as LBatch on LReq.BatchId=LBatch.BatchId 
+			group by LReq.BatchId; 
+
+6. select distinct(emp.first_name),string_agg(date,','),distinct(levreq.leave_message) from employee as emp 
+		join leave_request as levreq on emp.employee_id=levreq.employee_id 
+		join employee_manager empman on levreq.emloyee_id=empman.employee_id 
+			group by levreq.batch_id,emp.first_name,levreq.leave_message
+			having empman.manager_employee_id="123";
+
+
+7. update table Employee set RoleId="",first_name="" ... where EmpId='xyz';
+
+9. select count(EmployeeId) from employee where Email="" and Password="" and ;
+
+9 and 10. insert into employee
+	(role_id,employee_first_name,employee_last_name,email_id,date_of_joining,created_by,created_on,updated_by,updated_on) 
+	values
+	(2,'skanda','shastry','skanda@exceleron.com','2014-07-01',1,current_date,1,current_date);
