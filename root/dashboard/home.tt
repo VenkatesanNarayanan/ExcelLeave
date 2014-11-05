@@ -1,0 +1,32 @@
+<ul class="list-group">
+  			<li class="list-group-item list-group-item-info" style="height:50px;">
+			<p style="float:left;width:40%;">01-01-2014</p>
+			<p style="float:left;width:40%;">Pending</p>
+			<button type="button" class="btn btn-info" style="float:left;width:20%;">Cancel</button>
+			</li>
+  			<li class="list-group-item list-group-item-warning" style="height:50px;">
+			<p style="float:left;width:40%;">01-01-2014</p>
+			<p style="float:left;width:40%;">Pending</p>
+			<button type="button" class="btn btn-info" style="float:left;width:20%;">Cancel</button>			
+			</li>
+  			<li class="list-group-item list-group-item-info" style="height:50px;">
+			<p style="float:left;width:40%;">01-01-2014</p>
+			<p style="float:left;width:40%;">Pending</p>
+			<button type="button" class="btn btn-info" style="float:left;width:20%;">Cancel</button>
+			</li>
+  			<li class="list-group-item list-group-item-warning" style="height:50px;">
+			<p style="float:left;width:40%;">01-01-2014</p>
+			<p style="float:left;width:40%;">Pending</p>
+			<button type="button" class="btn btn-info" style="float:left;width:20%;">Cancel</button>			
+			</li>
+  			<li class="list-group-item list-group-item-info" style="height:50px;">
+			<p style="float:left;width:40%;">01-01-2014</p>
+			<p style="float:left;width:40%;">Pending</p>
+			<button type="button" class="btn btn-info" style="float:left;width:20%;">Cancel</button>
+			</li>
+  			<li class="list-group-item list-group-item-warning" style="height:50px;">
+			<p style="float:left;width:40%;">01-01-2014</p>
+			<p style="float:left;width:40%;">Pending</p>
+			<button type="button" class="btn btn-info" style="float:left;width:20%;">Cancel</button>			
+			</li>
+  </ul>

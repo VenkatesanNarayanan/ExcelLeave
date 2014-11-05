@@ -32,18 +32,15 @@ sub index :Path :Args(0) {
 	}
 
 	my $Role = "Employee";
+	my $emp;
+	$emp->{foo2} = ['<li id="viewrequest" class="menubar"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Request</a></li>'];
+	$emp->{foo3} = ['<li id="viewrequest" class="menubar"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Request</a></li>','<li id="updatedetails" class="menubar"><a href="#"><span class="glyphicon glyphicon-edit"></span>&nbsp;Update Details</a></li>'];
 
-	my $emp->{foo1} = [ '<a href="#"><span class="glyphicon glyphicon-user"></span>&nbsp;Profile</a>', '<a href="#"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Leave Apply</a>' ,'<a href="#"><span class="glyphicon glyphicon-send"></span>&nbsp;Leave Status</a>'];
-	$emp->{foo2} = [ '<a href="#"><span class="glyphicon glyphicon-user"></span>&nbsp;Profile</a>', '<a href="#"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Leave Apply</a>' ,'<a href="#"><span class="glyphicon glyphicon-send"></span>&nbsp;Leave Status</a>','<a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Request</a>'];
-	$emp->{foo3} = ['<a href="#"><span class="glyphicon glyphicon-user"></span>&nbsp;Profile</a>','<a href="#"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Leave Apply</a>','<a href="#"><span class="glyphicon glyphicon-send"></span>&nbsp;Leave Status</a>','<a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Request</a>','<a href="#"><span class="glyphicon glyphicon-edit"></span>&nbsp;Update Details</a>'];
-
-	if($Role eq "Employee") {
-		$c->stash->{messages} = $emp->{foo1};
-	}
-	elsif($Role eq "Manager") {
+	if($Role eq "Manager") {
 		$c->stash->{messages} = $emp->{foo2};
 	}
-	else {
+	elsif($Role eq "Adminstrator")
+   	{
 		$c->stash->{messages} = $emp->{foo3};
 	}	
 	$c->forward('View::TT');
@@ -52,11 +49,19 @@ sub index :Path :Args(0) {
 
 
 
-sub leaverequest :Path:Args(1) {
-	my ($self,$c,$arg)=@_;
-	#$c->stash->{template}='dashboard/LeaveRequestForm.tt';
+sub leaverequest :Local {
+	my ($self,$c)=@_;
+
 	$c->forward('View::TT');
 }
+
+
+sub home :Local {
+	my ($self,$c)=@_;
+
+	$c->forward('View::TT');
+}
+=encoding utf8
 =encoding utf8
 
 =head1 AUTHOR
