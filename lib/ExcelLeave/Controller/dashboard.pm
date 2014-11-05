@@ -26,8 +26,6 @@ sub index :Path :Args(0) {
 	my ( $self, $c ) = @_;
 	
 	my @collected=$c->model('Leave::Employee')->search({});
-	$c->log->info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-	$c->log->info("---------------------", Dumper \@collected);
 	foreach my $var(@collected)
 	{
 		print Dumper $var->{_column_data};
@@ -54,6 +52,11 @@ sub index :Path :Args(0) {
 
 
 
+sub leaverequest :Path:Args(1) {
+	my ($self,$c,$arg)=@_;
+	#$c->stash->{template}='dashboard/LeaveRequestForm.tt';
+	$c->forward('View::TT');
+}
 =encoding utf8
 
 =head1 AUTHOR
