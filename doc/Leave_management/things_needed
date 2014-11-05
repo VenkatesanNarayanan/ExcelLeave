@@ -1,0 +1,7 @@
+
+
+1. for coma seperated values string_agg(columan_name,',').
+
+2. for token generation Session::Token module.
+
+3. for system date in psql "current_date" is function.
