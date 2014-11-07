@@ -25,16 +25,16 @@ Catalyst Controller.
 sub index :Path :Args(0) {
 	my ( $self, $c ) = @_;
 	
-	my @collected=$c->model('Leave::Employee')->search({});
-	foreach my $var(@collected)
-	{
-		print Dumper $var->{_column_data};
-	}
+#	my @collected=$c->model('Leave::Employee')->search({});
+#	foreach my $var(@collected)
+#	{
+#		print Dumper $var->{_column_data};
+#	}
 
-	my $Role = "Employee";
+	my $Role = "Adminstrator";
 	my $emp;
 	$emp->{foo2} = ['<li id="viewrequest" class="menubar"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Request</a></li>'];
-	$emp->{foo3} = ['<li id="viewrequest" class="menubar"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Request</a></li>','<li id="updatedetails" class="menubar"><a href="#"><span class="glyphicon glyphicon-edit"></span>&nbsp;Update Details</a></li>'];
+	$emp->{foo3} = ['<li id="viewrequest" class="menubar"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Request</a></li>','<li id="addemployee" class="menubar"><a href="#"><span class="glyphicon glyphicon-edit"></span>&nbsp;Update Details</a></li>'];
 
 	if($Role eq "Manager") {
 		$c->stash->{messages} = $emp->{foo2};
@@ -61,6 +61,37 @@ sub home :Local {
 
 	$c->forward('View::TT');
 }
+
+sub addemployee :Local {
+	my ($self,$c)=@_;
+
+	$c->forward('View::TT');
+
+	#my $fname = $c->request->params->{'fname'};
+	#my $lname = $c->request->params->{'lname'};
+	#my $email = $c->request->params->{'email'};
+	#my $dateofjoining = $c->params->{'dateofjoining'};
+	#my $role = $c->params->{'role'};
+
+	print "name ------------------\n";
+=pod	
+	my @responsedata = $c->model('Leave::AddEmp')->create({
+
+			FirstName => $fname,
+			LastName => $lname,
+			Email => $email,
+			DateOfJoining => $dateofjoining,
+			Role => $role,
+
+		});
+
+	print Dumper \@responsedata;
+=cut
+
+}
+
+
+
 =encoding utf8
 =encoding utf8
 
