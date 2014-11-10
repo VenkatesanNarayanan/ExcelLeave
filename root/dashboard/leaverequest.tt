@@ -1,5 +1,5 @@
 	<div class="jumbotron">
-		<form role="form"  style="width:500px;margin:auto">
+		<form role="form" id="leaveapply" style="width:500px;margin:auto">
 		  <div class="form-group">
 			    <label>From Date</label> <label style="margin-left:250px;">To Date</label>
 				<br>
@@ -9,12 +9,72 @@
 
 	  	<div class="form-group">
 	    		<label>Message</label>
-	    		<textarea class="form-control" rows="5" maxlength="130" style="width:520px;"></textarea>
+	    		<textarea class="form-control" rows="5" maxlength="130" style="width:520px;" id="leavemessage"></textarea>
 	  	</div>
-	    	<button type="submit" class="btn btn-default">Submit</button>
+	    	<button type="submit" onclick="LeaveDetails()" class="btn btn-default">Submit</button>
+		<br><br><label id="ErrorMessage" style="color:red !important;"></label>
 		</form>      		
 	</div>
 	
 <script>
-	
+	$(function() {
+		    $( "#fromdate" ).datepicker({ dateFormat: 'yy-mm-dd',minDate: 4,beforeShowDay: $.datepicker.noWeekends,defaultDate: "+1w",
+		      changeMonth: true,
+		      minDate:"+2d",
+		      
+		      numberOfMonths: 2,
+		      onClose: function( selectedDate ) {
+		        $( "#todate" ).datepicker( "option", "minDate", selectedDate );
+			}
+			});
+		});
+
+		$(function() {
+			    $( "#todate" ).datepicker({ dateFormat: 'yy-mm-dd',minDate: 0,minDate: 4,beforeShowDay: $.datepicker.noWeekends,
+				defaultDate: "+1w",
+      			 changeMonth: true,
+			 numberOfMonths: 2,
+      			 onClose: function( selectedDate ) {
+       			 $( "#fromdate" ).datepicker( "option", "maxDate", selectedDate );
+      		}
+			 });
+				  });
+			
+	function LeaveDetails()
+	{
+		var datereg=/^\d{4}[-]\d{2}[-]\d{2}$/;
+		var fromdate=document.getElementById("fromdate").value;
+		var todate=document.getElementById("todate").value;
+		var leavemessage=document.getElementById("leavemessage").value;
+		if( datereg.test(fromdate) == true && datereg.test(todate) == true && leavemessage != "")
+		{
+			$.ajax({
+				url:'dashboard/leaverequesthandler',
+				type: 'POST',
+				data:{fromdate:fromdate,todate:todate,message:leavemessage},
+				}).done(function(responseText) {
+					$('#leaveapply')[0].reset();
+					$("#ErrorMessage").html("Leave Request is submitted");
+				});
+			
+		}
+		else
+		{
+			var message=""
+			if(datereg.test(fromdate) == false)
+			{
+				message +="*Invalid from date\n";
+			}
+			if(datereg.test(todate) == false) 
+			{
+				message +="*Invalid to date\n";
+			}
+			if(leavemessage == "")
+			{
+				message +="*Invalid message\n";
+			}					
+			$("#ErrorMessage").html(message);
+		}
+				
+	}
 </script>

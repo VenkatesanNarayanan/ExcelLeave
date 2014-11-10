@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+   <link href="assets/site-demos.css" rel="stylesheet"> 
     <link href="assets/navbar.css" rel="stylesheet">
+     
+   <script type="text/javascript" src="assets/jquery.js"></script>
+   <script type="text/javascript" src="assets/jquery.validate.js"></script>
+   <script type="text/javasrcipt" src="assets/jquery.validate.min.js"></script>
+   <script type="text/javascript" src="assets/additional-methods.min.js"></script>
+   <link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+   
+  </head>
 
-     </head>
-
-  <body onload="Display()">
+  <body>
 
     <div class="container">
 
@@ -28,19 +35,26 @@
 		<ul class="nav navbar-nav">
               	<li id="home" class="menubar"><a href="#"  > <span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
 		<li id="leaverequest" class="menubar"><a href="#" ><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Leave Apply</a></li>
-              	<li id="leavestatus" class="menubar"><a href="#" ><span class="glyphicon glyphicon-send"></span>&nbsp;Leave Status</a></li>
+              	<li id="leavestatus"><a href="#" ><span class="glyphicon glyphicon-send"></span>&nbsp;Leave Status</a></li>
              
-		        [% FOREACH items IN messages %]
-			[%items%]
+		        [% FOREACH tabs IN messages %]
+			[%tabs%]
 			[% END %]
  		</ul>
 
 		
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span>&nbsp;Settings<span 	class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span>&nbsp;
+		Hi,		
+		[% FOREACH myname IN uname %]
+		[%myname%]
+		[% END %]
+		<span 	class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#"><span class="glyphicon glyphicon-wrench"></span>&nbsp;Change Password</a></li>
+		  
+                  <li><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user"></span>&nbsp;Profile</a></li>
+                  <li><a href="#" data-toggle="modal" data-target="#changepassword"><span class="glyphicon glyphicon-wrench"></span>&nbsp;Change Password</a></li>
                   <li class="divider"></li>
                   <li><a href="#"><span class="glyphicon glyphicon-off"></span>&nbsp;Logout</a></li>
                 </ul>
@@ -123,44 +137,20 @@
     </div> <!-- /container -->
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="assets/bootstrap.min.js"></script>
-    <link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/jquery-ui.css">
-   <script src="assets/jquery-1.10.2.js"></script>
    <script src="assets/jquery-ui.js"></script>
   <script>
+  Display();
   function Display() {
 	
     $( "#datepicker" ).datepicker();
   }
-$(function() {
-		    $( "#fromdate" ).datepicker({ dateFormat: 'yy-mm-dd',defaultDate: "+1w",
-		      changeMonth: true,
-		      minDate:"+2d",
-		      
-		      numberOfMonths: 2,
-		      onClose: function( selectedDate ) {
-		        $( "#todate" ).datepicker( "option", "minDate", selectedDate );
-			}
-			});
-		});
-
-		$(function() {
-			    $( "#todate" ).datepicker({ dateFormat: 'yy-mm-dd',minDate: 0,
-				defaultDate: "+1w",
-      			changeMonth: true,
-      			numberOfMonths: 2,
-      			 onClose: function( selectedDate ) {
-       			 $( "#fromdate" ).datepicker( "option", "maxDate", selectedDate );
-      		}
-			 });
-				  });
+	
   </script>
 
     <script>
-	$(document).ready(function(){
-  			
+	$(document).ready(function(){ 			
 			$("#home").addClass("active");
 			var id="home";
 			var current="#home";
@@ -189,6 +179,105 @@ $(function() {
 
  	 		});
 	});
+ 
 	</script>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Profile</h4>
+      </div>
+      <div class="modal-body">
+        [% WHILE (Profile = ProfileDetails.next) %]
+		<p>EmployeeId : <b>[% Profile.EmployeeId | html %]</b></p>
+		<p>First Name : <b> [% Profile.FirstName | html%]</b></p>
+		<p>Last Name : <b> [% Profile.LastName | html%]</b></p>
+		<p>Date Of Joing : <b> [% Profile.DateOfJoing | html%]</b></p>
+		
+		<p>Email : <b> [% Profile.Email | html%]</b></p>
+	[% END %]
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Change password</h4>
+      </div>
+      <div class="modal-body">
+
+
+
+
+
+
+		<form role="form" id="ChangePasswordForm" style="width:500px;margin:auto">
+		  <div class="form-group">
+			    <label>Enter new password : </label>
+			    <input type="password" class="form-control" id="newpassword">	
+		  </div>
+		<br>
+		<div class="form-group">
+			<label>Re-Enter password: </label>	 
+			<input type="password" class="form-control" id="reenter">
+		</div>
+
+		<br><label id="PasswordChangeError" style="color:red !important;"></label><br>
+		</form>      		
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="changepassword()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+	function changepassword()
+	{
+		
+		var newpassword=document.getElementById("newpassword").value;
+		var reentered=document.getElementById("reenter").value;
+		if(newpassword.length > 6 && reentered.length > 6)
+		{
+			if(newpassword == reentered)
+			{
+				$.ajax({
+					url : 'dashboard/changepassword',
+					data : {status:"existing",newpassword:newpassword},
+				}).done(function(responseText){
+					$('#changepassword').modal('hide');
+ 					$('body').removeClass('modal-open');
+ 					$('.modal-backdrop').remove();
+					$('#ChangePasswordForm')[0].reset();
+					$("#PasswordChangeError").html("");
+				});
+			}
+			else
+			{
+				$("#PasswordChangeError").html("*Password miss matched");				
+			}
+		}
+		else
+		{
+			$("#PasswordChangeError").html("*Password should have atleast 6 characters");	
+		}
+	}
+</script>
+
   </body>
-</html>i
+</html>
