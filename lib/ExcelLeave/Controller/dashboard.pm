@@ -25,13 +25,23 @@ Catalyst Controller.
 =cut
 sub index :Path{
 	my ( $self, $c ) = @_;
+<<<<<<< HEAD
 	#print $c->user->FirstName,"hello\n";
 	my $username="Dharmu";
 	$c->stash->{ProfileDetails}=$c->model('Leave::Employee')->search({FirstName=>$username});
+=======
+	
+#	my @collected=$c->model('Leave::Employee')->search({});
+#	foreach my $var(@collected)
+#	{
+#		print Dumper $var->{_column_data};
+#	}
+
+>>>>>>> b2003c6c9a155436af5693e65c776efe2ecd9b24
 	my $Role = "Adminstrator";
 	my $emp;
 	$emp->{foo2} = ['<li id="viewrequest" class="menubar"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Request</a></li>'];
-	$emp->{foo3} = ['<li id="viewrequest" class="menubar"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Request</a></li>','<li id="updatedetails" class="menubar"><a href="#"><span class="glyphicon glyphicon-edit"></span>&nbsp;Update Details</a></li>'];
+	$emp->{foo3} = ['<li id="viewrequest" class="menubar"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Request</a></li>','<li id="addemployee" class="menubar"><a href="#"><span class="glyphicon glyphicon-edit"></span>&nbsp;Update Details</a></li>'];
 
 	if($Role eq "Manager") {
 		$c->stash->{messages} = $emp->{foo2};
@@ -85,6 +95,7 @@ sub home :Local {
 	$c->forward('View::TT');
 }
 
+<<<<<<< HEAD
 sub changepassword:Local{
 
 	my ($self,$c)=@_;
@@ -108,6 +119,38 @@ sub changepassword:Local{
 		my $tokencheck=$user->update({Password=>$mypassword});
 		print Dumper $c->req->params;
 }
+=======
+sub addemployee :Local {
+	my ($self,$c)=@_;
+
+	$c->forward('View::TT');
+
+	#my $fname = $c->request->params->{'fname'};
+	#my $lname = $c->request->params->{'lname'};
+	#my $email = $c->request->params->{'email'};
+	#my $dateofjoining = $c->params->{'dateofjoining'};
+	#my $role = $c->params->{'role'};
+
+	print "name ------------------\n";
+=pod	
+	my @responsedata = $c->model('Leave::AddEmp')->create({
+
+			FirstName => $fname,
+			LastName => $lname,
+			Email => $email,
+			DateOfJoining => $dateofjoining,
+			Role => $role,
+
+		});
+
+	print Dumper \@responsedata;
+=cut
+
+}
+
+
+
+>>>>>>> b2003c6c9a155436af5693e65c776efe2ecd9b24
 =encoding utf8
 =encoding utf8
 

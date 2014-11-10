@@ -138,6 +138,10 @@
 
 
     <script src="assets/bootstrap.min.js"></script>
+<<<<<<< HEAD
+=======
+    <link href="../assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+>>>>>>> b2003c6c9a155436af5693e65c776efe2ecd9b24
     <link rel="stylesheet" href="assets/jquery-ui.css">
    <script src="assets/jquery-ui.js"></script>
   <script>
@@ -179,6 +183,7 @@
 
  	 		});
 	});
+<<<<<<< HEAD
  
 	</script>
 
@@ -277,6 +282,102 @@
 			$("#PasswordChangeError").html("*Password should have atleast 6 characters");	
 		}
 	}
+=======
+</script>
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$('#').DataTable({});
+
+		jQuery.validator.setDefaults({
+			debug: true,
+			success: "valid"
+		});
+		$( "#addBook_Form" ).validate({
+			rules: {
+				fname: {
+					required: true,
+				},
+				lname: {
+					required :true,
+				},
+				email: {
+					required :true,
+				},
+				dateofjoining:{
+					required:true,
+				}
+				role:{
+
+				}
+
+			},
+			submitHandler : function(form){
+				alert("asd");
+
+				var fname = $('#fname').val();
+				var lname = $('#lname').val();
+				var email = $('#email').val();
+				var dateofjoining = $('#dateofjoining').val();
+				var role = $('#role').val();
+
+				$.ajax({ 
+					url:"admindashboard/addBook",
+					data :{fname : fname,
+						lname:lname,
+						email:email,
+						dateofjoining:dateofjoining,
+						role:role,
+					},
+					success:function(data){
+						$('#sucess_message').html(data.message);
+
+
+						// $('#myModal').modal('hide');
+						// $('body').removeClass('modal-open');
+						// $('.modal-backdrop').remove();
+
+					}
+				});
+
+
+
+			});
+		});
+
+	});
+
+	function AddEmp() {
+
+		alert("1st alert frm ajaxxx");
+
+		var fname = $('#fname').val();
+		var lname = $('#lname').val();
+		var email = $('#email').val();
+		var dateofjoining = $('#dateofjoining').val();
+		var role = $('#role').val();
+
+		alert(fname);
+
+		$.ajax({
+			url:"dashboard/addemployee",
+			data:{ fname : fname,
+				lname : lname,
+				email : email,
+				dateofjoining : dateofjoining,
+				role : role,
+
+			},
+
+			success:function(result){
+				alert("AddEmp() working fine");
+			}
+
+		});
+	}
+
+>>>>>>> b2003c6c9a155436af5693e65c776efe2ecd9b24
 </script>
 
   </body>
