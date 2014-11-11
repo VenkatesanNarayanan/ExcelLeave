@@ -259,6 +259,7 @@
 						{
 							$.ajax({
 								url : 'dashboard/changepassword',
+								type : "POST",
 								data : {status:"existing",newpassword:newpassword},
 								}).done(function(responseText){
 								$('#changepassword').modal('hide');
@@ -375,36 +376,6 @@
 					{
 						$("#PasswordChangeError").html("*Password should have atleast 6 characters");	
 					}
-				}
-
-			</script>
-
-			<script>
-				function AddEmp() {
-
-					var fname = $('#fname').val();
-					var lname = $('#lname').val();
-					var email = $('#email').val();
-					var dateofjoining = $('#dateofjoining').val();
-					var role = $('#role').val();
-
-					alert(fname);
-
-					$.ajax({
-						url:"dashboard/addemployee",
-						data:{ fname : fname,
-							lname : lname,
-							email : email,
-							dateofjoining : dateofjoining,
-							role : role,
-
-						},
-
-						success:function(result){
-							alert("AddEmp() working fine");
-						}
-
-					});
 				}
 
 			</script>

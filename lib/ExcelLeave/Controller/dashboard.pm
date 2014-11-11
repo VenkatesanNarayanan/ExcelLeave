@@ -1,6 +1,5 @@
 package ExcelLeave::Controller::dashboard;
 use Moose;
-use namespace::autoclean;
 use Data::Dumper;
 use DateTime;
 use Digest::MD5;
@@ -30,12 +29,6 @@ sub index :Path{
 	my $username="Dharmu";
 	$c->stash->{ProfileDetails}=$c->model('Leave::Employee')->search({FirstName=>$username});
 	
-#	my @collected=$c->model('Leave::Employee')->search({});
-#	foreach my $var(@collected)
-#	{
-#		print Dumper $var->{_column_data};
-#	}
-
 	my $Role = "Adminstrator";
 	my $emp;
 	$emp->{foo2} = ['<li id="viewrequest" class="menubar"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Request</a></li>'];
@@ -184,23 +177,6 @@ sub updatedetails:Local
 
 	my ($self,$c)=@_;
 
-=pod	my @collected=$c->model('Leave::Role')->search({},{
-			join => 'employees',   
-			'+select' => ["employees.EmployeeId","employees.FirstName","employees.LastName","employees.DateOfJoing","employees.Email"],
-			'+as' => ["EmployeeId","FirstName","LastName","DateOfJoing","Email"],
-			#order_by => {-$dt_params->{"order[0][dir]"}=>$sort_column},
-		});                         
-
-	push( @{$c->stash->{details}},{
-			EmployeeId => $_->get_column('EmployeeId'),
-			FirstName => $_->get_column('FirstName'),
-			LastName => $_->get_column('LastName'),
-			RoleName => $_->RoleName,  
-			DateOfJoining => $_->get_column('DateOfJoing'),
-			Email => $_->get_column('Email'),
-		}) foreach @collected;           
-=cut
-
 	my @collected=$c->model('Leave::Employee')->search({},{
 			join => 'role',
 			'+select' => ["role.RoleName"],
@@ -225,34 +201,51 @@ sub updatedetails:Local
 
 sub addemployee :Local {
 	my ($self,$c)=@_;
+	my @collected=$c->model('Leave::Role')->search({});
+
+	push( @{$c->stash->{roles}},{
+			 RoleName => $_->RoleName,
+		}) foreach @collected;
 
 	$c->forward('View::TT');
-
-	#my $fname = $c->request->params->{'fname'};
-	#my $lname = $c->request->params->{'lname'};
-	#my $email = $c->request->params->{'email'};
-	#my $dateofjoining = $c->params->{'dateofjoining'};
-	#my $role = $c->params->{'role'};
-
-	print "name ------------------\n";
-=pod	
-	my @responsedata = $c->model('Leave::AddEmp')->create({
-
-			FirstName => $fname,
-			LastName => $lname,
-			Email => $email,
-			DateOfJoining => $dateofjoining,
-			Role => $role,
-
-		});
-
-	print Dumper \@responsedata;
-=cut
-
 }
 
+sub updatedetailsform:Local
+{
+	my ($self,$c)=@_;
+	my @collected=$c->model('Leave::Role')->search({});
 
+	push( @{$c->stash->{roles}},{
+			 RoleName => $_->RoleName,
+		}) foreach @collected;
 
+	my @empcollection=$c->model('Leave::Employee')->search({EmployeeId=>$c->req->params->{employeeid}},{
+			join => 'role',
+			'+select' => ["role.RoleName"],
+			'+as' => ["RoleName"],
+		});
+		
+	push( @{$c->stash->{empdetails}},{
+			EmployeeId=>$_->EmployeeId,
+			FirstName=>$_->FirstName,
+			Email=>$_->Email,
+			LastName=>$_->LastName,
+			DateOfJoining=>$_->DateOfJoing,
+			Status=>$_->Status,
+			RoleName => $_->get_column('RoleName'),
+		}) foreach @empcollection;
+
+	print Dumper $c->req->params;
+	$c->forward('View::TT');
+}
+
+sub employeeupdate:Local
+{
+	print "====================================================\n\n";
+	my ($self,$c)=@_;
+	print Dumper $c->req->params;
+	$c->forward('View::JSON');
+}
 =encoding utf8
 =encoding utf8
 

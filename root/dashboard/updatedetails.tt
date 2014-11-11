@@ -25,13 +25,13 @@
 		[% END %]
 	</tbody>
     </table>
-
+	<button  onclick="callme()">click</button>
 </div>
 
 
 <script>
 $(document).ready(function() {
-    $('#example').dataTable({"iDisplayLength":10});  
+    $('#example').dataTable({"iDisplayLength":5});  
 });
   
 $('.empdetails').click(function(){
@@ -41,18 +41,18 @@ $('.empdetails').click(function(){
 		 employee[counter++]=$(this).html();
  		});
 	$.ajax({
-		url:'dashboard/addemployee',
+		url:'dashboard/updatedetailsform',
 		data:{
 			employeeid:employee[0],
-			firstname:employee[1],
-			lastname:employee[2],
-			dateofjoining:employee[3],
-			email:employee[4],
-			rolename:employee[5],
 		      }
 	      }).done(function(responseText){
 			$("#maincontent").html(responseText);
 		});
 			
 });
+
+function callme()
+{
+	alert("hi");
+}
 </script>
