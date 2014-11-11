@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+<<<<<<< HEAD
 		<link href="assets/site-demos.css" rel="stylesheet"> 
 		<link href="assets/navbar.css" rel="stylesheet">
 		<link href="assets/jquery.dataTables.css" rel="stylesheet">
@@ -10,6 +11,16 @@
 		<script type="text/javasrcipt" src="assets/jquery.validate.min.js"></script>
 		<script type="text/javascript" src="assets/additional-methods.min.js"></script>
 		<link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+=======
+		<link href="../assets/site-demos.css" rel="stylesheet"> 
+		<link href="../assets/navbar.css" rel="stylesheet">
+
+		<script type="text/javascript" src="../assets/jquery.js"></script>
+		<script type="text/javascript" src="../assets/jquery.validate.js"></script>
+		<script type="text/javasrcipt" src="../assets/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="../assets/additional-methods.min.js"></script>
+		<link href="../assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+>>>>>>> 5fd77072f95cbb6765eea9fee079b7cb3b35da5d
 
 	</head>
 
@@ -18,7 +29,11 @@
 		<div class="container">
 
 			<!-- Static navbar -->
+<<<<<<< HEAD
 			<a class="navbar-brand" href="#"><img src="assets/images/logo.gif" style="height:120px;margin-top:-30px;width:200px"/></a>
+=======
+			<a class="navbar-brand" href="#"><img src="../assets/images/logo.gif" style="height:120px;margin-top:-30px;width:200px"/></a>
+>>>>>>> 5fd77072f95cbb6765eea9fee079b7cb3b35da5d
 			<nav class="navbar navbar-default" role="navigation" style="margin-bottom: 90px;margin-top: 20px;margin-left: 285px;">
 			<div class="container-fluid" style="padding-left:0px;" >
 				<div class="navbar-header" >
@@ -138,10 +153,20 @@
 			</div> <!-- /container -->
 
 
+<<<<<<< HEAD
 			<script src="assets/bootstrap.min.js"></script>
 			<link href="../assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 			<link rel="stylesheet" href="assets/jquery-ui.css">
 			<script src="assets/jquery-ui.js"></script>
+=======
+			<script src="../assets/bootstrap.min.js"></script>
+
+
+			<link href="../assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+			<link rel="stylesheet" href="../assets/jquery-ui.css">
+			<script src="../assets/jquery-ui.js"></script>
+>>>>>>> 5fd77072f95cbb6765eea9fee079b7cb3b35da5d
 			<script>
 				Display();
 				function Display() {
@@ -281,5 +306,140 @@
 				}
 			</script>
 
+<<<<<<< HEAD
 	</body>
 	</html>
+=======
+			</script>
+
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+
+							<h4 class="modal-title" id="myModalLabel">Profile</h4>
+						</div>
+						<div class="modal-body">
+							[% WHILE (Profile = ProfileDetails.next) %]
+							<p>EmployeeId : <b>[% Profile.EmployeeId | html %]</b></p>
+							<p>First Name : <b> [% Profile.FirstName | html%]</b></p>
+							<p>Last Name : <b> [% Profile.LastName | html%]</b></p>
+							<p>Date Of Joing : <b> [% Profile.DateOfJoing | html%]</b></p>
+
+							<p>Email : <b> [% Profile.Email | html%]</b></p>
+							[% END %]
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title" id="myModalLabel">Change password</h4>
+						</div>
+						<div class="modal-body">
+
+
+
+
+
+
+							<form role="form" id="ChangePasswordForm" style="width:500px;margin:auto">
+								<div class="form-group">
+									<label>Enter new password : </label>
+									<input type="password" class="form-control" id="newpassword">	
+								</div>
+								<br>
+								<div class="form-group">
+									<label>Re-Enter password: </label>	 
+									<input type="password" class="form-control" id="reenter">
+								</div>
+
+								<br><label id="PasswordChangeError" style="color:red !important;"></label><br>
+							</form>      		
+
+
+
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary" onclick="changepassword()">Save changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<script>
+				function changepassword()
+				{
+
+					var newpassword=document.getElementById("newpassword").value;
+					var reentered=document.getElementById("reenter").value;
+					if(newpassword.length > 6 && reentered.length > 6)
+					{
+						if(newpassword == reentered)
+						{
+							$.ajax({
+								url : 'dashboard/changepassword',
+								data : {status:"existing",newpassword:newpassword},
+								}).done(function(responseText){
+								$('#changepassword').modal('hide');
+								$('body').removeClass('modal-open');
+								$('.modal-backdrop').remove();
+								$('#ChangePasswordForm')[0].reset();
+								$("#PasswordChangeError").html("");
+							});
+						}
+						else
+						{
+							$("#PasswordChangeError").html("*Password miss matched");				
+						}
+					}
+					else
+					{
+						$("#PasswordChangeError").html("*Password should have atleast 6 characters");	
+					}
+				}
+
+			</script>
+
+			<script>
+				function AddEmp() {
+
+					var fname = $('#fname').val();
+					var lname = $('#lname').val();
+					var email = $('#email').val();
+					var dateofjoining = $('#dateofjoining').val();
+					var role = $('#role').val();
+
+					alert(fname);
+
+					$.ajax({
+						url:"dashboard/addemployee",
+						data:{ fname : fname,
+							lname : lname,
+							email : email,
+							dateofjoining : dateofjoining,
+							role : role,
+
+						},
+
+						success:function(result){
+							alert("AddEmp() working fine");
+						}
+
+					});
+				}
+
+			</script>
+
+			
+>>>>>>> 5fd77072f95cbb6765eea9fee079b7cb3b35da5d
