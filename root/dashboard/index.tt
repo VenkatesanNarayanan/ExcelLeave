@@ -1,384 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-   <link href="assets/site-demos.css" rel="stylesheet"> 
-    <link href="assets/navbar.css" rel="stylesheet">
-     
-   <script type="text/javascript" src="assets/jquery.js"></script>
-   <script type="text/javascript" src="assets/jquery.validate.js"></script>
-   <script type="text/javasrcipt" src="assets/jquery.validate.min.js"></script>
-   <script type="text/javascript" src="assets/additional-methods.min.js"></script>
-   <link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-   
-  </head>
+	<head>
+		<link href="assets/site-demos.css" rel="stylesheet"> 
+		<link href="assets/navbar.css" rel="stylesheet">
+		<link href="assets/jquery.dataTables.css" rel="stylesheet">
+		<script type="text/javascript" src="assets/jquery.js"></script>
+		<script type="text/javascript" src="assets/jquery.validate.js"></script>
+		<script type="text/javascript" src="assets/jquery.dataTables.min.js"></script>
+		<script type="text/javasrcipt" src="assets/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="assets/additional-methods.min.js"></script>
+		<link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <body>
+	</head>
 
-    <div class="container">
+	<body>
 
-      <!-- Static navbar -->
-<a class="navbar-brand" href="#"><img src="assets/images/logo.gif" style="height:120px;margin-top:-30px;width:200px"/></a>
-      <nav class="navbar navbar-default" role="navigation" style="margin-bottom: 90px;margin-top: 20px;margin-left: 285px;">
-        <div class="container-fluid" style="padding-left:0px;" >
-          <div class="navbar-header" >
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            
-          </div>
+		<div class="container">
 
-          <div id="navbar" class="navbar-collapse collapse">
-		            
-		<ul class="nav navbar-nav">
-              	<li id="home" class="menubar"><a href="#"  > <span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
-		<li id="leaverequest" class="menubar"><a href="#" ><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Leave Apply</a></li>
-              	<li id="leavestatus"><a href="#" ><span class="glyphicon glyphicon-send"></span>&nbsp;Leave Status</a></li>
-             
-		        [% FOREACH tabs IN messages %]
-			[%tabs%]
-			[% END %]
- 		</ul>
+			<!-- Static navbar -->
+			<a class="navbar-brand" href="#"><img src="assets/images/logo.gif" style="height:120px;margin-top:-30px;width:200px"/></a>
+			<nav class="navbar navbar-default" role="navigation" style="margin-bottom: 90px;margin-top: 20px;margin-left: 285px;">
+			<div class="container-fluid" style="padding-left:0px;" >
+				<div class="navbar-header" >
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
 
-		
-            <ul class="nav navbar-nav navbar-right">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span>&nbsp;
-		Hi,		
-		[% FOREACH myname IN uname %]
-		[%myname%]
-		[% END %]
-		<span 	class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-		  
-                  <li><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user"></span>&nbsp;Profile</a></li>
-                  <li><a href="#" data-toggle="modal" data-target="#changepassword"><span class="glyphicon glyphicon-wrench"></span>&nbsp;Change Password</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#"><span class="glyphicon glyphicon-off"></span>&nbsp;Logout</a></li>
-                </ul>
-              </li>
-            </ul-->
-          </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-      </nav>
+				</div>
 
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron" style="padding:50px;width: 250px;float:left">
-        <h3>Leaves Left</h3>
-        <h1 class="btn-lg btn-primary" style="text-align:center;color:white;">14</h1>
-       </div>
-	<div id="maincontent" style="width:850px;float:right">
-		
-	</div>
-	<div style="float:right;">
+				<div id="navbar" class="navbar-collapse collapse">
 
-		<div class="panel panel-default" style="width:850px;">
-  		<!-- Default panel contents -->
-  		<div class="panel-heading">Official Holidays</div>
+					<ul class="nav navbar-nav">
+						<li id="home" class="menubar"><a href="#"  > <span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+						<li id="leaverequest" class="menubar"><a href="#" ><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Leave Apply</a></li>
+						<li id="leavestatus"><a href="#" ><span class="glyphicon glyphicon-send"></span>&nbsp;Leave Status</a></li>
 
-	
-
-  		<!-- Table -->
-  			<table class="table">
-    				<tr>
-					<th>Sl.No</th>
-					<th>Date</th>
-					<th>Occasion</th>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>4</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>5</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>6</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>7</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>9</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>10</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-  			</table>	
-		</div>
-	</div>
-
-	<div id="datepicker" style="float:left;width:250px;height:300px;">
-		
-	</div>		
-    </div> <!-- /container -->
+						[% FOREACH tabs IN messages %]
+						[%tabs%]
+						[% END %]
+					</ul>
 
 
-    <script src="assets/bootstrap.min.js"></script>
-<<<<<<< HEAD
-=======
-    <link href="../assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
->>>>>>> b2003c6c9a155436af5693e65c776efe2ecd9b24
-    <link rel="stylesheet" href="assets/jquery-ui.css">
-   <script src="assets/jquery-ui.js"></script>
-  <script>
-  Display();
-  function Display() {
-	
-    $( "#datepicker" ).datepicker();
-  }
-	
-  </script>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span>&nbsp;
+							Hi,		
+							[% FOREACH myname IN uname %]
+							[%myname%]
+							[% END %]
+							<span 	class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
 
-    <script>
-	$(document).ready(function(){ 			
-			$("#home").addClass("active");
-			var id="home";
-			var current="#home";
-			
-				$.ajax({
-					url:'dashboard/home',
-					type: 'POST',
-					}).done(function(responseText) {
+							<li><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user"></span>&nbsp;Profile</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#changepassword"><span class="glyphicon glyphicon-wrench"></span>&nbsp;Change Password</a></li>
+							<li class="divider"></li>
+							<li><a href="#"><span class="glyphicon glyphicon-off"></span>&nbsp;Logout</a></li>
+						</ul>
+						</li>
+						</ul-->
+					</div><!--/.nav-collapse -->
+				</div><!--/.container-fluid -->
+				</nav>
+
+				<!-- Main component for a primary marketing message or call to action -->
+				<div class="jumbotron" style="padding:50px;width: 250px;float:left">
+					<h3>Leaves Left</h3>
+					<h1 class="btn-lg btn-primary" style="text-align:center;color:white;">14</h1>
+				</div>
+				<div id="maincontent" style="width:850px;float:right">
+
+				</div>
+				<div style="float:right;">
+
+					<div class="panel panel-default" style="width:850px;">
+						<!-- Default panel contents -->
+						<div class="panel-heading">Official Holidays</div>
+
+
+
+						<!-- Table -->
+						<table class="table">
+							<tr>
+								<th>Sl.No</th>
+								<th>Date</th>
+								<th>Occasion</th>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>2014-01-26</td>
+								<td>Republic Day</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>2014-01-26</td>
+								<td>Republic Day</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>2014-01-26</td>
+								<td>Republic Day</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>2014-01-26</td>
+								<td>Republic Day</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>2014-01-26</td>
+								<td>Republic Day</td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>2014-01-26</td>
+								<td>Republic Day</td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>2014-01-26</td>
+								<td>Republic Day</td>
+							</tr>
+							<tr>
+								<td>10</td>
+								<td>2014-01-26</td>
+								<td>Republic Day</td>
+							</tr>
+						</table>	
+					</div>
+				</div>
+
+				<div id="datepicker" style="float:left;width:250px;height:300px;">
+
+				</div>		
+			</div> <!-- /container -->
+
+
+			<script src="assets/bootstrap.min.js"></script>
+			<link href="../assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="assets/jquery-ui.css">
+			<script src="assets/jquery-ui.js"></script>
+			<script>
+				Display();
+				function Display() {
+
+					$( "#datepicker" ).datepicker();
+				}
+
+			</script>
+
+			<script>
+				$(document).ready(function(){ 			
+					$("#home").addClass("active");
+					var id="home";
+					var current="#home";
+
+					$.ajax({
+						url:'dashboard/home',
+						type: 'POST',
+						}).done(function(responseText) {
 						$("#maincontent").html(responseText);
 					});
 
-			$(".menubar").click(function(){
-				id = $(this).attr('id');
-				var path="dashboard/"+id;
-				$.ajax({
-					url:path,
-					type: 'POST',
-					}).done(function(responseText) {
-						$("#maincontent").html(responseText);
+					$(".menubar").click(function(){
+						id = $(this).attr('id');
+						var path="dashboard/"+id;
+						$.ajax({
+							url:path,
+							type: 'POST',
+							}).done(function(responseText) {
+							$("#maincontent").html(responseText);
+						});
+
+						id='#' + id;
+						$(current).removeClass("active");
+						$(id).addClass("active");
+						current = id;
+
 					});
-				
-				id='#' + id;
- 				$(current).removeClass("active");
- 				$(id).addClass("active");
-				current = id;
-
- 	 		});
-	});
-<<<<<<< HEAD
- 
-	</script>
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Profile</h4>
-      </div>
-      <div class="modal-body">
-        [% WHILE (Profile = ProfileDetails.next) %]
-		<p>EmployeeId : <b>[% Profile.EmployeeId | html %]</b></p>
-		<p>First Name : <b> [% Profile.FirstName | html%]</b></p>
-		<p>Last Name : <b> [% Profile.LastName | html%]</b></p>
-		<p>Date Of Joing : <b> [% Profile.DateOfJoing | html%]</b></p>
-		
-		<p>Email : <b> [% Profile.Email | html%]</b></p>
-	[% END %]
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Change password</h4>
-      </div>
-      <div class="modal-body">
-
-
-
-
-
-
-		<form role="form" id="ChangePasswordForm" style="width:500px;margin:auto">
-		  <div class="form-group">
-			    <label>Enter new password : </label>
-			    <input type="password" class="form-control" id="newpassword">	
-		  </div>
-		<br>
-		<div class="form-group">
-			<label>Re-Enter password: </label>	 
-			<input type="password" class="form-control" id="reenter">
-		</div>
-
-		<br><label id="PasswordChangeError" style="color:red !important;"></label><br>
-		</form>      		
-
-
-
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="changepassword()">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-	function changepassword()
-	{
-		
-		var newpassword=document.getElementById("newpassword").value;
-		var reentered=document.getElementById("reenter").value;
-		if(newpassword.length > 6 && reentered.length > 6)
-		{
-			if(newpassword == reentered)
-			{
-				$.ajax({
-					url : 'dashboard/changepassword',
-					data : {status:"existing",newpassword:newpassword},
-				}).done(function(responseText){
-					$('#changepassword').modal('hide');
- 					$('body').removeClass('modal-open');
- 					$('.modal-backdrop').remove();
-					$('#ChangePasswordForm')[0].reset();
-					$("#PasswordChangeError").html("");
 				});
-			}
-			else
-			{
-				$("#PasswordChangeError").html("*Password miss matched");				
-			}
-		}
-		else
-		{
-			$("#PasswordChangeError").html("*Password should have atleast 6 characters");	
-		}
-	}
-=======
-</script>
 
-<script type="text/javascript">
+			</script>
 
-	$(document).ready(function() {
-		$('#').DataTable({});
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title" id="myModalLabel">Profile</h4>
+						</div>
+						<div class="modal-body">
+							[% WHILE (Profile = ProfileDetails.next) %]
+							<p>EmployeeId : <b>[% Profile.EmployeeId | html %]</b></p>
+							<p>First Name : <b> [% Profile.FirstName | html%]</b></p>
+							<p>Last Name : <b> [% Profile.LastName | html%]</b></p>
+							<p>Date Of Joing : <b> [% Profile.DateOfJoing | html%]</b></p>
 
-		jQuery.validator.setDefaults({
-			debug: true,
-			success: "valid"
-		});
-		$( "#addBook_Form" ).validate({
-			rules: {
-				fname: {
-					required: true,
-				},
-				lname: {
-					required :true,
-				},
-				email: {
-					required :true,
-				},
-				dateofjoining:{
-					required:true,
-				}
-				role:{
+							<p>Email : <b> [% Profile.Email | html%]</b></p>
+							[% END %]
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-				}
-
-			},
-			submitHandler : function(form){
-				alert("asd");
-
-				var fname = $('#fname').val();
-				var lname = $('#lname').val();
-				var email = $('#email').val();
-				var dateofjoining = $('#dateofjoining').val();
-				var role = $('#role').val();
-
-				$.ajax({ 
-					url:"admindashboard/addBook",
-					data :{fname : fname,
-						lname:lname,
-						email:email,
-						dateofjoining:dateofjoining,
-						role:role,
-					},
-					success:function(data){
-						$('#sucess_message').html(data.message);
+			<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title" id="myModalLabel">Change password</h4>
+						</div>
+						<div class="modal-body">
 
 
-						// $('#myModal').modal('hide');
-						// $('body').removeClass('modal-open');
-						// $('.modal-backdrop').remove();
 
+
+
+
+							<form role="form" id="ChangePasswordForm" style="width:500px;margin:auto">
+								<div class="form-group">
+									<label>Enter new password : </label>
+									<input type="password" class="form-control" id="newpassword">	
+								</div>
+								<br>
+								<div class="form-group">
+									<label>Re-Enter password: </label>	 
+									<input type="password" class="form-control" id="reenter">
+								</div>
+
+								<br><label id="PasswordChangeError" style="color:red !important;"></label><br>
+							</form>      		
+
+
+
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary" onclick="changepassword()">Save changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<script>
+				function changepassword()
+				{
+
+					var newpassword=document.getElementById("newpassword").value;
+					var reentered=document.getElementById("reenter").value;
+					if(newpassword.length > 6 && reentered.length > 6)
+					{
+						if(newpassword == reentered)
+						{
+							$.ajax({
+								url : 'dashboard/changepassword',
+								data : {status:"existing",newpassword:newpassword},
+								}).done(function(responseText){
+								$('#changepassword').modal('hide');
+								$('body').removeClass('modal-open');
+								$('.modal-backdrop').remove();
+								$('#ChangePasswordForm')[0].reset();
+								$("#PasswordChangeError").html("");
+							});
+						}
+						else
+						{
+							$("#PasswordChangeError").html("*Password miss matched");				
+						}
 					}
-				});
+					else
+					{
+						$("#PasswordChangeError").html("*Password should have atleast 6 characters");	
+					}
+				}
+			</script>
 
-
-
-			});
-		});
-
-	});
-
-	function AddEmp() {
-
-		alert("1st alert frm ajaxxx");
-
-		var fname = $('#fname').val();
-		var lname = $('#lname').val();
-		var email = $('#email').val();
-		var dateofjoining = $('#dateofjoining').val();
-		var role = $('#role').val();
-
-		alert(fname);
-
-		$.ajax({
-			url:"dashboard/addemployee",
-			data:{ fname : fname,
-				lname : lname,
-				email : email,
-				dateofjoining : dateofjoining,
-				role : role,
-
-			},
-
-			success:function(result){
-				alert("AddEmp() working fine");
-			}
-
-		});
-	}
-
->>>>>>> b2003c6c9a155436af5693e65c776efe2ecd9b24
-</script>
-
-  </body>
-</html>
+	</body>
+	</html>

@@ -1,0 +1,58 @@
+<div class="jumbotron">
+	<table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Date of joing</th>
+                <th>Email</th>
+                <th>Role</th>
+		<th></th>
+            </tr>
+        </thead>
+	<tbody >
+		[% FOREACH emp IN details %]
+ 		 <tr class="empdetails" id='[% emp.EmployeeId %]'>
+ 			<td>[% emp.EmployeeId %]</td>
+ 			<td>[% emp.FirstName %]</td>
+ 			<td>[% emp.LastName%]</td>
+ 			<td>[% emp.DateOfJoining %]</td>
+			<td>[% emp.Email%]</td>
+ 			<td>[% emp.RoleName%]</td>			
+ 			<td><span class="glyphicon glyphicon-pencil"></span></td>
+		</tr>
+		[% END %]
+	</tbody>
+    </table>
+
+</div>
+
+
+<script>
+$(document).ready(function() {
+    $('#example').dataTable({"iDisplayLength":10});  
+});
+  
+$('.empdetails').click(function(){
+	var employee=[];
+	var counter=0;
+	$(this).find("td").each(function(){
+		 employee[counter++]=$(this).html();
+ 		});
+	$.ajax({
+		url:'dashboard/addemployee',
+		data:{
+			employeeid:employee[0],
+			firstname:employee[1],
+			lastname:employee[2],
+			dateofjoining:employee[3],
+			email:employee[4],
+			rolename:employee[5],
+		      }
+	      }).done(function(responseText){
+			$("#maincontent").html(responseText);
+		});
+			
+});
+</script>

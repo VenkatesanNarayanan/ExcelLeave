@@ -30,3 +30,11 @@
 			<button type="button" class="btn btn-info" style="float:left;width:20%;">Cancel</button>			
 			</li>
   </ul>
+
+<script>
+$(document).ready(function() {
+    $('#example').dataTable( {
+        "ajax": '../ajax/data/arrays.txt'
+    } );
+} );
+</script>
