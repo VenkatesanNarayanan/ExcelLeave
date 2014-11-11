@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-<<<<<<< HEAD
 		<link href="assets/site-demos.css" rel="stylesheet"> 
 		<link href="assets/navbar.css" rel="stylesheet">
 		<link href="assets/jquery.dataTables.css" rel="stylesheet">
@@ -10,30 +9,14 @@
 		<script type="text/javascript" src="assets/jquery.dataTables.min.js"></script>
 		<script type="text/javasrcipt" src="assets/jquery.validate.min.js"></script>
 		<script type="text/javascript" src="assets/additional-methods.min.js"></script>
-		<link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-=======
-		<link href="../assets/site-demos.css" rel="stylesheet"> 
-		<link href="../assets/navbar.css" rel="stylesheet">
-
-		<script type="text/javascript" src="../assets/jquery.js"></script>
-		<script type="text/javascript" src="../assets/jquery.validate.js"></script>
-		<script type="text/javasrcipt" src="../assets/jquery.validate.min.js"></script>
-		<script type="text/javascript" src="../assets/additional-methods.min.js"></script>
-		<link href="../assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
->>>>>>> 5fd77072f95cbb6765eea9fee079b7cb3b35da5d
-
-	</head>
+		</head>
 
 	<body>
 
 		<div class="container">
 
 			<!-- Static navbar -->
-<<<<<<< HEAD
 			<a class="navbar-brand" href="#"><img src="assets/images/logo.gif" style="height:120px;margin-top:-30px;width:200px"/></a>
-=======
-			<a class="navbar-brand" href="#"><img src="../assets/images/logo.gif" style="height:120px;margin-top:-30px;width:200px"/></a>
->>>>>>> 5fd77072f95cbb6765eea9fee079b7cb3b35da5d
 			<nav class="navbar navbar-default" role="navigation" style="margin-bottom: 90px;margin-top: 20px;margin-left: 285px;">
 			<div class="container-fluid" style="padding-left:0px;" >
 				<div class="navbar-header" >
@@ -153,20 +136,11 @@
 			</div> <!-- /container -->
 
 
-<<<<<<< HEAD
 			<script src="assets/bootstrap.min.js"></script>
-			<link href="../assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+			<link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 			<link rel="stylesheet" href="assets/jquery-ui.css">
 			<script src="assets/jquery-ui.js"></script>
-=======
-			<script src="../assets/bootstrap.min.js"></script>
 
-
-			<link href="../assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
-			<link rel="stylesheet" href="../assets/jquery-ui.css">
-			<script src="../assets/jquery-ui.js"></script>
->>>>>>> 5fd77072f95cbb6765eea9fee079b7cb3b35da5d
 			<script>
 				Display();
 				function Display() {
@@ -306,12 +280,6 @@
 				}
 			</script>
 
-<<<<<<< HEAD
-	</body>
-	</html>
-=======
-			</script>
-
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -441,5 +409,5 @@
 
 			</script>
 
-			
->>>>>>> 5fd77072f95cbb6765eea9fee079b7cb3b35da5d
+		</body>
+	</html>
