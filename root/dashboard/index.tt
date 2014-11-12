@@ -9,7 +9,19 @@
 		<script type="text/javascript" src="assets/jquery.dataTables.min.js"></script>
 		<script type="text/javasrcipt" src="assets/jquery.validate.min.js"></script>
 		<script type="text/javascript" src="assets/additional-methods.min.js"></script>
-		</head>
+		<style>
+			.slno
+			{
+				width:10%;
+				text-align:center;
+			}
+			.holiday
+			{
+				width:40%;
+				text-align:center;
+			}
+		</style>
+	</head>
 
 	<body>
 
@@ -66,7 +78,7 @@
 				<!-- Main component for a primary marketing message or call to action -->
 				<div class="jumbotron" style="padding:50px;width: 250px;float:left">
 					<h3>Leaves Left</h3>
-					<h1 class="btn-lg btn-primary" style="text-align:center;color:white;">14</h1>
+					<h1 class="btn-lg btn-primary" style="text-align:center;color:white;"> [% TotalPersonalLeaves %]</h1>
 				</div>
 				<div id="maincontent" style="width:850px;float:right">
 
@@ -82,50 +94,17 @@
 						<!-- Table -->
 						<table class="table">
 							<tr>
-								<th>Sl.No</th>
-								<th>Date</th>
-								<th>Occasion</th>
+								<th class="slno">Sl.No</th>
+								<th class="holiday">Date</th>
+								<th class="holiday">Occasion</th>
 							</tr>
+							[% FOREACH holiday IN holidayslist %]
 							<tr>
-								<td>2</td>
-								<td>2014-01-26</td>
-								<td>Republic Day</td>
+								<td class="slno">[% holiday.Count%]</td>
+								<td class="holiday">[% holiday.HolidayDate%]</td>
+								<td class="holiday">[% holiday.HolidayOccasion%]</td>
 							</tr>
-							<tr>
-								<td>3</td>
-								<td>2014-01-26</td>
-								<td>Republic Day</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>2014-01-26</td>
-								<td>Republic Day</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>2014-01-26</td>
-								<td>Republic Day</td>
-							</tr>
-							<tr>
-								<td>6</td>
-								<td>2014-01-26</td>
-								<td>Republic Day</td>
-							</tr>
-							<tr>
-								<td>7</td>
-								<td>2014-01-26</td>
-								<td>Republic Day</td>
-							</tr>
-							<tr>
-								<td>9</td>
-								<td>2014-01-26</td>
-								<td>Republic Day</td>
-							</tr>
-							<tr>
-								<td>10</td>
-								<td>2014-01-26</td>
-								<td>Republic Day</td>
-							</tr>
+							[% END %]
 						</table>	
 					</div>
 				</div>
