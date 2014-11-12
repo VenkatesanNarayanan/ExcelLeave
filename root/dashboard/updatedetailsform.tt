@@ -4,7 +4,14 @@
 	
         <form class="form-horizontal" role="form" id="updateemployeeform">
 	[% FOREACH emp IN empdetails %]
- 					
+ 	
+	<div class="form-group">
+            <label class="col-lg-3 control-label">Employee id:</label>
+            <div class="col-lg-8" style="width:400px">
+              <input class="form-control" placeholder="Employee Id" value='[% emp.EmployeeId %]' type="text" id="employeeid" name="employeeid" disabled>
+            </div>
+          </div>
+        				
 	<div class="form-group">
             <label class="col-lg-3 control-label">First name:</label>
             <div class="col-lg-8" style="width:400px">
@@ -124,6 +131,7 @@ $(function() {
 			});
 function callme()
 {
+	var employeeid = document.getElementById("employeeid").value;
 	var fname = document.getElementById("fname").value;
 	var lname = document.getElementById("lname").value;
 	var email= document.getElementById("email").value;
@@ -135,6 +143,7 @@ function callme()
 	url :'dashboard/employeeupdate',
 	type :'POST',
 	data :{
+		employeeid:employeeid,
 		fname:fname,
 		lname:lname,
 		email:email,
@@ -142,7 +151,15 @@ function callme()
 		role:role,
 		status:status,
 		},
-	});
+	}).done(function(responseText){
+		$.ajax({
+		           url:'dashboard/updatedetails',
+		
+             		}).done(function(responseText){
+               			$("#maincontent").html(responseText);
+           		});
+		
+		});
 }
 
 

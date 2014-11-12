@@ -25,7 +25,6 @@
 		[% END %]
 	</tbody>
     </table>
-	<button  onclick="callme()">click</button>
 </div>
 
 
@@ -51,8 +50,4 @@ $('.empdetails').click(function(){
 			
 });
 
-function callme()
-{
-	alert("hi");
-}
 </script>
