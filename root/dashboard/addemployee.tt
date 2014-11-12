@@ -2,44 +2,46 @@
 
 <div class="jumbotron">
 	
-        <form class="form-horizontal" role="form" id="addemployeeform">
-          <div class="form-group">
+        <form class="form-horizontal" role="form" id="updateemployeeform">
+
+        				
+	<div class="form-group">
             <label class="col-lg-3 control-label">First name:</label>
             <div class="col-lg-8" style="width:400px">
-              <input class="form-control" placeholder="Girish" type="text" id="fname" name="fname">
+              <input class="form-control" placeholder="First Name"  type="text" id="fname" name="fname">
             </div>
           </div>
           <div class="form-group">
             <label class="col-lg-3 control-label">Last name:</label>
             <div class="col-lg-8" style="width:400px">
-              <input class="form-control" placeholder="Walvekar" type="text" id="lname" name="lname">
+              <input class="form-control" placeholder="Last Name"  type="text" id="lname" name="lname">
             </div>
           </div>
           
           <div class="form-group">
             <label class="col-lg-3 control-label">Email:</label>
             <div class="col-lg-8" style="width:400px">
-              <input class="form-control" placeholder="girish@exceleron.com" type="text" id="email" name="email">
-		  </div>
+              <input class="form-control" placeholder="Email" type="text" id="email" name="email">
+		  </div>	
 	  </div>
 
 	  <div class="form-group">
 		  <label class="col-md-3 control-label">Date of Joining:</label>
 		  <div class="col-md-8" style="width:400px">
-			  <input class="form-control" type="text" id="dateofjoining" name="dateofjoining">
+			  <input class="form-control" type="text" id="doj" name="doj">
 		  </div>
 	  </div>
 	  <div class="form-group">
 		  <label class="col-md-3 control-label">Role:</label>
 		  <div class="col-md-8">
 			  
-			  <select style="height:30px" id="role" name="role">
+			  <select style="height:30px;width:150px;" id="role" name="role">
 				
 				[% FOREACH role IN roles %]
  					[% IF role.RoleName == 'Employee' %]
-						<option value='[% role.RoleName %]' selected>[% role.RoleName %]</option>
+						<option selected>[% role.RoleName %]</option>
 					[% ELSE %]
-				  		<option value='[% role.RoleName %]'>[% role.RoleName %]</option>
+				  		<option>[% role.RoleName %]</option>
 					[% END %]
 				[% END %]				  
 			  </select>
@@ -48,13 +50,10 @@
 
 		  </div>
 	  </div>
-
-          <div class="form-group">
+	  <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div class="col-md-8">
-              <input class="btn btn-primary" value="Submit" type="submit" id="submit_btn" onclick="AddEmp()" >
-              
-              <input class="btn btn-default" value="Reset" type="reset" id="reset_btn">
+              <input class="btn btn-primary" value="Submit" type="submit" id="addemployee_btn" >
             </div>
           </div>
         </form>
@@ -62,21 +61,10 @@
 </div> 
 <script>
 $(function() {
-    $( "#dateofjoining" ).datepicker();
+    $("#doj").datepicker({dateFormat: 'yy-mm-dd'});
   });
 
-	$(document).ready(function () {
-	
-			alert("The  clicked.");
-
-			jQuery.validator.setDefaults({
-				debug: true,
-				success: "valid"
-			});
-
-
-
-			$("#addemployeeform").validate({
+			$("#updateemployeeform").validate({
 				rules: {
 					fname: {
 						required:true,
@@ -95,44 +83,44 @@ $(function() {
 
 					role : {
 						required : true,
-					}
-
+					},
+	
 				},
 
 
 				submitHandler : function(form){
-					alert("skandaaaaa");
-					var url = "/dashboard/addemployee";
-					var fname = $('#fname').value();
-					var lname = $('#lname').value();
-					var email= $('#email').value();
-					var dateofbirth = $('#dateofbirth').value();
-					var role = $('#role').value();
-					$.ajax({
-						type :"POST",
-						url :url,
-						data :{
-							fname:fname,
-							lname:lname,
-							email:email,
-							dateofbirth:dateofbirth,
-							role:role,
-						},
-						success : function ( data ) {
-
-							$('#sucess_message').html(data.message);
-							$('#fname').val("");
-							$('#lname').val("");
-							$('#email').val("");
-							$('#dateofjoining').val("");
-
-						}
-					});
-				}
+					callme();
+				},
 			});
-
+function callme()
+{
+	alert("call me");
+	var fname = document.getElementById("fname").value;
+	var lname = document.getElementById("lname").value;
+	var email= document.getElementById("email").value;
+	var doj = document.getElementById("doj").value;
+	var role = document.getElementById("role").value;
+	alert(fname+"   "+lname+"  "+email+" "+doj);			
+	$.ajax({
+	url :'dashboard/newemployee',
+	type :'POST',
+	data :{
+		fname:fname,
+		lname:lname,
+		email:email,
+		dateofjoining:doj,
+		role:role,
+		},
+		}).done(function(responseText){
+		$.ajax({
+			url:'dashboard/updatedetails',
+			type : 'POST',
+			}).done(function(responseText){
+			$("#maincontent").html(responseText);
 		});
 
+	});
+}
 
 </script>
 

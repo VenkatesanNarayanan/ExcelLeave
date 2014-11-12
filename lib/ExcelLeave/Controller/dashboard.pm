@@ -26,7 +26,7 @@ Catalyst Controller.
 sub index :Path{
 	my ( $self, $c ) = @_;
 	#print $c->user->FirstName,"hello\n";
-	my $username="Dharmu";
+	my $username="Girish";
 	$c->stash->{ProfileDetails}=$c->model('Leave::Employee')->search({FirstName=>$username});
 	
 	my $Role = "Adminstrator";
@@ -199,12 +199,19 @@ sub updatedetails:Local
 
 }
 
+sub newemployee :Local{
+	my ($self,$c)=@_;
+
+	print Dumper $c->req->params;
+	$c->forward('View::JSON');
+
+}
 sub addemployee :Local {
 	my ($self,$c)=@_;
 	my @collected=$c->model('Leave::Role')->search({});
 
 	push( @{$c->stash->{roles}},{
-			 RoleName => $_->RoleName,
+			RoleName => $_->RoleName,
 		}) foreach @collected;
 
 	$c->forward('View::TT');
@@ -216,7 +223,7 @@ sub updatedetailsform:Local
 	my @collected=$c->model('Leave::Role')->search({});
 
 	push( @{$c->stash->{roles}},{
-			 RoleName => $_->RoleName,
+			RoleName => $_->RoleName,
 		}) foreach @collected;
 
 	my @empcollection=$c->model('Leave::Employee')->search({EmployeeId=>$c->req->params->{employeeid}},{
@@ -224,7 +231,7 @@ sub updatedetailsform:Local
 			'+select' => ["role.RoleName"],
 			'+as' => ["RoleName"],
 		});
-		
+
 	push( @{$c->stash->{empdetails}},{
 			EmployeeId=>$_->EmployeeId,
 			FirstName=>$_->FirstName,
@@ -249,13 +256,13 @@ sub employeeupdate:Local
 		$id=$var->{_column_data}->{RoleId};
 	}
 	$user->update({
-					FirstName=>$c->req->params->{fname},
-					LastName=>$c->req->params->{lname},
-					Email=>$c->req->params->{email},
-					DateOfJoing=>$c->req->params->{dateofjoining},
-					RoleId=>$id,
-					Status=>$c->req->params->{status}
-				});
+			FirstName=>$c->req->params->{fname},
+			LastName=>$c->req->params->{lname},
+			Email=>$c->req->params->{email},
+			DateOfJoing=>$c->req->params->{dateofjoining},
+			RoleId=>$id,
+			Status=>$c->req->params->{status}
+		});
 	$c->forward('View::JSON');
 }
 =encoding utf8
@@ -263,7 +270,7 @@ sub employeeupdate:Local
 
 =head1 AUTHOR
 
-dharma,,,
+girish,,,
 
 =head1 LICENSE
 

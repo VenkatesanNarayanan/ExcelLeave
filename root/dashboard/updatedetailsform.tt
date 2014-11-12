@@ -95,7 +95,7 @@
 </div> 
 <script>
 $(function() {
-    $("#doj").datepicker();
+    $("#doj").datepicker({dateFormat: 'yy-mm-dd'});
   });
 
 			$("#updateemployeeform").validate({
