@@ -235,15 +235,27 @@ sub updatedetailsform:Local
 			RoleName => $_->get_column('RoleName'),
 		}) foreach @empcollection;
 
-	print Dumper $c->req->params;
 	$c->forward('View::TT');
 }
 
 sub employeeupdate:Local
 {
-	print "====================================================\n\n";
 	my ($self,$c)=@_;
-	print Dumper $c->req->params;
+	my $user=$c->model('Leave::Employee')->search({EmployeeId=>$c->req->params->{employeeid}});
+	my @roleid=$c->model('Leave::Role')->search({RoleName=>$c->req->params->{role}});
+	my $id;
+	foreach my $var (@roleid)
+	{
+		$id=$var->{_column_data}->{RoleId};
+	}
+	$user->update({
+					FirstName=>$c->req->params->{fname},
+					LastName=>$c->req->params->{lname},
+					Email=>$c->req->params->{email},
+					DateOfJoing=>$c->req->params->{dateofjoining},
+					RoleId=>$id,
+					Status=>$c->req->params->{status}
+				});
 	$c->forward('View::JSON');
 }
 =encoding utf8
