@@ -26,7 +26,7 @@ Catalyst Controller.
 sub index :Path{
 	my ( $self, $c ) = @_;
 	#print $c->user->FirstName,"hello\n";
-	my $username="Dharmu";
+	my $username="Girish";
 	$c->stash->{ProfileDetails}=$c->model('Leave::Employee')->search({FirstName=>$username});
 
 	my $Role = "Adminstrator";
@@ -237,6 +237,13 @@ $c->forward('View::TT');
 
 }
 
+sub newemployee :Local{
+	my ($self,$c)=@_;
+
+	print Dumper $c->req->params;
+	$c->forward('View::JSON');
+
+}
 sub addemployee :Local {
 	my ($self,$c)=@_;
 	my @collected=$c->model('Leave::Role')->search({});
@@ -301,7 +308,7 @@ sub employeeupdate:Local
 
 =head1 AUTHOR
 
-dharma,,,
+girish,,,
 
 =head1 LICENSE
 
