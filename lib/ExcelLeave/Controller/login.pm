@@ -47,21 +47,23 @@ sub loginvalidate:Local
     my $ctx = Digest::MD5->new;
     $ctx->add($c->request->params->{password});
     my $Password = $ctx->hexdigest;
+    $c->stash->{error}="valid";
     if ($c->authenticate( {
+
                  "Email" => $c->request->params->{'email'},
-                  "Password" => $Password
+             	"Password" => $Password,
          } ))
     {
-        #$c->uri_for_action('dashboard/index');
-        #$c->stash->{template} = "index.tt";
-	#$c->uri_for($c->controller('dashboard')->action_for('index'));         
-	#$c->detach('index');                  
-        #$c->stash->{template}='dashboard/index.tt';
-	$c->res->redirect($c->uri_for_action('dashboard/index'));
- 	$c->stash->{template} = "dashboard/index.tt";
+   	$c->res->redirect($c->uri_for_action('dashboard/index'));
+ 	$c->stash->{template} = "dashboard/index.tt";               
+    	$c->forward('View::TT');
     }                                         
-                                   
-    $c->forward('View::TT');           
+     else
+	{
+		
+		$c->stash->{error}="invalid";		               
+   		 $c->forward('View::JSON');
+	}            
 } 
 
 =encoding utf8

@@ -1,283 +1,420 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-   <link href="assets/site-demos.css" rel="stylesheet"> 
-    <link href="assets/navbar.css" rel="stylesheet">
-     
-   <script type="text/javascript" src="assets/jquery.js"></script>
-   <script type="text/javascript" src="assets/jquery.validate.js"></script>
-   <script type="text/javasrcipt" src="assets/jquery.validate.min.js"></script>
-   <script type="text/javascript" src="assets/additional-methods.min.js"></script>
-   <link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-   
-  </head>
-
-  <body>
-
-    <div class="container">
-
-      <!-- Static navbar -->
-<a class="navbar-brand" href="#"><img src="assets/images/logo.gif" style="height:120px;margin-top:-30px;width:200px"/></a>
-      <nav class="navbar navbar-default" role="navigation" style="margin-bottom: 90px;margin-top: 20px;margin-left: 285px;">
-        <div class="container-fluid" style="padding-left:0px;" >
-          <div class="navbar-header" >
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            
-          </div>
-
-          <div id="navbar" class="navbar-collapse collapse">
-		            
-		<ul class="nav navbar-nav">
-              	<li id="home" class="menubar"><a href="#"  > <span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
-		<li id="leaverequest" class="menubar"><a href="#" ><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Leave Apply</a></li>
-              	<li id="leavestatus"><a href="#" ><span class="glyphicon glyphicon-send"></span>&nbsp;Leave Status</a></li>
-             
-		        [% FOREACH tabs IN messages %]
-			[%tabs%]
-			[% END %]
- 		</ul>
-
-		
-            <ul class="nav navbar-nav navbar-right">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span>&nbsp;
-		Hi,		
-		[% FOREACH myname IN uname %]
-		[%myname%]
-		[% END %]
-		<span 	class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-		  
-                  <li><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user"></span>&nbsp;Profile</a></li>
-                  <li><a href="#" data-toggle="modal" data-target="#changepassword"><span class="glyphicon glyphicon-wrench"></span>&nbsp;Change Password</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#"><span class="glyphicon glyphicon-off"></span>&nbsp;Logout</a></li>
-                </ul>
-              </li>
-            </ul-->
-          </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-      </nav>
-
-      <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron" style="padding:50px;width: 250px;float:left">
-        <h3>Leaves Left</h3>
-        <h1 class="btn-lg btn-primary" style="text-align:center;color:white;">14</h1>
-       </div>
-	<div id="maincontent" style="width:850px;float:right">
-		
-	</div>
-	<div style="float:right;">
-
-		<div class="panel panel-default" style="width:850px;">
-  		<!-- Default panel contents -->
-  		<div class="panel-heading">Official Holidays</div>
-
-	
-
-  		<!-- Table -->
-  			<table class="table">
-    				<tr>
-					<th>Sl.No</th>
-					<th>Date</th>
-					<th>Occasion</th>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>4</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>5</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>6</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>7</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>9</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-				<tr>
-					<td>10</td>
-					<td>2014-01-26</td>
-					<td>Republic Day</td>
-				</tr>
-  			</table>	
-		</div>
-	</div>
-
-	<div id="datepicker" style="float:left;width:250px;height:300px;">
-		
-	</div>		
-    </div> <!-- /container -->
-
-
-    <script src="assets/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="assets/jquery-ui.css">
-   <script src="assets/jquery-ui.js"></script>
-  <script>
-  Display();
-  function Display() {
-	
-    $( "#datepicker" ).datepicker();
-  }
-	
-  </script>
-
-    <script>
-	$(document).ready(function(){ 			
-			$("#home").addClass("active");
-			var id="home";
-			var current="#home";
-			
-				$.ajax({
-					url:'dashboard/home',
-					type: 'POST',
-					}).done(function(responseText) {
-						$("#maincontent").html(responseText);
-					});
-
-			$(".menubar").click(function(){
-				id = $(this).attr('id');
-				var path="dashboard/"+id;
-				$.ajax({
-					url:path,
-					type: 'POST',
-					}).done(function(responseText) {
-						$("#maincontent").html(responseText);
-					});
-				
-				id='#' + id;
- 				$(current).removeClass("active");
- 				$(id).addClass("active");
-				current = id;
-
- 	 		});
-	});
- 
-	</script>
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Profile</h4>
-      </div>
-      <div class="modal-body">
-        [% WHILE (Profile = ProfileDetails.next) %]
-		<p>EmployeeId : <b>[% Profile.EmployeeId | html %]</b></p>
-		<p>First Name : <b> [% Profile.FirstName | html%]</b></p>
-		<p>Last Name : <b> [% Profile.LastName | html%]</b></p>
-		<p>Date Of Joing : <b> [% Profile.DateOfJoing | html%]</b></p>
-		
-		<p>Email : <b> [% Profile.Email | html%]</b></p>
-	[% END %]
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Change password</h4>
-      </div>
-      <div class="modal-body">
-
-
-
-
-
-
-		<form role="form" id="ChangePasswordForm" style="width:500px;margin:auto">
-		  <div class="form-group">
-			    <label>Enter new password : </label>
-			    <input type="password" class="form-control" id="newpassword">	
-		  </div>
-		<br>
-		<div class="form-group">
-			<label>Re-Enter password: </label>	 
-			<input type="password" class="form-control" id="reenter">
-		</div>
-
-		<br><label id="PasswordChangeError" style="color:red !important;"></label><br>
-		</form>      		
-
-
-
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="changepassword()">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-	function changepassword()
-	{
-		
-		var newpassword=document.getElementById("newpassword").value;
-		var reentered=document.getElementById("reenter").value;
-		if(newpassword.length > 6 && reentered.length > 6)
-		{
-			if(newpassword == reentered)
+	<head>
+		<link href="assets/site-demos.css" rel="stylesheet"> 
+		<link href="assets/navbar.css" rel="stylesheet">
+		<link href="assets/jquery.dataTables.css" rel="stylesheet">
+		<script type="text/javascript" src="assets/jquery.js"></script>
+		<script type="text/javascript" src="assets/jquery.validate.js"></script>
+		<script type="text/javascript" src="assets/jquery.dataTables.min.js"></script>
+		<script type="text/javasrcipt" src="assets/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="assets/additional-methods.min.js"></script>
+		<style>
+			.slno
 			{
-				$.ajax({
-					url : 'dashboard/changepassword',
-					data : {newpassword:newpassword},
-				}).done(function(responseText){
-					$('#changepassword').modal('hide');
- 					$('body').removeClass('modal-open');
- 					$('.modal-backdrop').remove();
-					$('#ChangePasswordForm')[0].reset();
-					$("#PasswordChangeError").html("");
+				width:10%;
+				text-align:center;
+			}
+			.holiday
+			{
+				width:40%;
+				text-align:center;
+			}
+			.leavelist
+			{
+				text-align:center !important;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="container">
+
+			<!-- Static navbar -->
+			<a class="navbar-brand" href="#"><img src="assets/images/logo.gif" style="height:120px;margin-top:-30px;width:200px"/></a>
+			<nav class="navbar navbar-default" role="navigation" style="margin-bottom: 90px;margin-top: 20px;margin-left: 285px;">
+			<div class="container-fluid" style="padding-left:0px;" >
+				<div class="navbar-header" >
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+
+				</div>
+
+				<div id="navbar" class="navbar-collapse collapse">
+
+					<ul class="nav navbar-nav">
+						<li id="home" class="menubar"><a href="#"  > <span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
+						<li id="leaverequest" class="menubar"><a href="#" ><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Leave Apply</a></li>
+						<li id="leavestatus"><a href="#" onclick="leaveslist();"><span class="glyphicon glyphicon-send"></span>&nbsp;Leave Status</a></li>
+
+						[% FOREACH tabs IN messages %]
+						[%tabs%]
+						[% END %]
+					</ul>
+
+
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span>&nbsp;
+							Hi,		
+							[% FOREACH myname IN uname %]
+							[%myname%]
+							[% END %]
+							<span 	class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+
+							<li><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-user"></span>&nbsp;Profile</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#changepassword"><span class="glyphicon glyphicon-wrench"></span>&nbsp;Change Password</a></li>
+							<li class="divider"></li>
+							<li><a href="#"><span class="glyphicon glyphicon-off"></span>&nbsp;Logout</a></li>
+						</ul>
+						</li>
+						</ul-->
+					</div><!--/.nav-collapse -->
+				</div><!--/.container-fluid -->
+				</nav>
+
+				<!-- Main component for a primary marketing message or call to action -->
+				<div class="jumbotron" style="padding:50px;width: 250px;float:left">
+					<h3>Leaves Left</h3>
+					<h1 class="btn-lg btn-primary" style="text-align:center;color:white;"> [% TotalPersonalLeaves %]</h1>
+				</div>
+				<div id="maincontent" style="width:850px;float:right">
+
+				</div>
+				<div style="float:right;">
+
+					<div class="panel panel-default" style="width:850px;">
+						<!-- Default panel contents -->
+						<div class="panel-heading">Official Holidays</div>
+
+
+
+						<!-- Table -->
+						<table class="table">
+							<tr>
+								<th class="slno">Sl.No</th>
+								<th class="holiday">Date</th>
+								<th class="holiday">Occasion</th>
+							</tr>
+							[% FOREACH holiday IN holidayslist %]
+							<tr>
+								<td class="slno">[% holiday.Count%]</td>
+								<td class="holiday">[% holiday.HolidayDate%]</td>
+								<td class="holiday">[% holiday.HolidayOccasion%]</td>
+							</tr>
+							[% END %]
+						</table>	
+					</div>
+				</div>
+
+				<div id="datepicker" style="float:left;width:250px;height:300px;">
+
+				</div>		
+			</div> <!-- /container -->
+
+
+			<script src="assets/bootstrap.min.js"></script>
+			<link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="assets/jquery-ui.css">
+			<script src="assets/jquery-ui.js"></script>
+
+			<script>
+				Display();
+				function Display() {
+
+					$( "#datepicker" ).datepicker();
+				}
+
+			</script>
+
+			<script>
+				$(document).ready(function(){ 			
+					$("#home").addClass("active");
+					var id="home";
+					var current="#home";
+
+					$.ajax({
+						url:'dashboard/home',
+						type: 'POST',
+						}).done(function(responseText) {
+						$("#maincontent").html(responseText);
+					});
+
+					$(".menubar").click(function(){
+						id = $(this).attr('id');
+						var path="dashboard/"+id;
+						$.ajax({
+							url:path,
+							type: 'POST',
+							}).done(function(responseText) {
+							$("#maincontent").html(responseText);
+						});
+
+						id='#' + id;
+						$(current).removeClass("active");
+						$(id).addClass("active");
+						current = id;
+
+					});
 				});
-			}
-			else
-			{
-				$("#PasswordChangeError").html("*Password miss matched");				
-			}
-		}
-		else
-		{
-			$("#PasswordChangeError").html("*Password should have atleast 6 characters");	
-		}
-	}
-</script>
 
-  </body>
-</html>
+			</script>
+
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title" id="myModalLabel">Profile</h4>
+						</div>
+						<div class="modal-body">
+							[% WHILE (Profile = ProfileDetails.next) %]
+							<p>EmployeeId : <b>[% Profile.EmployeeId | html %]</b></p>
+							<p>First Name : <b> [% Profile.FirstName | html%]</b></p>
+							<p>Last Name : <b> [% Profile.LastName | html%]</b></p>
+							<p>Date Of Joing : <b> [% Profile.DateOfJoing | html%]</b></p>
+
+							<p>Email : <b> [% Profile.Email | html%]</b></p>
+							[% END %]
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title" id="myModalLabel">Change password</h4>
+						</div>
+						<div class="modal-body">
+
+
+
+
+
+
+							<form role="form" id="ChangePasswordForm" style="width:500px;margin:auto">
+								<div class="form-group">
+									<label>Enter new password : </label>
+									<input type="password" class="form-control" id="newpassword">	
+								</div>
+								<br>
+								<div class="form-group">
+									<label>Re-Enter password: </label>	 
+									<input type="password" class="form-control" id="reenter">
+								</div>
+
+								<br><label id="PasswordChangeError" style="color:red !important;"></label><br>
+							</form>      		
+
+
+
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary" onclick="changepassword()">Save changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<script>
+				function changepassword()
+				{
+
+					var newpassword=document.getElementById("newpassword").value;
+					var reentered=document.getElementById("reenter").value;
+					if(newpassword.length > 6 && reentered.length > 6)
+					{
+						if(newpassword == reentered)
+						{
+							$.ajax({
+								url : 'dashboard/changepassword',
+								type : "POST",
+								data : {status:"existing",newpassword:newpassword},
+								}).done(function(responseText){
+								$('#changepassword').modal('hide');
+								$('body').removeClass('modal-open');
+								$('.modal-backdrop').remove();
+								$('#ChangePasswordForm')[0].reset();
+								$("#PasswordChangeError").html("");
+							});
+						}
+						else
+						{
+							$("#PasswordChangeError").html("*Password miss matched");				
+						}
+					}
+					else
+					{
+						$("#PasswordChangeError").html("*Password should have atleast 6 characters");	
+					}
+				}
+			</script>
+
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+
+							<h4 class="modal-title" id="myModalLabel">Profile</h4>
+						</div>
+						<div class="modal-body">
+							[% WHILE (Profile = ProfileDetails.next) %]
+							<p>EmployeeId : <b>[% Profile.EmployeeId | html %]</b></p>
+							<p>First Name : <b> [% Profile.FirstName | html%]</b></p>
+							<p>Last Name : <b> [% Profile.LastName | html%]</b></p>
+							<p>Date Of Joing : <b> [% Profile.DateOfJoing | html%]</b></p>
+
+							<p>Email : <b> [% Profile.Email | html%]</b></p>
+							[% END %]
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title" id="myModalLabel">Change password</h4>
+						</div>
+						<div class="modal-body">
+
+
+
+
+
+
+							<form role="form" id="ChangePasswordForm" style="width:500px;margin:auto">
+								<div class="form-group">
+									<label>Enter new password : </label>
+									<input type="password" class="form-control" id="newpassword">	
+								</div>
+								<br>
+								<div class="form-group">
+									<label>Re-Enter password: </label>	 
+									<input type="password" class="form-control" id="reenter">
+								</div>
+
+								<br><label id="PasswordChangeError" style="color:red !important;"></label><br>
+							</form>      		
+
+
+
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary" onclick="changepassword()">Save changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="modal fade" id="leaveslist" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h4 class="modal-title">Leaves List</h4>
+						</div>
+						<div class="modal-body">
+
+
+						<table class="table">
+							<tr class="list-group-item-info">
+								<th class="leavelist">Sl.No</th>
+								<th class="leavelist">Date</th>
+								<th class="leavelist">Message</th>
+								<th class="leavelist">Status</th>
+								<th class="leavelist"></th>
+							</tr>
+							<tbody id="leavelist-body"></tbody>
+							
+						</table>
+							
+				
+						</div>
+						<div class="modal-footer">
+						</div>
+					</div>
+			</div>
+
+
+			<script>
+				function changepassword()
+				{
+
+					var newpassword=document.getElementById("newpassword").value;
+					var reentered=document.getElementById("reenter").value;
+					if(newpassword.length > 6 && reentered.length > 6)
+					{
+						if(newpassword == reentered)
+						{
+							$.ajax({
+								url : 'dashboard/changepassword',
+								data : {status:"existing",newpassword:newpassword},
+								}).done(function(responseText){
+								$('#changepassword').modal('hide');
+								$('body').removeClass('modal-open');
+								$('.modal-backdrop').remove();
+								$('#ChangePasswordForm')[0].reset();
+								$("#PasswordChangeError").html("");
+							});
+						}
+						else
+						{
+							$("#PasswordChangeError").html("*Password miss matched");				
+						}
+					}
+					else
+					{
+						$("#PasswordChangeError").html("*Password should have atleast 6 characters");	
+					}
+				}
+				
+				
+			</script>
+			<script>
+				function leaveslist()
+				{
+					$.ajax({
+						url : 'dashboard/leavelist',
+						type : 'POST',
+						}).done(function(res){
+							var list = "";
+							$.each(res.leavelist, function(i,x) {
+							list += "<tr>";							
+							list += "<td class="+"leavelist"+">" + x.Counter + "</td>";
+							list += "<td class="+"leavelist"+">" + x.LeaveDate + "</td>";
+							list += "<td class="+"leavelist"+">" + x.Message + "</td>";
+							list += "<td class="+"leavelist"+">" + x.LeaveStatus + "</td>";
+							list += "<td class="+"leavelist"+"> <input type="+"submit"+" class="+"btn btn-large btn-primary"+" value="+"cancel"+"></td>";
+							list += "</tr>";
+							});
+							$("#leavelist-body").html(list);
+						}); 
+					$("#leaveslist").modal({"backdrop": "static"});
+				}
+			</script>
+		</body>
+	</html>

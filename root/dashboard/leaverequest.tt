@@ -46,7 +46,7 @@
 		var datereg=/^\d{4}[-]\d{2}[-]\d{2}$/;
 		var fromdate=document.getElementById("fromdate").value;
 		var todate=document.getElementById("todate").value;
-		var leavemessage=document.getElementById("leavemessage").value;
+		var leavemessage=document.getElementById("leavemessage").value;		
 		if( datereg.test(fromdate) == true && datereg.test(todate) == true && leavemessage != "")
 		{
 			$.ajax({
@@ -75,7 +75,6 @@
 				message +="*Invalid message\n";
 			}					
 			$("#ErrorMessage").html(message);
-		}
-				
+		}	
 	}
 </script>

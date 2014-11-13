@@ -52,10 +52,13 @@
       <form id="loginform" class="form-signin">
 
         <h2 class="form-signin-heading">Please sign in</h2>
+	<hr>
         <input type="text" id="email" name="email" class="input-block-level" placeholder="Email address">
         <input type="password" id="password" name="password" class="input-block-level" placeholder="Password">
         <br><input type="submit" class="btn btn-large btn-primary" value="Sign in">
-        <br><br><a href="#"> Forgot password</a><br>
+        <br><br><a href="#"> Forgot password</a>
+	<hr>
+	<h5 style="color:red;display:none" id="error">Invalid user</h5>
       </form>
 
     </div> 
@@ -87,8 +90,7 @@
 						minlength: "Your password must be atleast 6 characters long"
 					}
 				},
-				submitHandler: function(form) {
-					alert("success");					
+				submitHandler: function(form) {					
 					callme();
 					
 				}
@@ -97,7 +99,6 @@
 		function callme() {
 			var myemail=document.getElementById("email").value;
             		var mypassword=document.getElementById("password").value;
-			alert(mypassword);
 			$.ajax({
 				url: "/login/loginvalidate",
 				type: "POST",
@@ -105,9 +106,16 @@
 					email: myemail,
 					password: mypassword
 				},
-				}).done(function(responseText) {
-				$("body").html(responseText);
-				alert("Done");
+				}).done(function(data) {
+				if ( data.error == "invalid")
+				{
+					$("#error").show();					
+					$('#loginform')[0].reset();
+				}
+				else
+				{
+					$("body").html(data);
+				}
 			});
 		}
 		});
