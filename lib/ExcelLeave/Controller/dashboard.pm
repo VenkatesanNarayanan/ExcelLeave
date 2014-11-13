@@ -4,6 +4,9 @@ use Data::Dumper;
 use DateTime;
 use Digest::MD5;
 use JSON;
+use Session::Token;
+use Email::MIME;
+use Email::Sender::Simple qw(sendmail);
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -222,7 +225,7 @@ sub updatedetails:Local
 		});
 
 
-	print Dumper \@collected;
+	#print Dumper \@collected;
 
 push( @{$c->stash->{details}},{
 		EmployeeId => $_->EmployeeId,
@@ -239,8 +242,45 @@ $c->forward('View::TT');
 
 sub newemployee :Local{
 	my ($self,$c)=@_;
+	
+	my $current_date = DateTime->now(time_zone => 'Asia/Kolkata');
+	my $CreatedOn = $current_date->ymd('-');
+
+	my $Token = Session::Token->new->get;
+	print Dumper $Token;
+
+	my @chars = ("A".."Z", "a".."z", '1'..'6');
+	my $RandomPassword;
+	$RandomPassword .= $chars[rand @chars] for 1..6;
+	print $RandomPassword."\n";
+
+	my $ctx = Digest::MD5->new;
+	$ctx->add($RandomPassword);
+	my $EncryptedPassword = $ctx->hexdigest;
+	print Dumper $EncryptedPassword;
+
+	my $RoleId=$c->model('Leave::Role')->search({RoleName=>$c->req->params->{role}},{
+			'+select' => ["RoleId"],
+		});
 
 	print Dumper $c->req->params;
+
+	my @respdata = $c->model('Leave::Employee')->create({
+
+			 FirstName =>$c->req->params->{fname},
+			 LastName =>$c->req->params->{lname},
+			 DateOfJoing =>$c->req->params->{dateofjoining},
+			 RoleId =>$RoleId,
+			 Email =>$c->req->params->{email},
+			 Password =>$EncryptedPassword,
+			 Token =>$Token,
+			 CreatedBy =>'1',
+			 CreatedOn =>$CreatedOn,
+
+			 });
+
+	print Dumper \@respdata;
+
 	$c->forward('View::JSON');
 
 }
@@ -289,6 +329,10 @@ sub employeeupdate:Local
 	my $user=$c->model('Leave::Employee')->search({EmployeeId=>$c->req->params->{employeeid}});
 	my @roleid=$c->model('Leave::Role')->search({RoleName=>$c->req->params->{role}});
 	my $id;
+
+	my $current_date = DateTime->now(time_zone => 'Asia/Kolkata');
+	my $UpdatedOn = $current_date->ymd('-');
+
 	foreach my $var (@roleid)
 	{
 		$id=$var->{_column_data}->{RoleId};
@@ -299,7 +343,9 @@ sub employeeupdate:Local
 			Email=>$c->req->params->{email},
 			DateOfJoing=>$c->req->params->{dateofjoining},
 			RoleId=>$id,
-			Status=>$c->req->params->{status}
+			Status=>$c->req->params->{status},
+			UpdatedBy=>'1',
+			UpdatedOn=>$UpdatedOn,
 		});
 	$c->forward('View::JSON');
 }
