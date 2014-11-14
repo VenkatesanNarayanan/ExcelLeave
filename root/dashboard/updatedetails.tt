@@ -1,7 +1,6 @@
+
 <div class="jumbotron">
-	<div class="col-md-8">
-		<input class="btn btn-primary" value="Add New Employee" type="button" id="addemployee_btn" onclick="AddNewEmp()" >
-	</div><br><br>
+		<button class="btn btn-info" style="float:right;margin-top:-40px;margin-bottom:20px;" type="button" id="addemployee_btn" onclick="AddNewEmp()" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;&nbsp;Add Employee</button>
 	<table id="example" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>

@@ -109,15 +109,15 @@ sub leaverequesthandler:Local{
 	my $start = DateTime->new(year=>$fromdate[0],month=>$fromdate[1],day=>$fromdate[2]);
 	my $end   = DateTime->new(year=>$todate[0],month=>$todate[1],day=>$todate[2]);
 	my %offcialsholidays;
-	my $user=$c->user->FirstName;
-	my $employeeid=$c->user->EmployeeId;
+	my $user="Dharmu";
+	my $employeeid=1;
 	my @collected=$c->model('Leave::OfficialHolidays')->search({});
 	foreach my $var(@collected)
 	{
 		$offcialsholidays{$var->{_column_data}->{"HolidayDate"}}="";;
 	}
 
-	my @collected=$c->model('Leave::LeaveRequestBatch')->search({});
+	my @batchcollection=$c->model('Leave::LeaveRequestBatch')->search({});
 
 	my @arr=qw/a b c d e f g h i j k l m n o p q r s t u v w x y z/;
 
@@ -134,7 +134,7 @@ sub leaverequesthandler:Local{
 			$batchid .= $arr[int rand(25)];
 		}
 
-		foreach my $var(@collected)
+		foreach my $var(@batchcollection)
 		{
 			if($var->{_column_data}->{BatachId} eq $batchid)
 			{
@@ -164,7 +164,6 @@ sub leaverequesthandler:Local{
 		}
 	}
 
-	print "Added a BatachId\n\n";
 	while ($start <= $end) 
 	{
 		unless(exists $offcialsholidays{$start->ymd})
@@ -264,8 +263,6 @@ $c->forward('View::TT');
 
 sub newemployee :Local{
 	my ($self,$c)=@_;
-<<<<<<< HEAD
-=======
 	
 	my $current_date = DateTime->now(time_zone => 'Asia/Kolkata');
 	my $CreatedOn = $current_date->ymd('-');
@@ -283,11 +280,13 @@ sub newemployee :Local{
 	my $EncryptedPassword = $ctx->hexdigest;
 	print Dumper $EncryptedPassword;
 
-	my $RoleId=$c->model('Leave::Role')->search({RoleName=>$c->req->params->{role}},{
-			'+select' => ["RoleId"],
-		});
-
-	print Dumper $c->req->params;
+	my @roles=$c->model('Leave::Role')->search({RoleName=>$c->req->params->{role}});
+	my $RoleId;
+	foreach(@roles)
+	{
+		$RoleId=$_->{_column_data}->{RoleId};
+	}
+	print Dumper $RoleId;
 
 	my @respdata = $c->model('Leave::Employee')->create({
 
@@ -305,7 +304,6 @@ sub newemployee :Local{
 
 	print Dumper \@respdata;
 
->>>>>>> 050e30f22e9fecc9966a9c2e69968f8491d27e05
 	$c->forward('View::JSON');
 
 }
