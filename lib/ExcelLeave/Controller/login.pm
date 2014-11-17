@@ -54,9 +54,9 @@ sub loginvalidate:Local
              	"Password" => $Password,
          } ))
     {
-   	$c->res->redirect($c->uri_for_action('dashboard/index'));
- 	$c->stash->{template} = "dashboard/index.tt";               
-    	$c->forward('View::TT');
+		  	$c->res->redirect($c->uri_for_action('dashboard/index'));
+			#$c->stash->{template} = "dashboard/index.tt";               
+			#$c->forward('View::TT');
     }                                         
      else
 	{

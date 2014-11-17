@@ -1,105 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-   <link href="../assets/site-demos.css" rel="stylesheet"> 
-    <link href="../assets/navbar.css" rel="stylesheet">
-     
-   <script type="text/javascript" src="../assets/jquery.js"></script>
-   <script type="text/javascript" src="../assets/jquery.validate.js"></script>
-   <script type="text/javasrcipt" src="../assets/jquery.validate.min.js"></script>
-   <script type="text/javascript" src="../assets/additional-methods.min.js"></script>
-   <link href="../assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-   
-  </head>
+	<head>
+		<link href="../assets/site-demos.css" rel="stylesheet"> 
+		<link href="../assets/navbar.css" rel="stylesheet">
+		<script type="text/javascript" src="../assets/jquery.js"></script>
+		<script type="text/javascript" src="../assets/jquery.validate.js"></script>
+		<script type="text/javasrcipt" src="../assets/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="../assets/additional-methods.min.js"></script>
+		<link href="../assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	</head>
 
-  <body>
-    <script src="../assets/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../assets/jquery-ui.css">
-   <script src="../assets/jquery-ui.js"></script>
+	<body>
+		<script src="../assets/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="../assets/jquery-ui.css">
+		<script src="../assets/jquery-ui.js"></script>
 
-	<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">	
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Change password</h4>
-      </div>
-      <div class="modal-body">
+		<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">	
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title" id="myModalLabel">Change password</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form" id="ChangePasswordForm" style="width:500px;margin:auto">
+							<div class="form-group">
+								<label>Enter new password : </label>
+								<input type="password" class="form-control" id="newpassword">	
+							</div>
+							<br>
+							<div class="form-group">
+								<label>Re-Enter password: </label>	 
+								<input type="password" class="form-control" id="reenter">
+							</div>
 
-
-
-
-
-
-		<form role="form" id="ChangePasswordForm" style="width:500px;margin:auto">
-		  <div class="form-group">
-			    <label>Enter new password : </label>
-			    <input type="password" class="form-control" id="newpassword">	
-		  </div>
-		<br>
-		<div class="form-group">
-			<label>Re-Enter password: </label>	 
-			<input type="password" class="form-control" id="reenter">
+							<br><label id="PasswordChangeError" style="color:red !important;"></label><br>
+						</form>      		
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" onclick="changepassword()">Save changes</button>
+					</div>
+				</div>
+			</div>
 		</div>
 
-		<br><label id="PasswordChangeError" style="color:red !important;"></label><br>
-		</form>      		
-
-
-
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="changepassword()">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-	function changepassword()
-	{
-		
-		var newpassword=document.getElementById("newpassword").value;
-		var reentered=document.getElementById("reenter").value;
-		if(newpassword.length > 6 && reentered.length > 6)
-		{
-			if(newpassword == reentered)
+		<script>
+			function changepassword()
 			{
-				$.ajax({
-					url : '/dashboard/changepassword',
-					data : {status:"new",token:'[% token %]',newpassword:newpassword},
-				}).done(function(responseText){
-					$('#changepassword').modal('hide');
- 					$('body').removeClass('modal-open');
- 					$('.modal-backdrop').remove();
-					$('#ChangePasswordForm')[0].reset();
-					$("#PasswordChangeError").html("");
-				});
-			}
-			else
-			{
-				$("#PasswordChangeError").html("*Password miss matched");				
-			}
-		}
-		else
-		{
-			$("#PasswordChangeError").html("*Password should have atleast 6 characters");	
-		}
-	}
-	$(document).ready(function(){
-		if('[% tokenvalidate %]' == "valid")
-		{
-    			$("#changepassword").modal({"backdrop": "static"});
-		}
-		else
-		{
-			alert("Token expired already");
-		}
-	 });
 
-</script>
+				var newpassword=document.getElementById("newpassword").value;
+				var reentered=document.getElementById("reenter").value;
+				if(newpassword.length > 6 && reentered.length > 6)
+				{
+					if(newpassword == reentered)
+					{
+						$.ajax({
+							url : '/dashboard/changepassword',
+							data : {status:"new",token:'[% token %]',newpassword:newpassword},
+							}).done(function(responseText){
+							$('#changepassword').modal('hide');
+							$('body').removeClass('modal-open');
+							$('.modal-backdrop').remove();
+							$('#ChangePasswordForm')[0].reset();
+							$("#PasswordChangeError").html("");
+						});
+					}
+					else
+					{
+						$("#PasswordChangeError").html("*Password miss matched");				
+					}
+				}
+				else
+				{
+					$("#PasswordChangeError").html("*Password should have atleast 6 characters");	
+				}
+			}
+			$(document).ready(function(){
+				if('[% tokenvalidate %]' == "valid")
+				{
+					$("#changepassword").modal({"backdrop": "static"});
+				}
+				else
+				{
+					alert("Token expired already");
+				}
+			});
 
-  </body>
+		</script>
+
+	</body>
 </html>

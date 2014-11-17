@@ -82,7 +82,7 @@
 				<!-- Main component for a primary marketing message or call to action -->
 				<div class="jumbotron" style="padding:50px;width: 250px;float:left">
 					<h3>Leaves Left</h3>
-					<h1 class="btn-lg btn-primary" style="text-align:center;color:white;"> [% TotalPersonalLeaves %]</h1>
+					<h1 class="btn-lg btn-primary" style="text-align:center;color:white;" id="leaves_left" > [% TotalPersonalLeaves %]</h1>
 				</div>
 				<div id="maincontent" style="width:850px;float:right">
 

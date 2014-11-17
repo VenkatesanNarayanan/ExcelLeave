@@ -1,48 +1,57 @@
-	<div class="jumbotron">
-		<form role="form" id="leaveapply" style="width:500px;margin:auto">
-		  <div class="form-group">
-			    <label>From Date</label> <label style="margin-left:250px;">To Date</label>
-				<br>
-			    <input type="text" class="form-control" id="fromdate" style="float:left;width:200px;">	
-			   <input type="text" class="form-control" id="todate" style="width:200px;margin-left:320px;">
+<div class="jumbotron">
+	<form role="form" id="leaveapply" style="width:500px;margin:auto">
+		<div class="form-group">
+			<label>From Date</label> <label style="margin-left:250px;">To Date</label>
+			<br>
+			<input type="text" class="form-control" id="fromdate" style="float:left;width:200px;">	
+			<input type="text" class="form-control" id="todate" style="width:200px;margin-left:320px;">
 		</div>
 
-	  	<div class="form-group">
-	    		<label>Message</label>
-	    		<textarea class="form-control" rows="5" maxlength="130" style="width:520px;" id="leavemessage"></textarea>
-	  	</div>
-	    	<button type="submit" onclick="LeaveDetails()" class="btn btn-default">Submit</button>
+		<div class="form-group">
+			<label>Message</label>
+			<textarea class="form-control" rows="5" maxlength="130" style="width:520px;" id="leavemessage"></textarea>
+		</div>
+		<button type="submit" onclick="LeaveDetails(); leaveupdate();" class="btn btn-default">Submit</button>
 		<br><br><label id="ErrorMessage" style="color:red !important;"></label>
-		</form>      		
-	</div>
-	
-<script>
-	$(function() {
-		    $( "#fromdate" ).datepicker({ dateFormat: 'yy-mm-dd',minDate: 4,beforeShowDay: $.datepicker.noWeekends,defaultDate: "+1w",
-		      changeMonth: true,
-		      minDate:"+"+[%LeaveRequestPrior%]+"d",
-		      
-		      numberOfMonths: 2,
-		      onClose: function( selectedDate ) {
-		        $( "#todate" ).datepicker( "option", "minDate", selectedDate );
-			}
-			});
-		});
+	</form>      		
+</div>
 
-		$(function() {
-			    $( "#todate" ).datepicker({ dateFormat: 'yy-mm-dd',minDate: 0,minDate: 4,beforeShowDay: $.datepicker.noWeekends,
-				defaultDate: "+1w",
-      			 changeMonth: true,
-			 numberOfMonths: 2,
-      			 onClose: function( selectedDate ) {
-       			 $( "#fromdate" ).datepicker( "option", "maxDate", selectedDate );
-      		}
-			 });
-				  });
-			
+<script>
+	function leaveupdate()
+	{
+		$.ajax({
+			url : 'dashboard/leavesleft',
+			type : 'POST',
+			}).done(function(res){
+			$("#leaves_left").html(res.TotalPersonalLeaves);
+		}); 
+	}
+	$(function() {
+		$( "#fromdate" ).datepicker({ dateFormat: 'yy-mm-dd',minDate: 4,beforeShowDay: $.datepicker.noWeekends,defaultDate: "+1w",
+			changeMonth: true,
+			minDate:"+"+[%LeaveRequestPrior%]+"d",
+
+			numberOfMonths: 2,
+			onClose: function( selectedDate ) {
+				$( "#todate" ).datepicker( "option", "minDate", selectedDate );
+			}
+		});
+	});
+
+	$(function() {
+		$( "#todate" ).datepicker({ dateFormat: 'yy-mm-dd',minDate: 0,minDate: 4,beforeShowDay: $.datepicker.noWeekends,
+			defaultDate: "+1w",
+			changeMonth: true,
+			numberOfMonths: 2,
+			onClose: function( selectedDate ) {
+				$( "#fromdate" ).datepicker( "option", "maxDate", selectedDate );
+			}
+		});
+	});
+
 	function LeaveDetails()
 	{
-		
+
 		var datereg=/^\d{4}[-]\d{2}[-]\d{2}$/;
 		var fromdate=document.getElementById("fromdate").value;
 		var todate=document.getElementById("todate").value;
@@ -54,10 +63,10 @@
 				type: 'POST',
 				data:{fromdate:fromdate,todate:todate,message:leavemessage},
 				}).done(function(responseText) {
-					$('#leaveapply')[0].reset();
-					$("#ErrorMessage").html("Leave Request is submitted");
-				});
-			
+				$('#leaveapply')[0].reset();
+				$("#ErrorMessage").html("Leave Request is submitted");
+			});
+
 		}
 		else
 		{

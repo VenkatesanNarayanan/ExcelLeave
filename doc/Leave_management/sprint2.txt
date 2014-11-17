@@ -1,0 +1,71 @@
+Continued backlogs
+
+===========================================================
+rest all except 14(10hrs)
+1. login page : 
+	a. tick mark validations
+	b. url change in browser.
+	c. email validation.
+	d. authentication with encripted password.
+	e. camel case module names.
+
+2. token expire time.
+
+3. redirecct () => check
+
+4. joining date name correct.
+
+5. removing html and xml from module.
+
+6. _columun_data to proper syntax.
+
+7. jquery.min
+
+8. leave application direct entry of date is not allowed.
+
+9. search employee by => correct first name to email id.
+
+10. remove swap files from git.
+
+11. jquery files check.
+
+12. change password wait for resposeText .
+
+13. avoid duplicate change password modal.
+
+14. create page for leave status.(14 hrs)
+	a. creating page with demo content.
+	b. with database content andd validations associated to it.
+	c. testing.
+
+
+
+new back logs
+
+===========================================================
+1. Based on leaves left validations.
+
+2. Send a mail with valid content to particular manager.
+
+3. done.
+
+4. backend check and cancel request.
+
+5. forgot password => last part
+
+6. a. design a data table to view all the requests.
+   b. database connectivity to data table and display.
+   c. backnend validation and constraint check.
+   d. test with differrent sinarios .
+
+7. done.
+
+8. back-up last part.
+
+9. done.
+
+10. done.
+
+11. done.
+
+12. calendar view last => part.

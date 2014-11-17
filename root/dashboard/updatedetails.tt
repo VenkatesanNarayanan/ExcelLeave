@@ -1,62 +1,59 @@
-
 <div class="jumbotron">
-		<button class="btn btn-info" style="float:right;margin-top:-40px;margin-bottom:20px;" type="button" id="addemployee_btn" onclick="AddNewEmp()" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;&nbsp;Add Employee</button>
+	<button class="btn btn-info" style="float:right;margin-top:-40px;margin-bottom:20px;" type="button" id="addemployee_btn" onclick="AddNewEmp()" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;&nbsp;Add Employee</button>
 	<table id="example" class="display" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Date of joing</th>
-                <th>Email</th>
-                <th>Role</th>
-		<th></th>
-            </tr>
-        </thead>
-	<tbody >
-		[% FOREACH emp IN details %]
- 		 <tr class="empdetails" id='[% emp.EmployeeId %]'>
- 			<td>[% emp.EmployeeId %]</td>
- 			<td>[% emp.FirstName %]</td>
- 			<td>[% emp.LastName%]</td>
- 			<td>[% emp.DateOfJoining %]</td>
-			<td>[% emp.Email%]</td>
- 			<td>[% emp.RoleName%]</td>			
- 			<td><span class="glyphicon glyphicon-pencil"></span></td>
-		</tr>
-		[% END %]
-	</tbody>
-    </table>
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>Date of joing</th>
+				<th>Email</th>
+				<th>Role</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody >
+			[% FOREACH emp IN details %]
+			<tr class="empdetails" id='[% emp.EmployeeId %]'>
+				<td>[% emp.EmployeeId %]</td>
+				<td>[% emp.FirstName %]</td>
+				<td>[% emp.LastName%]</td>
+				<td>[% emp.DateOfJoining %]</td>
+				<td>[% emp.Email%]</td>
+				<td>[% emp.RoleName%]</td>			
+				<td><span class="glyphicon glyphicon-pencil"></span></td>
+			</tr>
+			[% END %]
+		</tbody>
+	</table>
 </div>
-
-
 <script>
-    $('#example').dataTable({"iDisplayLength":5});  
-  
-$('.empdetails').click(function(){
-	var employee=[];
-	var counter=0;
-	$(this).find("td").each(function(){
-		 employee[counter++]=$(this).html();
- 		});
-	$.ajax({
-		url:'dashboard/updatedetailsform',
-		data:{
-			employeeid:employee[0],
-		      }
-	      }).done(function(responseText){
+	$('#example').dataTable({"iDisplayLength":5});  
+
+	$('.empdetails').click(function(){
+		var employee=[];
+		var counter=0;
+		$(this).find("td").each(function(){
+			employee[counter++]=$(this).html();
+		});
+		$.ajax({
+			url:'dashboard/updatedetailsform',
+			data:{
+				employeeid:employee[0],
+			}
+			}).done(function(responseText){
 			$("#maincontent").html(responseText);
 		});
-			
-});
 
-function AddNewEmp() {
-	$.ajax({
-		url:'dashboard/addemployee',
-		}).done(function(responseText){
-		$("#maincontent").html(responseText);
 	});
 
-}
+	function AddNewEmp() {
+		$.ajax({
+			url:'dashboard/addemployee',
+			}).done(function(responseText){
+			$("#maincontent").html(responseText);
+		});
+
+	}
 
 </script>
