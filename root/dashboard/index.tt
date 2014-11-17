@@ -7,7 +7,6 @@
 		<script type="text/javascript" src="assets/jquery.js"></script>
 		<script type="text/javascript" src="assets/jquery.validate.js"></script>
 		<script type="text/javascript" src="assets/jquery.dataTables.min.js"></script>
-		<script type="text/javasrcipt" src="assets/jquery.validate.min.js"></script>
 		<script type="text/javascript" src="assets/additional-methods.min.js"></script>
 		<style>
 			.slno
@@ -51,10 +50,14 @@
 						<li id="home" class="menubar"><a href="#"  > <span class="glyphicon glyphicon-home"></span>&nbsp;Home</a></li>
 						<li id="leaverequest" class="menubar"><a href="#" ><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Leave Apply</a></li>
 						<li id="leavestatus"><a href="#" onclick="leaveslist();"><span class="glyphicon glyphicon-send"></span>&nbsp;Leave Status</a></li>
+						[% IF Role != 'Employee'%]
+						<li id="viewrequest" class="menubar"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;View Request</a></li>
+						[%END%]
 
-						[% FOREACH tabs IN messages %]
-						[%tabs%]
-						[% END %]
+						[% IF Role != 'Manager' %]
+					
+						<li id="updatedetails" class="menubar"><a href="#"><span class="glyphicon glyphicon-edit"></span>&nbsp;Update Details</a></li>
+						[%END%]
 					</ul>
 
 
@@ -116,54 +119,7 @@
 			</div> <!-- /container -->
 
 
-			<script src="assets/bootstrap.min.js"></script>
-			<link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-			<link rel="stylesheet" href="assets/jquery-ui.css">
-			<script src="assets/jquery-ui.js"></script>
-
-			<script>
-				Display();
-				function Display() {
-
-					$( "#datepicker" ).datepicker();
-				}
-
-			</script>
-
-			<script>
-				$(document).ready(function(){ 			
-					$("#home").addClass("active");
-					var id="home";
-					var current="#home";
-
-					$.ajax({
-						url:'dashboard/home',
-						type: 'POST',
-						}).done(function(responseText) {
-						$("#maincontent").html(responseText);
-					});
-
-					$(".menubar").click(function(){
-						id = $(this).attr('id');
-						var path="dashboard/"+id;
-						$.ajax({
-							url:path,
-							type: 'POST',
-							}).done(function(responseText) {
-							$("#maincontent").html(responseText);
-						});
-
-						id='#' + id;
-						$(current).removeClass("active");
-						$(id).addClass("active");
-						current = id;
-
-					});
-				});
-
-			</script>
-
-			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content" style="height:280px">
 						<div class="modal-body">
@@ -189,7 +145,7 @@
 														</tr>
 														<tr>
 															<td>Hire date:</td>
-															<td>[% Profile.DateOfJoing | html%]</td>
+															<td>[% Profile.DateOfJoining | html%]</td>
 														</tr>   
 														<tr>
 															<td>Email</td>
@@ -208,71 +164,6 @@
 					</div>
 				</div>
 			</div>
-
-			<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-							<h4 class="modal-title" id="myModalLabel">Change password</h4>
-						</div>
-						<div class="modal-body">
-							<form role="form" id="ChangePasswordForm" style="width:500px;margin:auto">
-								<div class="form-group">
-									<label>Enter new password : </label>
-									<input type="password" class="form-control" id="newpassword">	
-								</div>
-								<br>
-								<div class="form-group">
-									<label>Re-Enter password: </label>	 
-									<input type="password" class="form-control" id="reenter">
-								</div>
-
-								<br><label id="PasswordChangeError" style="color:red !important;"></label><br>
-							</form>      		
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary" onclick="changepassword()">Save changes</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<script>
-				function changepassword()
-				{
-
-					var newpassword=document.getElementById("newpassword").value;
-					var reentered=document.getElementById("reenter").value;
-					if(newpassword.length > 6 && reentered.length > 6)
-					{
-						if(newpassword == reentered)
-						{
-							$.ajax({
-								url : 'dashboard/changepassword',
-								type : "POST",
-								data : {status:"existing",newpassword:newpassword},
-								}).done(function(responseText){
-								$('#changepassword').modal('hide');
-								$('body').removeClass('modal-open');
-								$('.modal-backdrop').remove();
-								$('#ChangePasswordForm')[0].reset();
-								$("#PasswordChangeError").html("");
-							});
-						}
-						else
-						{
-							$("#PasswordChangeError").html("*Password miss matched");				
-						}
-					}
-					else
-					{
-						$("#PasswordChangeError").html("*Password should have atleast 6 characters");	
-					}
-				}
-			</script>
-
 
 			<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
@@ -329,7 +220,55 @@
 					</div>
 				</div>
 
-				<script>
+		<script src="assets/bootstrap.min.js"></script>
+			<link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+			<link rel="stylesheet" href="assets/jquery-ui.css">
+			<script src="assets/jquery-ui.js"></script>
+
+			<script>
+			
+				Display();
+				function Display() {
+
+					$( "#datepicker" ).datepicker();
+				}
+
+			</script>
+
+			<script>
+				$(document).ready(function(){ 			
+					$("#home").addClass("active");
+					var id="home";
+					var current="#home";
+
+					$.ajax({
+						url:'dashboard/home',
+						type: 'POST',
+						}).done(function(responseText) {
+						$("#maincontent").html(responseText);
+					});
+
+					$(".menubar").click(function(){
+						id = $(this).attr('id');
+						var path="dashboard/"+id;
+						$.ajax({
+							url:path,
+							type: 'POST',
+							}).done(function(responseText) {
+							$("#maincontent").html(responseText);
+						});
+
+						id='#' + id;
+						$(current).removeClass("active");
+						$(id).addClass("active");
+						current = id;
+
+					});
+				});
+
+			</script>
+
+			<script>
 					function changepassword()
 					{
 
@@ -343,11 +282,18 @@
 									url : 'dashboard/changepassword',
 									data : {status:"existing",newpassword:newpassword},
 									}).done(function(responseText){
-									$('#changepassword').modal('hide');
-									$('body').removeClass('modal-open');
-									$('.modal-backdrop').remove();
-									$('#ChangePasswordForm')[0].reset();
-									$("#PasswordChangeError").html("");
+									if(responseText.PasswordStatus == "Success")
+									{
+										$('#changepassword').modal('hide');
+										$('body').removeClass('modal-open');
+										$('.modal-backdrop').remove();
+										$('#ChangePasswordForm')[0].reset();
+										$("#PasswordChangeError").html("");
+									}
+									else
+									{
+										$("#PasswordChangeError").html("*System crashed");				
+									}
 								});
 							}
 							else
@@ -384,5 +330,6 @@
 						$("#leaveslist").modal({"backdrop": "static"});
 					}
 				</script>
+		
 			</body>
 		</html>

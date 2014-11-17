@@ -114,7 +114,7 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 0, size => 30 },
   "LastName",
   { data_type => "varchar", is_nullable => 0, size => 30 },
-  "DateOfJoing",
+  "DateOfJoining",
   { data_type => "date", is_nullable => 0 },
   "Email",
   { data_type => "varchar", is_nullable => 0, size => 100 },

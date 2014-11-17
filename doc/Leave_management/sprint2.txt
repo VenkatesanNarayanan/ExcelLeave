@@ -7,31 +7,31 @@ rest all except 14(10hrs)
 	b. url change in browser.
 	c. email validation.
 	d. authentication with encripted password.
-	e. camel case module names.
+	e. camel case module names(done).
 
 2. token expire time.
 
-3. redirecct () => check
+3. redirecct () => check(done).
 
-4. joining date name correct.
+4. joining date name correct(done).
 
-5. removing html and xml from module.
+5. removing html and xml from module(done).
 
-6. _columun_data to proper syntax.
+6. _columun_data to proper syntax(done).
 
-7. jquery.min
+7. jquery.min(done).
 
-8. leave application direct entry of date is not allowed.
+8. leave application direct entry of date is not allowed(done).
 
-9. search employee by => correct first name to email id.
+9. search employee by => correct first name to email id(done).
 
-10. remove swap files from git.
+10. remove swap files from git(done).
 
-11. jquery files check.
+11. jquery files check(done).
 
-12. change password wait for resposeText .
+12. change password wait for resposeText (done).
 
-13. avoid duplicate change password modal.
+13. avoid duplicate change password modal(done).
 
 14. create page for leave status.(14 hrs)
 	a. creating page with demo content.
@@ -43,9 +43,9 @@ rest all except 14(10hrs)
 new back logs
 
 ===========================================================
-1. Based on leaves left validations.
+1. Based on leaves left validations.(3hrs)
 
-2. Send a mail with valid content to particular manager.
+2. Send a mail with valid content to particular manager.(3hrs)
 
 3. done.
 
@@ -53,7 +53,7 @@ new back logs
 
 5. forgot password => last part
 
-6. a. design a data table to view all the requests.
+6. a. design a data table to view all the requests.(40hrs)
    b. database connectivity to data table and display.
    c. backnend validation and constraint check.
    d. test with differrent sinarios .
@@ -69,3 +69,10 @@ new back logs
 11. done.
 
 12. calendar view last => part.
+
+
+13. testing => (6hrs)
+
+14. integration => (3hrs)
+
+15. sprint plan andd task divide (10hrs).
