@@ -1,159 +1,165 @@
 <div class="jumbotron">
-	<form class="form-horizontal" role="form" id="updateemployeeform">
-		[% FOREACH emp IN empdetails %]
-		<div class="form-group">
-			<label class="col-lg-3 control-label">Employee id:</label>
-			<div class="col-lg-8" style="width:400px">
-				<input class="form-control" placeholder="Employee Id" value='[% emp.EmployeeId %]' type="text" id="employeeid" name="employeeid" disabled>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-lg-3 control-label">First name:</label>
-			<div class="col-lg-8" style="width:400px">
-				<input class="form-control" placeholder="First Name" value='[% emp.FirstName %]' type="text" id="fname" name="fname">
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-lg-3 control-label">Last name:</label>
-			<div class="col-lg-8" style="width:400px">
-				<input class="form-control" placeholder="Last Name" value='[% emp.LastName %]' type="text" id="lname" name="lname">
-			</div>
-		</div>
+    <form class="form-horizontal" role="form" id="updateemployeeform">
+        [% FOREACH emp IN empdetails %]
+        <div class="form-group">
+            <label class="col-lg-3 control-label">Employee id:</label>
+            <div class="col-lg-8" style="width:400px">
+                <input class="form-control" placeholder="Employee Id" value='[% emp.EmployeeId %]' type="text" id="employeeid" name="employeeid" disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">First name:</label>
+            <div class="col-lg-8" style="width:400px">
+                <input class="form-control" placeholder="First Name" value='[% emp.FirstName %]' type="text" id="fname" name="fname">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">Last name:</label>
+            <div class="col-lg-8" style="width:400px">
+                <input class="form-control" placeholder="Last Name" value='[% emp.LastName %]' type="text" id="lname" name="lname">
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="col-lg-3 control-label">Email:</label>
-			<div class="col-lg-8" style="width:400px">
-				<input class="form-control" placeholder="Email" type="text" id="email" value='[% emp.Email %]' name="email">
-			</div>	
-		</div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">Email:</label>
+            <div class="col-lg-8" style="width:400px">
+                <input class="form-control" placeholder="Email" type="text" id="email" value='[% emp.Email %]' name="email">
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="col-md-3 control-label">Date of Joining:</label>
-			<div class="col-md-8" style="width:400px">
-				<input class="form-control" type="text" id="doj" name="doj" value='[% emp.DateOfJoining %]'>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-md-3 control-label">Role:</label>
-			<div class="col-md-8">
+        <div class="form-group">
+            <label class="col-md-3 control-label">Date of Joining:</label>
+            <div class="col-md-8" style="width:400px">
+                <input class="form-control" type="text" readonly='true' id="doj" name="doj" value='[% emp.DateOfJoining %]'>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Role:</label>
+            <div class="col-md-8">
 
-				<select style="height:30px;width:150px;" id="role" name="role">
+                <select style="height:30px;width:150px;" id="role" name="role">
 
-					[% FOREACH role IN roles %]
-					[% IF role.RoleName == emp.RoleName %]
-					<option selected>[% role.RoleName %]</option>
-					[% ELSE %]
-					<option>[% role.RoleName %]</option>
-					[% END %]
-					[% END %]				  
-				</select>
+                    [% FOREACH role IN roles %]
+                    [% IF role.RoleName == emp.RoleName %]
+                    <option selected>
+                        [% role.RoleName %]
+                    </option>
+                    [% ELSE %]
+                    <option>
+                        [% role.RoleName %]
+                    </option>
+                    [% END %]
+                    [% END %]
+                </select>
 
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-md-3 control-label">Status:</label>
-			<div class="col-md-8">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Status:</label>
+            <div class="col-md-8">
 
-				<select style="height:30px;width:150px;" id="status" name="status">
-					[% IF emp.Status == 'Active'%]
-					<option selected>Active</option>
-					[% ELSE %]				  	
-					<option>Active</option>
-					[% END %]				
-					[% IF emp.Status == 'Inactive'%]
-					<option selected>Inactive</option>
-					[% ELSE %]				  	
-					<option>Inactive</option>
-					[% END %]
-					[% IF emp.Status == 'Disabled'%]
-					<option selected>Disabled</option>
-					[% ELSE %]				  	
-					<option>Disabled</option>
-					[% END %]				  
-				</select>
+                <select style="height:30px;width:150px;" id="status" name="status">
+                    [% IF emp.Status == 'Active'%]
+                    <option selected>Active</option>
+                    [% ELSE %]
+                    <option>Active</option>
+                    [% END %]
+                    [% IF emp.Status == 'Inactive'%]
+                    <option selected>Inactive</option>
+                    [% ELSE %]
+                    <option>Inactive</option>
+                    [% END %]
+                    [% IF emp.Status == 'Disabled'%]
+                    <option selected>Disabled</option>
+                    [% ELSE %]
+                    <option>Disabled</option>
+                    [% END %]
+                </select>
 
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-md-3 control-label"></label>
-			<div class="col-md-8">
-				<input class="btn btn-primary" value="Update" type="submit" >
-			</div>
-		</div>
-		[% END %]
-	</form>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div class="col-md-8">
+                <input class="btn btn-primary" value="Update" type="submit">
+            </div>
+        </div>
+        [% END %]
+    </form>
 
-</div> 
+</div>
 <script>
-	$(function() {
-		$("#doj").datepicker({dateFormat: 'yy-mm-dd'});
-	});
+    $(function() {
+        $("#doj").datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+    });
 
-	$("#updateemployeeform").validate({
-		rules: {
-			fname: {
-				required:true,
-			},
-			lname: {
-				required :true,
-			},
-			email: {
-				required :true,
-				email : true
-			},
+    $("#updateemployeeform").validate({
+        rules: {
+            fname: {
+                required: true,
+                lettersonly: true
+            },
+            lname: {
+                required: true,
+                lettersonly: true
+            },
+            email: {
+                required: true,
+                email: true
+            },
 
-			dateofjoining : {
-				required :true,
-			},
+            doj: {
+                required: true,
+            },
 
-			role : {
-				required : true,
-			},
-			status : {
-				required : true,
-			}
+            role: {
+                required: true,
+            },
+            status: {
+                required: true,
+            }
 
-		},
-
-
-		submitHandler : function(form){
-			callme();
-		},
-	});
-	function callme()
-	{
-		var employeeid = document.getElementById("employeeid").value;
-		var fname = document.getElementById("fname").value;
-		var lname = document.getElementById("lname").value;
-		var email= document.getElementById("email").value;
-		var doj = document.getElementById("doj").value;
-		var role = document.getElementById("role").value;
-		var status =document.getElementById("status").value;
-
-		$.ajax({
-			url :'dashboard/employeeupdate',
-			type :'POST',
-			data :{
-				employeeid:employeeid,
-				fname:fname,
-				lname:lname,
-				email:email,
-				dateofjoining:doj,
-				role:role,
-				status:status,
-			},
-			}).done(function(responseText){
-			$.ajax({
-				url:'dashboard/updatedetails',
-
-				}).done(function(responseText){
-				$("#maincontent").html(responseText);
-			});
-
-		});
-	}
+        },
 
 
+        submitHandler: function(form) {
+            callme();
+        },
+    });
+
+    function callme() {
+        var employeeid = document.getElementById("employeeid").value;
+        var fname = document.getElementById("fname").value;
+        var lname = document.getElementById("lname").value;
+        var email = document.getElementById("email").value;
+        var doj = document.getElementById("doj").value;
+        var role = document.getElementById("role").value;
+        var status = document.getElementById("status").value;
+
+        $.ajax({
+            url: 'dashboard/employeeupdate',
+            type: 'POST',
+            data: {
+                employeeid: employeeid,
+                fname: fname,
+                lname: lname,
+                email: email,
+                dateofjoining: doj,
+                role: role,
+                status: status,
+            },
+        }).done(function(responseText) {
+            $.ajax({
+                url: 'dashboard/updatedetails',
+
+            }).done(function(responseText) {
+                $("#maincontent").html(responseText);
+            });
+
+        });
+    }
 </script>
 
 

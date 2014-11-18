@@ -24,9 +24,33 @@ Catalyst Controller.
 sub index : Path : Args(0)
 {
     my ($self, $c) = @_;
-    $c->forward('View::TT');
 
-    #$c->response->body('Matched ExcelLeave::Controller::login in login.');
+    my $ctx = Digest::MD5->new;
+    $ctx->add($c->request->params->{password});
+    my $Password = $ctx->hexdigest;
+
+    if (
+        $c->authenticate(
+            {
+
+                "Email"    => $c->request->params->{'email'},
+                "Password" => $Password,
+            }
+        )
+      )
+    {
+        $c->res->redirect($c->uri_for_action('dashboard/index'));
+    }
+    else {
+        if (defined $c->req->params->{password}) {
+            $c->stash->{error} = 1;
+        }
+        else {
+            $c->stash->{error} = 0;
+        }
+        $c->forward('View::TT');
+    }
+
 }
 
 sub tokencheck : Path : Args(1)
@@ -40,36 +64,6 @@ sub tokencheck : Path : Args(1)
         $c->stash->{tokenvalidate} = "invalid";
     }
     $c->forward('View::TT');
-}
-
-sub loginvalidate : Local
-{
-
-    my ($self, $c) = @_;
-    my $ctx = Digest::MD5->new;
-    $ctx->add($c->request->params->{password});
-    my $Password = $ctx->hexdigest;
-    $c->stash->{error} = "valid";
-    if (
-        $c->authenticate(
-            {
-
-                "Email"    => $c->request->params->{'email'},
-                "Password" => $Password,
-            }
-        )
-      )
-    {
-        $c->res->redirect($c->uri_for_action('dashboard/index'));
-
-        #$c->stash->{template} = "dashboard/index.tt";
-        #$c->forward('View::TT');
-    }
-    else {
-
-        $c->stash->{error} = "invalid";
-        $c->forward('View::JSON');
-    }
 }
 
 =encoding utf8

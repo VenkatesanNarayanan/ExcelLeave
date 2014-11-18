@@ -1,0 +1,55 @@
+<div class="jumbotron">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+        [% FOREACH msg IN batch_detail %]
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion" href='#[%msg.Count%]' aria-expanded="true" aria-controls="collapseOne">
+						[%msg.Count%]&nbsp;.&nbsp;&nbsp;[% msg.Message %]
+					</a>
+				</h4>
+            </div>
+            <div id='[%msg.Count%]' class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+
+                    <table class="table table-stripped" id='[% msg.Count %]'>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Status</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            [% FOREACH msg1 IN detail %]
+                            [%IF msg1.BatchId == msg.BatchId %]
+                            <tr>
+                                <td>
+                                    [% msg1.LeaveDate %]
+                                </td>
+                                <td>
+                                    [% msg1.LeaveStatus %]
+                                </td>
+                            </tr>
+                            [%END%]
+                            [% END %]
+
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+        [%END%]
+
+
+
+    </div>
+</div>

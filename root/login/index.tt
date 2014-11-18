@@ -1,119 +1,249 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<link href="assets/site-demos.css" rel="stylesheet"> 
-		<link href="assets/navbar.css" rel="stylesheet">
-		<script type="text/javascript" src="assets/jquery.js"></script>
-		<script type="text/javascript" src="assets/jquery.validate.js"></script>
-		<script type="text/javasrcipt" src="assets/jquery.validate.min.js"></script>
-		<script type="text/javascript" src="assets/additional-methods.min.js"></script>
-		<link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-		<style type="text/css">
-			body {
-				padding-top: 40px;
-				padding-bottom: 40px;
-			}
-			.form-signin {
-				max-width: 300px;
-				padding: 19px 29px 29px;
-				margin: 0 auto 20px;
-				background-color: #fff;
-				border: 1px solid #e5e5e5;
-				-webkit-border-radius: 5px;
-				-moz-border-radius: 5px;
-				border-radius: 5px;
-				-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-				-moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-				box-shadow: 0 1px 2px rgba(0,0,0,.05);
-			}
-			.form-signin .form-signin-heading,
-			.form-signin .checkbox {
-				margin-bottom: 10px;
-			}
-			.form-signin input[type="text"],
-			.form-signin input[type="password"] {
-				font-size: 16px;
-				height: auto;
-				margin-bottom: 15px;
-				padding: 7px 9px;
-			}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
-		</style>
-	</head>
+<html>
 
-	<body>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/jquery.validate.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        #content {
+            min-height: 550px;
+            text-align: left;
+            padding: 20px;
+        }
+        h1 {
+            padding: 20px 10px 20px 10px;
+        }
+        h2 {
+            padding-left: 0px !important;
+            color: #428bca;
+        }
+        #header {
+            background-color: #CA410B !important;
+        }
+        .large {
+            font-size: 22px;
+        }
+        .orange {
+            color: orange;
+        }
+        .italic {
+            font-style: italic
+        }
+        .textmiddle {
+            vertical-align: middle;
+        }
+        .padout {
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+        .rounded-corners {
+            -moz-border-radius: 40px;
+            -webkit-border-radius: 40px;
+            -khtml-border-radius: 40px;
+            border-radius: 40px;
+        }
+        .rounded-corners-top {
+            -moz-border-top-radius: 40px;
+            -webkit-border-radius: 40px;
+            -khtml-border-radius: 40px;
+            border-radius: 40px;
+        }
+        .right {
+            float: right;
+        }
+        .scrolldown {
+            padding-left: 20px;
+            color: #EDECE8;
+            font-size: 40px;
+            font-weight: bold;
+            vertical-align: middle;
+            text-shadow: #6374AB 2px 2px 2px;
+        }
+        .contentblock {
+            margin: 0px 20px;
+        }
+        .results {
+            border: 1px solid blue;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 50px;
+        }
+        .blue-bold {
+            font-size: 18px;
+            font-weight: bold;
+            color: blue;
+        }
+        /* example styles for validation form demo */
+        #register-form {
+            background: url("assets/images/form-fieldset.gif") repeat-x scroll left bottom #F8FDEF;
+            border: 1px solid #DFDCDC;
+            border-radius: 15px 15px 15px 15px;
+            display: inline-block;
+            margin-bottom: 30px;
+            margin-left: 31%;
+            margin-top: 10px;
+            padding: 25px 50px 10px 33px;
+            width: 400px;
+        }
+        #register-form .fieldgroup {
+            background: url("assets/images/form-divider.gif") repeat-x scroll left top transparent;
+            display: inline-block;
+            padding: 8px 10px;
+            width: 340px;
+        }
+        #register-form .fieldgroup label {
+            float: left;
+            padding: 15px 0 0;
+            width: 110px;
+            color: #428bca;
+        }
+        #register-form .fieldgroup input,
+        #register-form .fieldgroup textarea,
+        #register-form .fieldgroup select {
+            width: 205px;
+            margin: 10px 0;
+            height: 25px;
+        }
+        #reqgister-form .submit {
+            padding: 10px;
+            width: 220px;
+            height: 40px !important;
+        }
+        #register-form .fieldgroup label.error {
+            color: #FB3A3A;
+            display: inline-block;
+            padding: 0;
+            text-align: left;
+            width: 300px;
+        }
+    </style>
 
-		<div class="container">
-			<link href="assets/bootstrap.css" rel="stylesheet">
 
-			<form id="loginform" class="form-signin">
 
-				<h2 class="form-signin-heading">Please sign in</h2>
-				<hr>
-				<input type="text" id="email" name="email" class="input-block-level" placeholder="Email address">
-				<input type="password" id="password" name="password" class="input-block-level" placeholder="Password">
-				<br><input type="submit" class="btn btn-large btn-primary" value="Sign in">
-				<br><br><a href="#"> Forgot password</a>
-				<hr>
-				<h5 style="color:red;display:none" id="error">Invalid user</h5>
-			</form>
+    <script type="text/javascript">
+        (function($, W, D)
 
-		</div> 
-	</body>
-	<style type="text/css" id="stylebot-css">
-	</style>
-	<script>
-		$(document).ready(function() {
+            {
+                var validator = {};
+                validator.call = {
+                    setupFormValidation: function() {
+                        $("#register-form").validate({
+                            rules: {
+                                email: {
+                                    required: true,
+                                    email: true
+                                },
 
-			$("#loginform").validate({
-				debug : true,
-				success : "valid",
-				rules: {
-					email: {
-						required: true,
-						email: true
-					},
-					password: {
-						required: true,
-						minlength: 6
-					}
-				},
-				messages: {
-					email: "Not a valid email address",
-					password: {
-						required: "Please provide a password",
-						minlength: "Your password must be atleast 6 characters long"
-					}
-				},
-				submitHandler: function(form) {					
-					callme();
+                                password: {
 
-				}
-			});
+                                    required: true,
 
-			function callme() {
-				var myemail=document.getElementById("email").value;
-				var mypassword=document.getElementById("password").value;
-				$.ajax({
-					url: "/login/loginvalidate",
-					type: "POST",
-					data: {
-						email: myemail,
-						password: mypassword
-					},
-					}).done(function(data) {
-					if ( data.error == "invalid")
-					{
-						$("#error").show();					
-						$('#loginform')[0].reset();
-					}
-					else
-					{
-						$("body").html(data);
-					}
-				});
-			}
-		});
-	</script>
+                                    minlength: 5
+
+                                },
+
+                            },
+
+                            messages: {
+
+                                password: {
+
+                                    required: "Please provide a password",
+
+                                    minlength: "Your password must be at least 5 characters long"
+
+                                },
+
+                                email: "Please enter a valid email address",
+
+
+                            },
+
+                            submitHandler: function(form) {
+
+                                form.submit();
+
+                            }
+
+                        });
+
+                    }
+
+                }
+
+                $(D).ready(function($) {
+
+                    validator.call.setupFormValidation();
+
+                });
+
+
+
+            })(jQuery, window, document);
+    </script>
+
+
+
+</head>
+
+<body>
+
+    <div id="page-wrap">
+        <div id="content">
+            <form action="/login" method="post" id="register-form" novalidate="novalidate">
+                <h2>User login</h2>
+                <div id="form-content">
+                    <fieldset>
+                        <div class="fieldgroup">
+                            <label for="email">Email</label>
+                            <input type="text" class="input-block-level" id="email" name="email">
+
+                        </div>
+                        <div class="fieldgroup">
+                            <label for="password">Password</label>
+                            <input type="password" class="input-block-level" id="password" name="password">
+                        </div>
+                        <div class="fieldgroup">
+                            <input type="submit" value="Sign in" style="margin-left:50px" class="btn btn-large btn-primary submit">
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="fieldgroup">
+                    <a href="/login" style="float:left">Forgot password</a>
+                    [% IF error %]
+                    <p style="float:right;color:red;" id="error"><b>Invalid user details</b>
+                    </p>
+                    [% END %]
+                </div>
+            </form>
+
+        </div>
+    </div>
+    </div>
+    <!-- end page wrap -->
+</body>
+<!--script>
+    function callme() {
+        var myemail = document.getElementById("email").value;
+        var mypassword = document.getElementById("password").value;
+        $.ajax({
+            url: "/login/loginvalidate",
+            type: "POST",
+            data: {
+                email: myemail,
+                password: mypassword
+            },
+        }).done(function(data) {
+            if (data.error == "invalid") {
+                $("#error").show();
+            } else {
+                $("body").html(data);
+            }
+        });
+    }
+</script-->
 
 </html>

@@ -1,90 +1,93 @@
 <div class="jumbotron">
-	<form role="form" id="leaveapply" style="width:500px;margin:auto">
-		<div class="form-group">
-			<label>From Date</label> <label style="margin-left:250px;">To Date</label>
-			<br>
-			<input type="text" class="form-control" readonly='true' id="fromdate" style="float:left;width:200px;">	
-			<input type="text" class="form-control" readonly='true' id="todate" style="width:200px;margin-left:320px;">
-		</div>
+    <form role="form" id="leaveapply" style="width:500px;margin:auto">
+        <div class="form-group">
+            <label>From Date</label>
+            <label style="margin-left:250px;">To Date</label>
+            <br>
+            <input type="text" class="form-control" readonly='true' id="fromdate" style="float:left;width:200px;">
+            <input type="text" class="form-control" readonly='true' id="todate" style="width:200px;margin-left:320px;">
+        </div>
 
-		<div class="form-group">
-			<label>Message</label>
-			<textarea class="form-control" rows="5" maxlength="130" style="width:520px;" id="leavemessage"></textarea>
-		</div>
-		<button type="submit" onclick="LeaveDetails(); leaveupdate();" class="btn btn-default">Submit</button>
-		<br><br><label id="ErrorMessage" style="color:red !important;"></label>
-	</form>      		
+        <div class="form-group">
+            <label>Message</label>
+            <textarea class="form-control" rows="5" maxlength="130" style="width:520px;" id="leavemessage"></textarea>
+        </div>
+        <button type="submit" onclick="LeaveDetails(); leaveupdate();" class="btn btn-default">Submit</button>
+        <br>
+        <br>
+        <label id="ErrorMessage" style="color:red !important;"></label>
+    </form>
 </div>
 
 <script>
-	function leaveupdate()
-	{
-		$.ajax({
-			url : 'dashboard/leavesleft',
-			type : 'POST',
-			}).done(function(res){
-			$("#leaves_left").html(res.TotalPersonalLeaves);
-		}); 
-	}
-	$(function() {
-		$( "#fromdate" ).datepicker({ dateFormat: 'yy-mm-dd',beforeShowDay: $.datepicker.noWeekends,
-			defaultDate: "+1w",
-			minDate:"+"+[%LeaveRequestPrior%]+"d",
-			numberOfMonths: 2,
-			onClose: function( selectedDate ) {
-				$( "#todate" ).datepicker( "option", "minDate", selectedDate );
-			}
-		});
-	});
+    function leaveupdate() {
+        $.ajax({
+            url: 'dashboard/leavesleft',
+            type: 'POST',
+        }).done(function(res) {
+            $("#leaves_left").html(res.TotalPersonalLeaves);
+        });
+    }
+    $(function() {
+        $("#fromdate").datepicker({
+            dateFormat: 'yy-mm-dd',
+            beforeShowDay: $.datepicker.noWeekends,
+            defaultDate: "+1w",
+            minDate: "+" + [% LeaveRequestPrior %]+"d",
+            numberOfMonths: 2,
+            onClose: function(selectedDate) {
+                $("#todate").datepicker("option", "minDate", selectedDate);
+            }
+        });
+    });
 
-	$(function() {
-		var year = (new Date).getFullYear();
-		$( "#todate" ).datepicker({ dateFormat: 'yy-mm-dd',beforeShowDay: $.datepicker.noWeekends,
-			defaultDate: "+1w",
-			changeMonth: true,
-			maxDate: new Date(year, 11, 31),
-			numberOfMonths: 2,
-			onClose: function( selectedDate ) {
-				$( "#fromdate" ).datepicker( "option", selectedDate );
-			}
-		});
-	});
+    $(function() {
+        var year = (new Date).getFullYear();
+        $("#todate").datepicker({
+            dateFormat: 'yy-mm-dd',
+            beforeShowDay: $.datepicker.noWeekends,
+            defaultDate: "+1w",
+            changeMonth: true,
+            maxDate: new Date(year, 11, 31),
+            numberOfMonths: 2,
+            onClose: function(selectedDate) {
+                $("#fromdate").datepicker("option", selectedDate);
+            }
+        });
+    });
 
-	function LeaveDetails()
-	{
+    function LeaveDetails() {
 
-		var datereg=/^\d{4}[-]\d{2}[-]\d{2}$/;
-		var fromdate=document.getElementById("fromdate").value;
-		var todate=document.getElementById("todate").value;
-		var leavemessage=document.getElementById("leavemessage").value;		
-		if( datereg.test(fromdate) == true && datereg.test(todate) == true && leavemessage != "")
-		{
-			$.ajax({
-				url:'dashboard/leaverequesthandler',
-				type: 'POST',
-				data:{fromdate:fromdate,todate:todate,message:leavemessage},
-				}).done(function(responseText) {
-				$('#leaveapply')[0].reset();
-				$("#ErrorMessage").html("Leave Request is submitted");
-			});
+        var datereg = /^\d{4}[-]\d{2}[-]\d{2}$/;
+        var fromdate = document.getElementById("fromdate").value;
+        var todate = document.getElementById("todate").value;
+        var leavemessage = document.getElementById("leavemessage").value;
+        if (datereg.test(fromdate) == true && datereg.test(todate) == true && leavemessage != "") {
+            $.ajax({
+                url: 'dashboard/leaverequesthandler',
+                type: 'POST',
+                data: {
+                    fromdate: fromdate,
+                    todate: todate,
+                    message: leavemessage
+                },
+            }).done(function(responseText) {
+                $('#leaveapply')[0].reset();
+                $("#ErrorMessage").html("Leave Request is submitted");
+            });
 
-		}
-		else
-		{
-			var message=""
-			if(datereg.test(fromdate) == false)
-			{
-				message +="*Invalid from date\n";
-			}
-			if(datereg.test(todate) == false) 
-			{
-				message +="*Invalid to date\n";
-			}
-			if(leavemessage == "")
-			{
-				message +="*Invalid message\n";
-			}					
-			$("#ErrorMessage").html(message);
-		}	
-	}
+        } else {
+            var message = ""
+            if (datereg.test(fromdate) == false) {
+                message += "*Invalid from date\n";
+            }
+            if (datereg.test(todate) == false) {
+                message += "*Invalid to date\n";
+            }
+            if (leavemessage == "") {
+                message += "*Invalid message\n";
+            }
+            $("#ErrorMessage").html(message);
+        }
+    }
 </script>
