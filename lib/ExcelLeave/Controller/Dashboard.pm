@@ -158,7 +158,7 @@ sub leaverequesthandler : Local
                         BatchId    => $batchid,
                         LeaveDate  => $start->ymd,
                         CreatedBy  => $employeeid,
-                        UpadatedBy => $employeeid,
+                        UpdatedBy => $employeeid,
                         CreatedOn  => $requestdate,
                         UpdatedOn  => $requestdate,
                     }
@@ -189,12 +189,9 @@ sub home : Local
 {
     my ($self, $c) = @_;
     my $employeeid   = 1;
-    my $current_date = DateTime->now(time_zone => 'Asia/Kolkata');
-    my $requestdate  = $current_date->ymd();
     my @leavelist    = $c->model('Leave::LeaveRequest')->search(
         {
             EmployeeId => $employeeid,
-            LeaveDate  => {'>', $requestdate},
         },
         {
             rows     => 6,
@@ -277,7 +274,7 @@ sub newemployee : Local
     my $Token = Session::Token->new->get;
     print Dumper $Token;
 
-    my @chars = ("A" .. "Z", "a" .. "z", '1' .. '6');
+    my @chars = ("A" .. "Z", "a" .. "z", '1' .. '9');
     my $RandomPassword;
     $RandomPassword .= $chars[rand @chars] for 1 .. 6;
     print $RandomPassword. "\n";
@@ -395,12 +392,14 @@ sub updatedetailsform : Local
 sub employeeupdate : Local
 {
     my ($self, $c) = @_;
+	my $employeeid=1;
+
     my $user = $c->model('Leave::Employee')->search({EmployeeId => $c->req->params->{employeeid}});
     my @roleid = $c->model('Leave::Role')->search({RoleName => $c->req->params->{role}});
     my $id;
 
     my $current_date = DateTime->now(time_zone => 'Asia/Kolkata');
-    my $UpdatedOn = $current_date->ymd('-');
+    my $requestdate = $current_date->ymd('-');
 
     foreach my $var (@roleid) {
         $id = $var->RoleId;
@@ -413,8 +412,8 @@ sub employeeupdate : Local
             DateOfJoining => $c->req->params->{dateofjoining},
             RoleId        => $id,
             Status        => $c->req->params->{status},
-            UpdatedBy     => $id,
-            UpdatedOn     => $UpdatedOn,
+            UpdatedBy     => $employeeid,
+            UpdatedOn     => $requestdate,
         }
     );
     $c->forward('View::JSON');
@@ -462,40 +461,211 @@ sub leavesleft : Local
 
 sub leavestatus : Local
 {
+	my ($self, $c) = @_;
+	my $count = 1;
+	my $numdays=0;
+	my $employeeid=1;
+	my $current_date = DateTime->now(time_zone => 'Asia/Kolkata');
+    my $requestdate  = $current_date->ymd();
+
+	if($c->req->params->{"cancelrequest[]"})
+	{
+		if(ref($c->req->params->{"cancelrequest[]"}) eq 'ARRAY')
+		{
+			foreach(@{$c->req->params->{"cancelrequest[]"}})
+			{
+				$numdays++;
+				my $leave=$c->model('Leave::LeaveRequest')->search({LeaveId	=> $_});
+				   $leave->update({
+									LeaveStatus => 'Cancelled',
+									UpdatedBy	=> $employeeid,
+									UpdatedOn	=> $requestdate,
+								});
+			}
+		}
+		else
+		{
+			$numdays++;
+			my $leave=$c->model('Leave::LeaveRequest')->search({LeaveId => $c->req->params->{"cancelrequest[]"}});
+			$leave->update({
+					LeaveStatus => 'Cancelled',
+					UpdatedBy	=> $employeeid,
+					UpdatedOn	=> $requestdate,
+				});
+		}
+
+		my $leavesleft=$c->model('Leave::EmployeeLeave')->search(
+			{
+				EmployeeId => $employeeid,
+			},
+			{
+			columns => [qw/AvailablePersonalLeaves/],
+			});
+			
+		my $myleaves		=	$leavesleft->next;
+		my $numberofleaves	=	$myleaves->AvailablePersonalLeaves;
+
+		$numberofleaves += $numdays;
+		$c->stash->{AvailablePL}=$numberofleaves;
+
+		$leavesleft->update({
+			AvailablePersonalLeaves => $numberofleaves,
+			UpdatedBy				=> $employeeid,
+			UpdatedOn				=> $requestdate, 
+			});	
+
+		$c->forward('View::JSON');
+	}
+	else
+	{
+		my @batchcollection = $c->model('Leave::LeaveRequestBatch')->search({});
+		push(
+			@{$c->stash->{batchcollection}},
+			{
+				Count => $count++,
+				BatchId => $_->BatchId,
+				Message => $_->Message,
+				FromDate => $_->FromDate,
+				ToDate => $_->ToDate,
+			}
+		) foreach @batchcollection;
+		
+		$c->forward('View::TT');
+	}
+}
+sub viewrequest : Local
+{
     my ($self, $c) = @_;
+	my $employeeid=1;
+	
+ 	if(defined $c->req->params->{batchid})	
+	{
+		my @leavecollection = $c->model('Leave::LeaveRequest')->search(
+			{
+				'me.BatchId' =>$c->req->params->{batchid},
+			},
+			{
+				join => ['batch','employee'],
+				'+select' =>['employee.FirstName','employee.LastName','batch.Message'],
+				'+as' =>['FirstName','LastName','Message'],
+			}
+			);
+		push(
+			@{$c->stash->{leavecollection}},
+			{
+				LeaveId		=> $_->LeaveId,
+				FirstName   => $_->get_column('FirstName'),
+				LastName 	=> $_->get_column('LastName'),
+				LeaveDate 	=> $_->LeaveDate,
+				LeaveStatus => $_->LeaveStatus,
+				Message		=> $_->get_column('Message'),
+			}
+		) foreach @leavecollection;
 
-    my @batchcollection = $c->model('Leave::LeaveRequestBatch')->search({});
+    	$c->forward('View::JSON');
+	}
+	else
+	{
+		my @batchcollection = $c->model('Leave::LeaveRequest')->search(
+			{
+				-and =>[
+						'me.EmployeeId'=>$employeeid,
+						'me.UpdatedBy' =>{'!=',$employeeid},
+					],
+			},
+			{
+				join      => ['batch','employee'],
+				'+select' =>['employee.FirstName','employee.LastName','batch.FromDate','batch.ToDate','batch.Message'],
+				'+as' =>['FirstName','LastName','FromDate','ToDate','Message'],
+				columns => ['me.BatchId','employee.FirstName','employee.LastName','batch.FromDate','batch.ToDate','batch.Message'],
+				distinct => 1,
+			}
+		);
 
-    my $count = 1;
-    push(
-        @{$c->stash->{batch_detail}},
-        {
-            Count   => $count++,
-            BatchId => $_->BatchId,
-            Message => $_->Message,
-        }
-    ) foreach @batchcollection;
-
-    my @leavecollection = $c->model('Leave::LeaveRequestBatch')->search(
-        {},
-        {
-            join      => 'leave_requests',
-            '+select' => ['leave_requests.LeaveDate', 'leave_requests.LeaveStatus'],
-            '+as'     => ['LeaveDate', 'LeaveStatus']
-        }
-    );
-    push(
-        @{$c->stash->{detail}},
-        {
-            BatchId     => $_->BatchId,
-            LeaveDate   => $_->get_column('LeaveDate'),
-            LeaveStatus => $_->get_column('LeaveStatus'),
-        }
-    ) foreach @leavecollection;
-
-    $c->forward('View::TT');
+		my $counter=1;
+		push(
+			@{$c->stash->{requests}},
+			{
+				Counter		=> $counter++,
+				BatchId     => $_->BatchId,
+				FromDate    => $_->get_column('FromDate'),
+				ToDate 	    => $_->get_column('ToDate'),
+				Message		=> $_->get_column('Message'),
+				FirstName	=> $_->get_column('FirstName'),
+				LastName	=> $_->get_column('LastName'),
+			}
+		) foreach @batchcollection;
+    	$c->forward('View::TT');
+	}
 }
 
+sub requestview:Local
+{
+	my($self,$c)=@_;
+
+
+	my $current_date = DateTime->now(time_zone => 'Asia/Kolkata');
+    my $requestdate  = $current_date->ymd();
+	my $employeeid	=1;
+
+	if(ref($c->req->params->{"acceptreq[]"}) eq 'ARRAY')
+	{
+		foreach(@{$c->req->params->{"acceptreq[]"}})
+		{
+			print "hello ARRAY acceptreq\n";
+			my $updateleave = $c->model('Leave::LeaveRequest')->search({LeaveId=>$_});
+			$updateleave->update(
+				{
+					LeaveStatus => 'Approved',
+					UpdatedBy 	=> $employeeid,
+					UpdatedOn	=> $requestdate,
+				}
+			);
+		}
+	}
+	else
+	{
+		
+			print "hello Simple acceptreq\n";
+			my $updateleave = $c->model('Leave::LeaveRequest')->search({LeaveId=>$c->req->params->{"acceptreq[]"}});
+			$updateleave->update(
+				{
+					LeaveStatus => 'Approved',
+					UpdatedBy 	=> $employeeid,
+					UpdatedOn	=> $requestdate,
+				}
+			);
+	}
+
+	if(ref($c->req->params->{"denyreq[]"}) eq 'ARRAY')
+	{
+		foreach(@{$c->req->params->{"denyreq[]"}})
+		{
+			my $updateleave = $c->model('Leave::LeaveRequest')->search({LeaveId=>$_});
+			$updateleave->update(
+				{
+					LeaveStatus => 'Denied',
+					UpdatedBy 	=> $employeeid,
+					UpdatedOn	=> $requestdate,
+				}
+			);
+		}
+	}
+	else
+	{
+			my $updateleave = $c->model('Leave::LeaveRequest')->search({LeaveId=>$c->req->params->{"denyreq[]"}});
+			$updateleave->update(
+				{
+					LeaveStatus => 'Denied',
+					UpdatedBy 	=> $employeeid,
+					UpdatedOn	=> $requestdate,
+				}
+			);
+	}
+	
+	$c->stash->{response}='Success';
+	$c->forward('View::JSON');
+}
 =encoding utf8
 =encoding utf8
 

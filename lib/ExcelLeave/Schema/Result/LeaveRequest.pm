@@ -104,10 +104,10 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 0, size => 20 },
   "CreatedOn",
   { data_type => "date", is_nullable => 0 },
-  "UpadatedBy",
-  { data_type => "varchar", is_nullable => 0, size => 20 },
+  "UpdatedBy",
+  { data_type => "varchar", is_nullable => 1, size => 20 },
   "UpdatedOn",
-  { data_type => "date", is_nullable => 0 },
+  { data_type => "date", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY

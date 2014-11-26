@@ -91,7 +91,8 @@
             </div>
             <!--/.container-fluid -->
         </nav>
-
+		
+		
         <!-- Main component for a primary marketing message or call to action -->
         <div class="jumbotron" style="padding:50px;width: 250px;float:left">
             <h3>Leaves Left</h3>

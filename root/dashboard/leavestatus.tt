@@ -1,55 +1,173 @@
 <div class="jumbotron">
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-        [% FOREACH msg IN batch_detail %]
+	<table class="display" cellspacing="0" width="100%" id="LeaveStatus" style="width:100%">
 
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingOne">
-                <h4 class="panel-title">
-					<a data-toggle="collapse" data-parent="#accordion" href='#[%msg.Count%]' aria-expanded="true" aria-controls="collapseOne">
-						[%msg.Count%]&nbsp;.&nbsp;&nbsp;[% msg.Message %]
-					</a>
-				</h4>
-            </div>
-            <div id='[%msg.Count%]' class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                <div class="panel-body">
+		<thead>
+			<tr>
+				<td>Sl.no</td>			
+				<td>From date</td>			
+				<td>To date</td>
+				<td>Message</td>
+				<td></td>
+			</tr>
+		</thead>
+		<tbody>
+			[% FOREACH batch IN batchcollection %]	
+			<tr class="request_call" id='[% batch.Count %]'>
+				<td>
+					[% batch.Count %]
+				</td>
+				<td>
+					[% batch.FromDate %]
+				</td>
+				<td>
+					[% batch.ToDate %]
+				</td>
+				<td>
+					[% batch.Message %]
+				</td>
+				<td>
+					<button type="button" class="btn btn-info view_request" id='[%batch.BatchId%]' name='[% batch.BatchId %]'><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;View</button>
+				</td>
+			</tr>
+			[%END%]
 
-                    <table class="table table-stripped" id='[% msg.Count %]'>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Status</th>
+		</tbody>
+	</table>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            [% FOREACH msg1 IN detail %]
-                            [%IF msg1.BatchId == msg.BatchId %]
-                            <tr>
-                                <td>
-                                    [% msg1.LeaveDate %]
-                                </td>
-                                <td>
-                                    [% msg1.LeaveStatus %]
-                                </td>
-                            </tr>
-                            [%END%]
-                            [% END %]
-
-                        </tbody>
-                    </table>
-
-
-
-                </div>
-            </div>
-        </div>
-
-
-
-        [%END%]
-
-
-
-    </div>
 </div>
+
+
+<div class="modal fade" id="viewreq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+	<div class="modal-dialog">
+		<div class="modal-content" style="width: 466px;margin: auto;">
+			<div class="modal-header" style="color:#428bca">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<label>Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;</label><label class="modal-title" id="Empview"></label><br>
+				<label>Message : &nbsp;</label><label class="modal-title" id="Empmsg"></label><br>
+			</div>
+			<div class="modal-body">
+				<table class="table">
+					<tr class="list-group-item-info">
+						<th class="leavelist">Date</th>
+						<th class="leavelist">Status</th>
+						<th class="leavelist">Select</th>
+					</tr>
+					<tbody id="viewreqbody"></tbody>
+
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info cancelreq" id="cancelselected" style="background-color:#428bca" data-dismiss="modal"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Cancel selected</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	var oTable=$('#LeaveStatus').dataTable({
+		"iDisplayLength": 5,
+	});
+	var viewbtnid;
+	$('#LeaveStatus').delegate('.view_request', 'click', function() {
+		viewbtnid=$(this).attr('id');
+		leavecall();
+	});
+
+	var TotalRows;
+	var CancelledRows;
+	function leavecall(){
+		TotalRows=0;
+		CancelledRows=0;
+		var e = window.event,
+		btn = e.target || e.srcElement;
+		var bid=btn.name;
+		$.ajax({
+			url : 'dashboard/viewrequest',
+			type : 'POST',
+			data : {
+				batchid:bid,
+			},
+			}).done(function(res){
+			var list = "";
+			$.each(res.leavecollection, function(i,x) {
+				$("#Empview").html(x.FirstName+" "+x.LastName);
+				$("#Empmsg").html(x.Message);
+				TotalRows++;
+				list += "<tr>";							
+					list += "<td class="+"leavelist"+">" + x.LeaveDate+ "</td>";
+					list += "<td class="+"leavelist"+">" + x.LeaveStatus + "</td>";
+					if(x.LeaveStatus == 'Cancelled' || x.LeaveStatus == 'Denied')
+					{
+					list += "<td class="+"leavelist"+"><input disabled type="+"checkbox"+" class="+"lcheck"+" id="+x.LeaveId+" onchange="+"callcheck();"+"></td>";
+					CancelledRows++;
+					}
+					else
+					{
+						list += "<td class="+"leavelist"+"><input type="+"checkbox"+" class="+"lcheck"+" id="+x.LeaveId+" onchange="+"callcheck();"+" checked></td>";
+					}
+					list += "</tr>";
+			});
+			$("#viewreqbody").html(list);
+			
+			if(TotalRows == CancelledRows)
+			{
+				$('#cancelselected').prop('disabled',true);
+			}
+			else
+			{
+				$('#cancelselected').prop('disabled',false);
+			}
+			
+			$("#viewreq").modal({"backdrop": "static"});
+		});
+		}
+
+
+
+	function callcheck(){
+		var even= window.event,btn= even.target||even.srcElement;
+		var val1=btn.id;
+		if($("#"+val1).is(':checked'))
+		{
+			CancelledRows--;
+		}
+		else
+		{
+			CancelledRows++;
+		}
+
+		if(TotalRows == CancelledRows)
+		{
+			$('#cancelselected').prop('disabled',true);
+		}
+		else
+		{
+			$('#cancelselected').prop('disabled',false);
+		}
+	}
+	
+	$('.cancelreq').click(function()
+	{
+		var cancelrequest = [];
+		$('.lcheck').each(function()
+		{
+			var checkboxid=$(this).attr('id');
+			if($('#'+checkboxid).is(':checked'))
+			{
+				cancelrequest.push(checkboxid);
+			}
+
+		});
+		$.ajax({
+			url  : 'dashboard/leavestatus',
+			type : 'POST',
+			data : {cancelrequest : cancelrequest},
+			}).done(function(data){
+				$("#leaves_left").html(data.AvailablePL);
+		});
+	});
+</script>

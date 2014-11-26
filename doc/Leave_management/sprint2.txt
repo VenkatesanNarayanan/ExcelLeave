@@ -3,9 +3,9 @@ Continued backlogs
 ===========================================================
 rest all except 14(10hrs)
 1. login page : 
-	a. tick mark validations
-	b. url change in browser.
-	c. email validation.
+	a. tick mark validations(done).
+	b. url change in browser(done).
+	c. email validation(done).
 	d. authentication with encripted password.
 	e. camel case module names(done).
 
