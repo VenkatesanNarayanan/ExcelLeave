@@ -11,7 +11,12 @@
             <p style="float:left;width:40%;">
                 [% leave.LeaveStatus %]
             </p>
-            <button type="button" class="btn btn-info" style="float:left;width:20%;" id='LeaveId'>Cancel</button>
+		
+                [% IF leave.LeaveStatus == 'Cancelled' or leave.LeaveStatus=='Denied' %]
+            		<button type="button" class="btn btn-info" style="float:left;width:20%;" disabled id='LeaveId'>Cancel</button>
+		[%ELSE%]
+			<button type="button" class="btn btn-info" style="float:left;width:20%;" id='LeaveId'>Cancel</button>		
+		[%END%]
         </li>
         [% END %]
 </ul>

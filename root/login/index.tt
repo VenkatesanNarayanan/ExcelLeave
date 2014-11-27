@@ -174,8 +174,10 @@
 
                 }
 
-                $(D).ready(function($) {
-
+				$(D).ready(function($) {
+					$( "input" ).focus(function() {
+						$('#error').hide();
+					});
                     validator.call.setupFormValidation();
 
                 });
@@ -207,7 +209,7 @@
                             <input type="password" class="input-block-level" id="password" name="password">
                         </div>
                         <div class="fieldgroup">
-                            <input type="submit" value="Sign in" style="margin-left:50px" class="btn btn-large btn-primary submit">
+                            <input type="submit" value="Sign in" style="margin-left:50px;height:auto" class="btn btn-large btn-primary submit">
                         </div>
                     </fieldset>
                 </div>
@@ -225,25 +227,4 @@
     </div>
     <!-- end page wrap -->
 </body>
-<!--script>
-    function callme() {
-        var myemail = document.getElementById("email").value;
-        var mypassword = document.getElementById("password").value;
-        $.ajax({
-            url: "/login/loginvalidate",
-            type: "POST",
-            data: {
-                email: myemail,
-                password: mypassword
-            },
-        }).done(function(data) {
-            if (data.error == "invalid") {
-                $("#error").show();
-            } else {
-                $("body").html(data);
-            }
-        });
-    }
-</script-->
-
 </html>

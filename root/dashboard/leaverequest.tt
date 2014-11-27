@@ -28,11 +28,13 @@
             $("#leaves_left").html(res.TotalPersonalLeaves);
         });
     }
+    var year = (new Date).getFullYear();
     $(function() {
         $("#fromdate").datepicker({
             dateFormat: 'yy-mm-dd',
             beforeShowDay: $.datepicker.noWeekends,
-            defaultDate: "+1w",
+            defaultDate: "+0d",
+            maxDate: new Date(year, 11, 31),
             minDate: "+" + [% LeaveRequestPrior %]+"d",
             numberOfMonths: 2,
             onClose: function(selectedDate) {
@@ -42,11 +44,10 @@
     });
 
     $(function() {
-        var year = (new Date).getFullYear();
         $("#todate").datepicker({
             dateFormat: 'yy-mm-dd',
             beforeShowDay: $.datepicker.noWeekends,
-            defaultDate: "+1w",
+            defaultDate: "+0d",
             changeMonth: true,
             maxDate: new Date(year, 11, 31),
             numberOfMonths: 2,

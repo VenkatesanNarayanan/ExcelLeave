@@ -47,6 +47,13 @@ sub default :Path {
     $c->response->status(404);
 }
 
+sub index:Path:Args(0)
+{
+	my($self,$c)=@_;
+	$c->stash->{template}='login/index.tt';
+	$c->forward('View::TT');
+}
+
 =head2 end
 
 Attempt to render a view, if needed.

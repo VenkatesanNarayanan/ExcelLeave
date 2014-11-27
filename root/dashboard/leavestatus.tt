@@ -23,7 +23,7 @@
 				<td>
 					[% batch.ToDate %]
 				</td>
-				<td>
+				<td width="200" >
 					[% batch.Message %]
 				</td>
 				<td>
@@ -79,6 +79,7 @@
 
 	var TotalRows;
 	var CancelledRows;
+
 	function leavecall(){
 		TotalRows=0;
 		CancelledRows=0;
@@ -86,7 +87,7 @@
 		btn = e.target || e.srcElement;
 		var bid=btn.name;
 		$.ajax({
-			url : 'dashboard/viewrequest',
+			url : 'dashboard/LeaveStatusHandle',
 			type : 'POST',
 			data : {
 				batchid:bid,

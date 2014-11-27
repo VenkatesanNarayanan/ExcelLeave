@@ -26,6 +26,39 @@ Catalyst Controller.
 
 =cut
 
+sub CurrentDate
+{
+
+    my $current_date = DateTime->now(time_zone => 'Asia/Kolkata');
+    return $current_date->ymd();
+}
+
+sub EncryptPassword {
+	my ( $normalpassword ) = @_;
+	my $ctx = Digest::MD5->new;
+	$ctx->add($normalpassword);
+	my $encryptedpassword = $ctx->hexdigest;
+	return $encryptedpassword;
+}
+
+sub ExcelLeaveMailing {
+
+	my ( $fromeid, $toeid, $esubject, $content ) = @_;
+	my $message = Email::MIME->create(
+		header_str => [
+			From => $fromeid,
+			To => $toeid,
+			Subject => $esubject,
+		],
+		attributes => {
+			encoding => 'quoted-printable',
+			charset => 'ISO-8859-1',
+		},
+		body_str => $content ,
+	); 
+	sendmail($message);
+}
+
 sub index : Path
 {
     my ($self, $c) = @_;
@@ -96,14 +129,15 @@ sub leaverequesthandler : Local
 {
     my ($self, $c) = @_;
     my $user       = "Dharmu";
-    my $employeeid = 1;
+    my ($ManagerEmailId,$ManagerName);
+	my $employeeid = 1;
     my @fromdate   = split('-', $c->req->params->{fromdate});
     my @todate     = split('-', $c->req->params->{todate});
     my $start      = DateTime->new(year => $fromdate[0], month => $fromdate[1], day => $fromdate[2]);
     my $end        = DateTime->new(year => $todate[0], month => $todate[1], day => $todate[2]);
     my %offcialsholidays;
     my @collected = $c->model('Leave::OfficialHolidays')->search({});
-
+ 
     foreach my $var (@collected) {
         $offcialsholidays{$var->HolidayDate} = "";
     }
@@ -113,8 +147,6 @@ sub leaverequesthandler : Local
     my @arr = qw/a b c d e f g h i j k l m n o p q r s t u v w x y z/;
 
     my $flag         = 0;
-    my $current_date = DateTime->now(time_zone => 'Asia/Kolkata');
-    my $requestdate  = $current_date->ymd();
     my $batchid      = "";
     my $numberofdays = 0;
     while ($flag == 0) {
@@ -137,9 +169,7 @@ sub leaverequesthandler : Local
                     ToDate    => $c->req->params->{todate},
                     Message   => $c->req->params->{message},
                     CreatedBy => $employeeid,
-                    UpdatedBy => $employeeid,
-                    CreatedOn => $requestdate,
-                    UpdatedOn => $requestdate,
+                    CreatedOn => CurrentDate(),
                 }
             );
             last;
@@ -158,9 +188,7 @@ sub leaverequesthandler : Local
                         BatchId    => $batchid,
                         LeaveDate  => $start->ymd,
                         CreatedBy  => $employeeid,
-                        UpdatedBy => $employeeid,
-                        CreatedOn  => $requestdate,
-                        UpdatedOn  => $requestdate,
+                        CreatedOn  => CurrentDate(),
                     }
                 );
                 $numberofdays += 1;
@@ -182,6 +210,31 @@ sub leaverequesthandler : Local
             AvailablePersonalLeaves => $apl,
         }
     );
+
+
+
+
+
+	my @EmpManager = $c->model('Leave::EmployeeManager')->search({EmployeeId => $employeeid});
+	my $ManagerId;
+	foreach (@EmpManager) {
+		$ManagerId = $_->ManagerEmployeeId;
+	}
+
+	my @ManagerDetail = $c->model('Leave::Employee')->search({EmployeeId => $ManagerId});
+	foreach (@ManagerDetail) {
+		$ManagerEmailId = $_->Email;
+		$ManagerName = $_->FirstName;
+	}
+
+	my $esubject = "Leave request login to ExcelLeave System !!";
+	my $content="Hai ".$ManagerName.",\n\n\t".$user." have applied for leave From ".$start." To ".$end."\n\tWith reason : ".$c->req->params->{message}."\n\nThank You,\n..................\nExcelLeave System,\nExceleron Software (India).";
+
+	ExcelLeaveMailing('ExcelLeave@exceleron.com',$ManagerEmailId,$esubject,$content);
+
+
+
+
     $c->forward('View::JSON');
 }
 
@@ -191,7 +244,7 @@ sub home : Local
     my $employeeid   = 1;
     my @leavelist    = $c->model('Leave::LeaveRequest')->search(
         {
-            EmployeeId => $employeeid,
+            		EmployeeId => $employeeid,
         },
         {
             rows     => 6,
@@ -211,27 +264,51 @@ sub home : Local
     $c->forward('View::TT');
 }
 
+
 sub changepassword : Local
 {
+	my ($self, $c) = @_;
+	my $employeeid = 1;
+	my $currentpassword = '0cd1bcf0d7e096cc31006530c2023833';
+	my $user;
+	my $myencryptedpassword = EncryptPassword($c->req->params->{newpassword});
+	if ($c->req->params->{status} eq "new")
+	{
+		$user = $c->model('Leave::Employee')->search({Token => $c->req->params->{token}});
+		$user->update({
+				Status 		=> 'Active',
+				Password	=>	$myencryptedpassword,
+				UpdatedBy	=> 	$employeeid,
+				UpdatedOn	=> CurrentDate(),
+			});
+		$c->stash->{PasswordStatus} = "Success";
+	}
+	else
+	{
+		$user = $c->model('Leave::Employee')->search({EmployeeId => $employeeid});
+		my $encryptedoldpassword = EncryptPassword($c->req->params->{oldpassword});
+		print Dumper $encryptedoldpassword;
 
-    my ($self, $c) = @_;
-    my $employeeid = 1;
-    my $user;
-    if ($c->req->params->{status} eq "new") {
-        $user = $c->model('Leave::Employee')->search({Token => $c->req->params->{token}});
-        $user->update({Status => 'Active'});
-    }
-    else {
-        $user = $c->model('Leave::Employee')->search({EmployeeId => $employeeid});
-    }
-    my $data = $c->req->params->{newpassword};
-    my $ctx  = Digest::MD5->new;
-    $ctx->add($data);
-    my $mypassword = $ctx->hexdigest;
-    my $tokencheck = $user->update({Password => $mypassword});
-    $c->stash->{PasswordStatus} = "Success";
-    $c->forward('View::JSON');
+		if($encryptedoldpassword eq $currentpassword)
+		{
+			my $tokencheck = $user->update({
+					Password => $myencryptedpassword,
+					UpdatedBy	=> 	$employeeid,
+					UpdatedOn	=> CurrentDate(),
+				});
+			$c->stash->{PasswordStatus} = "Success";
+		}
+		else
+		{
+			$c->stash->{PasswordStatus} = "fail";
+		}
+	}
+	$c->forward('View::JSON');
 }
+
+
+
+
 
 sub updatedetails : Local
 {
@@ -267,9 +344,7 @@ sub newemployee : Local
 {
     my ($self, $c) = @_;
     my $employeeid = 1;
-
-    my $current_date = DateTime->now(time_zone => 'Asia/Kolkata');
-    my $CreatedOn = $current_date->ymd('-');
+	my $email='dharma@exceleron.com';
 
     my $Token = Session::Token->new->get;
     print Dumper $Token;
@@ -302,11 +377,17 @@ sub newemployee : Local
             Password      => $EncryptedPassword,
             Token         => $Token,
             CreatedBy     => $employeeid,
-            CreatedOn     => $CreatedOn,
+            CreatedOn     => CurrentDate(),
 
         }
     );
-    my @totalleaves = $c->model('Leave::SystemConfig')->search({ConfigKey => 'TotalPersonalLeaves'});
+  
+	my $esubject = "Activate yourself to ExcelLeave System !!";
+ 	my $content="Hai ".$c->req->params->{fname}.",\n\n\tClick on following link to activate your account in ExcelLeave System.\n\n\tlogin/".$Token."\n\nThank You,\n..................\nExcelLeave System,\nExceleron Software (India).";
+
+  ExcelLeaveMailing($email,$c->req->params->{email},$esubject,$content);
+
+	my @totalleaves = $c->model('Leave::SystemConfig')->search({ConfigKey => 'TotalPersonalLeaves'});
     foreach my $var (@totalleaves) {
         $c->stash->{TotalPersonalLeaves} = $var->ConfigValue;
     }
@@ -326,9 +407,9 @@ sub newemployee : Local
                 EmployeeId              => $_->EmployeeId,
                 AvailablePersonalLeaves => $pl,
                 UpdatedBy               => $employeeid,
-                UpdatedOn               => $CreatedOn,
+                UpdatedOn               => CurrentDate(),
                 CreatedBy               => $employeeid,
-                CreatedOn               => $CreatedOn,
+                CreatedOn               => CurrentDate(),
             }
         );
     }
@@ -398,9 +479,6 @@ sub employeeupdate : Local
     my @roleid = $c->model('Leave::Role')->search({RoleName => $c->req->params->{role}});
     my $id;
 
-    my $current_date = DateTime->now(time_zone => 'Asia/Kolkata');
-    my $requestdate = $current_date->ymd('-');
-
     foreach my $var (@roleid) {
         $id = $var->RoleId;
     }
@@ -413,7 +491,7 @@ sub employeeupdate : Local
             RoleId        => $id,
             Status        => $c->req->params->{status},
             UpdatedBy     => $employeeid,
-            UpdatedOn     => $requestdate,
+            UpdatedOn     => CurrentDate(),
         }
     );
     $c->forward('View::JSON');
@@ -465,8 +543,6 @@ sub leavestatus : Local
 	my $count = 1;
 	my $numdays=0;
 	my $employeeid=1;
-	my $current_date = DateTime->now(time_zone => 'Asia/Kolkata');
-    my $requestdate  = $current_date->ymd();
 
 	if($c->req->params->{"cancelrequest[]"})
 	{
@@ -479,7 +555,7 @@ sub leavestatus : Local
 				   $leave->update({
 									LeaveStatus => 'Cancelled',
 									UpdatedBy	=> $employeeid,
-									UpdatedOn	=> $requestdate,
+									UpdatedOn	=> CurrentDate(),
 								});
 			}
 		}
@@ -490,7 +566,7 @@ sub leavestatus : Local
 			$leave->update({
 					LeaveStatus => 'Cancelled',
 					UpdatedBy	=> $employeeid,
-					UpdatedOn	=> $requestdate,
+					UpdatedOn	=> CurrentDate(),
 				});
 		}
 
@@ -511,14 +587,25 @@ sub leavestatus : Local
 		$leavesleft->update({
 			AvailablePersonalLeaves => $numberofleaves,
 			UpdatedBy				=> $employeeid,
-			UpdatedOn				=> $requestdate, 
+			UpdatedOn				=> CurrentDate(), 
 			});	
 
 		$c->forward('View::JSON');
 	}
 	else
 	{
-		my @batchcollection = $c->model('Leave::LeaveRequestBatch')->search({});
+		my @batchcollection = $c->model('Leave::LeaveRequestBatch')->search({
+			'leave_requests.EmployeeId' => $employeeid,
+			},
+			{
+				join => 'leave_requests',
+				columns => [qw/me.BatchId me.Message me.FromDate me.ToDate/],
+				'+select' => 'leave_requests.EmployeeId',
+				'+as' => 'EmployeeId BatchId Message FromDate ToDate',
+				distinct => 1,
+				order_by => {-desc=>'me.FromDate'},
+			}
+		);
 		push(
 			@{$c->stash->{batchcollection}},
 			{
@@ -533,6 +620,7 @@ sub leavestatus : Local
 		$c->forward('View::TT');
 	}
 }
+
 sub viewrequest : Local
 {
     my ($self, $c) = @_;
@@ -548,6 +636,7 @@ sub viewrequest : Local
 				join => ['batch','employee'],
 				'+select' =>['employee.FirstName','employee.LastName','batch.Message'],
 				'+as' =>['FirstName','LastName','Message'],
+				order_by => 'LeaveDate',
 			}
 			);
 		push(
@@ -571,6 +660,7 @@ sub viewrequest : Local
 				-and =>[
 						'me.EmployeeId'=>$employeeid,
 						'me.UpdatedBy' =>{'!=',$employeeid},
+						'me.LeaveStatus' =>{'!=','Cancelled'},
 					],
 			},
 			{
@@ -595,30 +685,27 @@ sub viewrequest : Local
 				LastName	=> $_->get_column('LastName'),
 			}
 		) foreach @batchcollection;
-    	$c->forward('View::TT');
+    
+		$c->forward('View::TT');
 	}
+
 }
 
 sub requestview:Local
 {
 	my($self,$c)=@_;
-
-
-	my $current_date = DateTime->now(time_zone => 'Asia/Kolkata');
-    my $requestdate  = $current_date->ymd();
 	my $employeeid	=1;
-
+	my $leaves=0;
 	if(ref($c->req->params->{"acceptreq[]"}) eq 'ARRAY')
 	{
 		foreach(@{$c->req->params->{"acceptreq[]"}})
 		{
-			print "hello ARRAY acceptreq\n";
 			my $updateleave = $c->model('Leave::LeaveRequest')->search({LeaveId=>$_});
 			$updateleave->update(
 				{
 					LeaveStatus => 'Approved',
 					UpdatedBy 	=> $employeeid,
-					UpdatedOn	=> $requestdate,
+					UpdatedOn	=> CurrentDate(),
 				}
 			);
 		}
@@ -626,13 +713,12 @@ sub requestview:Local
 	else
 	{
 		
-			print "hello Simple acceptreq\n";
 			my $updateleave = $c->model('Leave::LeaveRequest')->search({LeaveId=>$c->req->params->{"acceptreq[]"}});
 			$updateleave->update(
 				{
 					LeaveStatus => 'Approved',
 					UpdatedBy 	=> $employeeid,
-					UpdatedOn	=> $requestdate,
+					UpdatedOn	=> CurrentDate(),
 				}
 			);
 	}
@@ -641,30 +727,79 @@ sub requestview:Local
 	{
 		foreach(@{$c->req->params->{"denyreq[]"}})
 		{
+			$leaves++;
 			my $updateleave = $c->model('Leave::LeaveRequest')->search({LeaveId=>$_});
 			$updateleave->update(
 				{
 					LeaveStatus => 'Denied',
 					UpdatedBy 	=> $employeeid,
-					UpdatedOn	=> $requestdate,
+					UpdatedOn	=> CurrentDate(),
 				}
 			);
 		}
 	}
 	else
 	{
-			my $updateleave = $c->model('Leave::LeaveRequest')->search({LeaveId=>$c->req->params->{"denyreq[]"}});
-			$updateleave->update(
-				{
-					LeaveStatus => 'Denied',
-					UpdatedBy 	=> $employeeid,
-					UpdatedOn	=> $requestdate,
-				}
-			);
+		$leaves++;
+		my $updateleave = $c->model('Leave::LeaveRequest')->search({LeaveId=>$c->req->params->{"denyreq[]"}});
+		$updateleave->update(
+			{
+				LeaveStatus => 'Denied',
+				UpdatedBy 	=> $employeeid,
+				UpdatedOn	=> CurrentDate(),
+			}
+		);
 	}
 	
+	my $leavesleft=$c->model('Leave::EmployeeLeave')->search({
+				EmployeeId => $employeeid
+			},
+			{
+				columns => [qw/AvailablePersonalLeaves/],
+			}
+		);
+		
+		my $mypl = $leavesleft->next;
+		my $availablepl = $mypl->AvailablePersonalLeaves;
+			$availablepl += $leaves;
+		$leavesleft->update({
+			AvailablePersonalLeaves => $availablepl,
+			UpdatedBy => $employeeid,
+			UpdatedOn => CurrentDate(),
+			});
 	$c->stash->{response}='Success';
 	$c->forward('View::JSON');
+}
+
+sub LeaveStatusHandle:Local
+{
+	my($self,$c)=@_;
+	my $employeeid	=1;
+	print "Start@@";
+	my @leavecollection = $c->model('Leave::LeaveRequest')->search(
+		{
+			'me.BatchId' =>$c->req->params->{batchid},
+		},
+		{
+			join => ['batch','employee'],
+			'+select' =>['employee.FirstName','employee.LastName','batch.Message'],
+			'+as' =>['FirstName','LastName','Message'],
+		}
+	);
+	push(
+		@{$c->stash->{leavecollection}},
+		{
+			LeaveId     => $_->LeaveId,
+			FirstName   => $_->get_column('FirstName'),
+			LastName    => $_->get_column('LastName'),
+			LeaveDate   => $_->LeaveDate,
+			LeaveStatus => $_->LeaveStatus,
+			Message     => $_->get_column('Message'),
+		}
+	) foreach @leavecollection;
+	print "End@@@";
+	$c->forward('View::JSON');
+
 }
 =encoding utf8
 =encoding utf8
