@@ -28,11 +28,12 @@ The root page (/)
 
 =cut
 
-sub index :Path :Args(0) {
-    my ( $self, $c ) = @_;
+sub index : Path : Args(0)
+{
+    my ($self, $c) = @_;
 
     # Hello World
-    $c->response->body( $c->welcome_message );
+    $c->response->body($c->welcome_message);
 }
 
 =head2 default
@@ -41,17 +42,18 @@ Standard 404 error page
 
 =cut
 
-sub default :Path {
-    my ( $self, $c ) = @_;
-    $c->response->body( 'Page not found' );
+sub default : Path
+{
+    my ($self, $c) = @_;
+    $c->response->body('Page not found');
     $c->response->status(404);
 }
 
-sub index:Path:Args(0)
+sub index : Path : Args(0)
 {
-	my($self,$c)=@_;
-	$c->stash->{template}='login/index.tt';
-	$c->forward('View::TT');
+    my ($self, $c) = @_;
+    $c->stash->{template} = 'login/index.tt';
+    $c->forward('View::TT');
 }
 
 =head2 end
@@ -60,7 +62,7 @@ Attempt to render a view, if needed.
 
 =cut
 
-sub end : ActionClass('RenderView') {}
+sub end : ActionClass('RenderView') { }
 
 =head1 AUTHOR
 

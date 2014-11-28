@@ -21,13 +21,12 @@ Catalyst Controller.
 
 =cut
 
-sub index : Path : Args(0)
-{
-    my ($self, $c) = @_;
-     $c->stash->{error} = 1;
-    if (defined $c->request->params->{password}) {
+sub index : Path : Args(0) {
+    my ( $self, $c ) = @_;
+
+    if ( defined $c->request->params->{password} ) {
         my $ctx = Digest::MD5->new;
-        $ctx->add($c->request->params->{password});
+        $ctx->add( $c->request->params->{password} );
         my $Password = $ctx->hexdigest;
 
         if (
@@ -40,7 +39,8 @@ sub index : Path : Args(0)
             )
           )
         {
-            $c->res->redirect($c->uri_for_action('dashboard/index'));
+            $c->res->redirect( $c->uri_for_action('dashboard/index') );
+            $c->stash->{error} = 1;
         }
     }
 
@@ -51,14 +51,14 @@ sub index : Path : Args(0)
 
 }
 
-sub tokencheck : Path : Args(1)
-{
-    my ($self, $c, $token) = @_;
+sub tokencheck : Path : Args(1) {
+    my ( $self, $c, $token ) = @_;
     $c->stash->{token} = $token;
-    my $user = $c->model('Leave::Employee')->search({-and => [Token => $token, Status => "Inactive"]});
+    my $user = $c->model('Leave::Employee')
+      ->search( { -and => [ Token => $token, Status => "Inactive" ] } );
     print "\n\nnumber of Records is :", $user->count, "\n";
     $c->stash->{tokenvalidate} = "valid";
-    if ($user->count == 0) {
+    if ( $user->count == 0 ) {
         $c->stash->{tokenvalidate} = "invalid";
     }
     $c->forward('View::TT');

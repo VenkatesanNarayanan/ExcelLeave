@@ -1,0 +1,70 @@
+        #content {
+            min-height: 550px;
+            text-align: left;
+            padding: 20px;
+        }
+        h1 {
+            padding: 20px 10px 20px 10px;
+        }
+        h2 {
+            padding-left: 0px !important;
+            color: #428bca;
+        }
+        #header {
+            background-color: #CA410B !important;
+        }
+        .large {
+            font-size: 22px;
+        }
+        .orange {
+            color: orange;
+        }
+        .italic {
+            font-style: italic
+        }
+        .textmiddle {
+            vertical-align: middle;
+        }
+        .padout {
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+        .rounded-corners {
+            -moz-border-radius: 40px;
+            -webkit-border-radius: 40px;
+            -khtml-border-radius: 40px;
+            border-radius: 40px;
+        }
+        .rounded-corners-top {
+            -moz-border-top-radius: 40px;
+            -webkit-border-radius: 40px;
+            -khtml-border-radius: 40px;
+            border-radius: 40px;
+        }
+        .right {
+            float: right;
+        }
+        .scrolldown {
+            padding-left: 20px;
+            color: #EDECE8;
+            font-size: 40px;
+            font-weight: bold;
+            vertical-align: middle;
+            text-shadow: #6374AB 2px 2px 2px;
+        }
+        .contentblock {
+            margin: 0px 20px;
+        }
+        .results {
+            border: 1px solid blue;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 50px;
+        }
+        .blue-bold {
+            font-size: 18px;
+            font-weight: bold;
+            color: blue;
+        }
+        /* example styles for validation form demo */
+        

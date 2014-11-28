@@ -1,199 +1,80 @@
 <div class="jumbotron">
 
-	<table class="display" cellspacing="0" width="100%" id="LeaveRequest" style="width:100%">
+    <table class="display" cellspacing="0" width="100%" id="LeaveRequest" style="width:100%">
 
-			<thead>
-				<tr>
-					<td>Sl.no</td>			
-					<td>Name</td>			
-					<td>From date</td>			
-					<td>To date</td>
-					<td>Message</td>
-					<td></td>
-				</tr>
-				</thead>
-				<tbody>
-				[% FOREACH request IN requests %]	
-				<tr class="request_call" id='[% request.Counter %]'>
-				<td>
-					[% request.Counter %]
-				</td>
-				<td width="140">
-					[% request.FirstName %] &nbsp; [% request.LastName %]
-				</td>
-				<td width="100">
-					[% request.FromDate %]
-				</td>
-				<td width="100">
-					[% request.ToDate %]
-				</td>
-				<td width="200">
-					[% request.Message %]
-				</td>
-				<td>
-					<button type="button" class="btn btn-info view_request" id='[%request.BatchId%]' name='[% request.BatchId %]'><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;View</button>
-				</td>
-			</tr>
-			[%END%]
-		
-		</tbody>
-	</table>
+        <thead>
+            <tr>
+                <td>Sl.no</td>
+                <td>Name</td>
+                <td>From date</td>
+                <td>To date</td>
+                <td>Message</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            [% FOREACH request IN requests %]
+            <tr class="request_call" id='[% request.Counter %]'>
+                <td>
+                    [% request.Counter %]
+                </td>
+                <td width="140">
+                    [% request.FirstName %] &nbsp;
+                    [% request.LastName %]
+                </td>
+                <td width="100">
+                    [% request.FromDate %]
+                </td>
+                <td width="100">
+                    [% request.ToDate %]
+                </td>
+                <td width="200">
+                    [% request.Message %]
+                </td>
+                <td>
+                    <button type="button" class="btn btn-info view_request" id='[%request.BatchId%]' name='[% request.BatchId %]'><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;View</button>
+                </td>
+            </tr>
+            [%END%]
+
+        </tbody>
+    </table>
 
 </div>
 
 
 <div class="modal fade" id="viewreq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
-	<div class="modal-dialog">
-		<div class="modal-content" style="width: 466px;margin: auto;">
-			<div class="modal-header" style="color:#428bca">
-				<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				<label>Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;</label><label class="modal-title" id="Empview"></label><br>
-				<label>Message : &nbsp;</label><label class="modal-title" id="Empmsg"></label><br>
-			</div>
-			<div class="modal-body">
-				<table class="table">
-					<tr class="list-group-item-info">
-						<th class="leavelist">Date</th>
-						<th class="leavelist">Status</th>
-						<th class="leavelist">Select</th>
-					</tr>
-					<tbody id="viewreqbody"></tbody>
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 466px;margin: auto;">
+            <div class="modal-header" style="color:#428bca">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <label>Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;</label>
+                <label class="modal-title" id="Empview"></label>
+                <br>
+                <label>Message : &nbsp;</label>
+                <label class="modal-title" id="Empmsg"></label>
+                <br>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <tr class="list-group-item-info">
+                        <th class="leavelist">Date</th>
+                        <th class="leavelist">Status</th>
+                        <th class="leavelist">Select</th>
+                    </tr>
+                    <tbody id="viewreqbody"></tbody>
 
-				</table>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-info sendreq" id="acceptreq" style="background-color:#428bca" data-dismiss="modal"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Accept</button>
-				<button type="button" class="btn btn-warning sendreq" id="denyreq" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Deny</button>
-			</div>
-		</div>
-	</div>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info sendreq" id="acceptreq" style="background-color:#428bca" data-dismiss="modal"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Accept</button>
+                <button type="button" class="btn btn-warning sendreq" id="denyreq" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Deny</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<script>
-	$(function () {
-		  $('[data-toggle="tooltip"]').tooltip()
-	  })
-	var oTable=$('#LeaveRequest').dataTable({
-		"iDisplayLength": 5,
-	});
-	var viewbtnid;
-	$('#LeaveRequest').delegate('.view_request', 'click', function() {
-		viewbtnid=$(this).attr('id');
-		leavecall();
-		});
 
-		var checked=0;
-		var unchecked=0;
-		function leavecall(){
-			$('#denyreq').prop('disabled',false);
-			checked=0;
-			unchecked=0;
-			var e = window.event,
-			       btn = e.target || e.srcElement;
-		var bid=btn.name;
-		$.ajax({
-			url : 'dashboard/viewrequest',
-			type : 'POST',
-			data : {
-					batchid:bid,
-				},
-			}).done(function(res){
-			var list = "";
-			$.each(res.leavecollection, function(i,x) {
-				
-				$("#Empview").html(x.FirstName+" "+x.LastName);
-				$("#Empmsg").html(x.Message);
-				if(x.LeaveStatus != 'Cancelled')				
-				{				
-					list += "<tr>";							
-						list += "<td class="+"leavelist"+">" + x.LeaveDate+ "</td>";
-						list += "<td class="+"leavelist"+">" + x.LeaveStatus + "</td>";
-						list += "<td class="+"leavelist"+"><input type="+"checkbox"+" class="+"lcheck"+" id="+x.LeaveId+" onchange="+"callcheck();"+" checked></td>";
-					list += "</tr>";
-				}
-		});
-			$("#viewreqbody").html();
-			$("#viewreqbody").html(list);
-		}); 
-		$("#viewreq").modal({"backdrop": "static"});
-	}
-	function callcheck(){
-		var even= window.event,btn= even.target||even.srcElement;
-		var val1=btn.id;
-		if($("#"+val1).is(':checked'))
-		{
-			checked++;
-		}
-		else
-		{
-			unchecked++;
-		}
-
-		if(checked == unchecked)
-		{
-			$('#denyreq').prop('disabled',false);
-		}
-		else
-		{
-			$('#denyreq').prop('disabled',true);
-		}
-	}
-	var requestrow;
-	$('.request_call').click(function(){
-			requestrow=$(this).attr('id');
-	});
-	$('.sendreq').click(function(){
-		var acceptreq=[];
-		var denyreq=[];
-		var fillarr= $(this).attr('id');
-		var revfillarray;
-		if(fillarr == 'acceptreq')
-		{
-			revfillarray='denyreq';
-		}
-		else
-		{
-			revfillarray='acceptreq';
-		}
-		
-	
-		$(".lcheck").each(function()
-		{
-			if($("#"+$(this).attr('id')).is(':checked'))
-			{
-				if(fillarr == 'acceptreq')
-				{
-					acceptreq.push($(this).attr('id'));
-				}
-				else
-				{
-					denyreq.push($(this).attr('id'));
-				}
-			}
-			else
-			{
-				if(revfillarray == 'acceptreq')
-				{
-					acceptreq.push($(this).attr('id'));
-				}
-				else
-				{
-					denyreq.push($(this).attr('id'));
-				}
-			}
-
-		});
-			$.ajax({
-				url:'dashboard/requestview',
-				type: 'POST',
-				data:{
-					acceptreq : acceptreq,
-					denyreq : denyreq,
-				},
-				}).done(function(){
-				oTable.fnDeleteRow('#'+requestrow);
-			});
-	});
-</script>
+<script type="text/javascript" src="assets/newjs/viewrequest.js"></script>
