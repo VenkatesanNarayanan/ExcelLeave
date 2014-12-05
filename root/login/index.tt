@@ -1,15 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
-  < html >
+<html>
 
-  <head> < title > ExcelLeave </title> < link rel = "shortcut icon" href =
-  "assets/images/icon.png" > <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"> < /script>
-    <script type="text/ javascript " src=" assets / jquery . validate . min . js "></script>
-    <script type=" text / javascript " src=" assets / newjs / login . js "></script>
-    <link rel=" stylesheet " type=" text / css " href=" assets / login . css ">
+<head>
+    <title>ExcelLeave</title>
+    <link rel="shortcut icon" href="assets/images/icon.png">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/newjs/login.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/login.css">
     <style>
         #register-form {
-            background: url(" assets /images/ form-fieldset . gif ") repeat-x scroll left bottom #F8FDEF;
+            background: url("assets/images/form-fieldset.gif") repeat-x scroll left bottom #F8FDEF;
             border: 1px solid #DFDCDC;
             border-radius: 15px 15px 15px 15px;
             display: inline-block;
@@ -20,7 +22,7 @@
             width: 400px;
         }
         #register-form .fieldgroup {
-            background: url(" assets /images/ form-divider . gif ") repeat-x scroll left top transparent;
+            background: url("assets/images/form-divider.gif") repeat-x scroll left top transparent;
             display: inline-block;
             padding: 8px 10px;
             width: 340px;
@@ -55,51 +57,63 @@
 
 <body>
 
-    <div id=" page-wrap ">
-        <div id=" content ">
-            <form action=" / login " method=" post " id=" register-form " novalidate=" novalidate ">
+    <div id="page-wrap">
+        <div id="content">
+            <form action="/login" method="post" id="register-form" novalidate="novalidate">
                 <h2>User login</h2>
-                <div id=" form-content ">
+                <div id="form-content">
                     <fieldset>
-                        <div class=" fieldgroup ">
-                            <label for=" email ">Email</label>
-                            <input type=" text " class=" input-block-level " id=" email " name=" email ">
+                        <div class="fieldgroup">
+                            <label for="email">Email</label>
+                            <input type="text" class="input-block-level" id="email" name="email">
 
                         </div>
-                        <div class=" fieldgroup ">
-                            <label for=" password ">Password</label>
-                            <input type=" password " class=" input-block-level " id=" password " name=" password ">
+                        <div class="fieldgroup">
+                            <label for="password">Password</label>
+                            <input type="password" class="input-block-level" id="password" name="password">
                         </div>
-                        <div class=" fieldgroup ">
-                            <input type=" submit " value=" Sign in " style=" margin-left : 50 px;
-height: auto " class=" btn btn-large btn-primary submit ">
+                        <div class="fieldgroup">
+                            <input type="submit" value="Sign in" style="margin-left:50px;height:auto" class="btn btn-large btn-primary submit">
                         </div>
                     </fieldset>
                 </div>
-                <div class=" fieldgroup ">
-                    <a href="    #" style="float:left" data-toggle="modal" data-target="#myModal">Forgot password</a>
-  [
-    %IF error %] < p style = "float:right;color:red;" id =
-      "error" > <b> Invalid user details </b> < /p>
+                <div class="fieldgroup">
+                    <a href="#" style="float:left" data-toggle="modal" data-target="#myModal">Forgot password</a>
+                    [% IF error %]
+                    <p style="float:right;color:red;" id="error"><b>Invalid user details</b>
+                    </p>
                     [% END %]
-                </div > </form> < /div>
-    </div >
+                </div>
+            </form>
+        </div>
+    </div>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      < div class = "modal-dialog" > <div class="modal-content" style="width:450px;margin:auto;"> < div class =
-      "modal-header" > <button type="button" class="close" data-dismiss="modal"> < span aria-hidden = "true" > &times;
-      </span> < span class = "sr-only" > Close </span> < /button>
-                    <h4 class="modal-title" id="myModalLabel">Forgot Password</ h4 > </div> < div class =
-      "modal-body" > <form role="form" id="ForgotPassword" style="width:350px;margin:auto"> < div class =
-      "form-group" > <label> Enter your Email-id : </label> < input type = "text" class = "form-control" id =
-      "email" name = "email" > </div> < div class =
-      "form-group" > <button type="submit" class="btn btn-primary"> Save changes </button> < p style =
-      "color:red;float:right;display:none" id =
-      "fpw" > <b> < br > Invalid Email </b> < /p>
-                        </div > </form> < /div>
-            </div > </div> < /div>
-    <script src="assets/ bootstrap . min . js "></script>
-    <link href=" assets / bootstrap / dist / css / bootstrap . min . css " rel=" stylesheet ">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:450px;margin:auto;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Forgot Password</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="ForgotPassword" style="width:350px;margin:auto">
+                        <div class="form-group">
+                            <label>Enter your Email-id :</label>
+                            <input type="text" class="form-control" id="email" name="email">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <p style="color:red;float:right;display:none" id="fpw"><b><br>Invalid Email</b>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/bootstrap.min.js"></script>
+    <link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </body>
 

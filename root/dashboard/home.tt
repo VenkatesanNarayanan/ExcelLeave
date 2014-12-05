@@ -1,9 +1,10 @@
-<script src='assets/newjs/fullcalendar.min.js'> < /script>
+<script src='assets/newjs/fullcalendar.min.js'></script>
 <script>
     $('#calendar').fullCalendar({
         editable: true,
         eventLimit: true,
         eventSources: [% messages %],
     });
-</script > <div id="calendar"> < /div>
+</script>
+<div id="calendar"></div>
 

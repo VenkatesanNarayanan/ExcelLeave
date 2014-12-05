@@ -1,12 +1,19 @@
 <div class="jumbotron">
 
-  < table class = "display" cellspacing = "0" width = "100%" id = "LeaveStatus" style = "width:100%" >
+    <table class="display" cellspacing="0" width="100%" id="LeaveStatus" style="width:100%">
 
-  <thead> < tr>
+        <thead>
+            <tr>
                 <td>Sl.no</td>
-  < td > From date </td> < td > To date </td> < td > Message </td> < td > </td> < /tr>
-        </ thead > <tbody> [
-    %FOREACH batch IN batchcollection %] < tr class="request_call" id='[% batch . Count %] '>
+                <td>From date</td>
+                <td>To date</td>
+                <td>Message</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            [% FOREACH batch IN batchcollection %]
+            <tr class="request_call" id='[% batch.Count %]'>
                 <td>
                     [% batch.Count %]
                 </td>
@@ -20,10 +27,7 @@
                     [% batch.Message %]
                 </td>
                 <td>
-                    <button type="button" class="btn btn-info view_request" id=' [
-        %batch . BatchId %] ' name=' [
-            %batch
-              . BatchId %] '><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;View</button>
+                    <button type="button" class="btn btn-info view_request" id='[%batch.BatchId%]' name='[% batch.BatchId %]'><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;View</button>
                 </td>
             </tr>
             [%END%]
