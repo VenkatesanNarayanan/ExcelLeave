@@ -480,9 +480,18 @@ sub newemployee : Local
     my @employeelist = $c->model('Leave::Employee')->search({Email => $c->req->params->{email}});
 
     foreach (@employeelist) {
+	my $pl;
         my @doj = split("-", $_->DateOfJoining);
-        my $pl = $c->stash->{TotalPersonalLeaves} / 12;
-        $pl = int($pl * (12 - $doj[1]));
+	my $current_year = DateTime->now(time_zone => 'Asia/Kolkata')->year();
+	if ($doj[0] < $current_year)
+	{
+		$pl = 18;
+	}
+	else
+	{
+        	$pl = $c->stash->{TotalPersonalLeaves} / 12;
+        	$pl = int($pl * (12 - $doj[1]));
+	}
 
         $c->model('Leave::EmployeeLeave')->create(
             {
