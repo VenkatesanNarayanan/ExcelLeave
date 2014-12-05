@@ -10,13 +10,15 @@
 		var checked = 0;
 		var unchecked = 0;
 		var eid;
+		var bid;
+
 		function leavecall() {
 		    $('#denyreq').prop('disabled', false);
 		    checked = 0;
 		    unchecked = 0;
 		    var e = window.event,
 		        btn = e.target || e.srcElement;
-		    var bid = btn.name;
+		    bid = btn.name;
 		    $.ajax({
 		        url: 'dashboard/viewrequest',
 		        type: 'POST',
@@ -26,7 +28,7 @@
 		    }).done(function(res) {
 		        var list = "";
 		        $.each(res.leavecollection, function(i, x) {
-				eid=x.EmployeeId;
+		            eid = x.EmployeeId;
 		            $("#Empview").html(x.FirstName + " " + x.LastName);
 		            $("#Empmsg").html(x.Message);
 		            if (x.LeaveStatus != 'Cancelled') {
@@ -97,9 +99,10 @@
 		        url: 'dashboard/requestview',
 		        type: 'POST',
 		        data: {
-			     employeeid:eid,
+		            employeeid: eid,
 		            acceptreq: acceptreq,
 		            denyreq: denyreq,
+		            batch_id: bid,
 		        },
 		    }).done(function() {
 		        oTable.fnDeleteRow('#' + requestrow);

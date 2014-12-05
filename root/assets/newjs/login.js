@@ -44,25 +44,71 @@
 
                         });
 
+
+
+
+
+
+
+                        $("#ForgotPassword").validate({
+                            rules: {
+                                email: {
+                                    required: true,
+                                    email: true
+                                },
+
+                            },
+
+                            messages: {
+
+                                email: "Please enter a valid email address",
+
+
+                            },
+
+                            submitHandler: function(form) {
+                                $.ajax({
+                                    url: 'login/forgotpassword',
+                                    type: 'POST',
+                                    data: {
+                                        email: $('.form-control').val(),
+                                    }
+                                }).done(function(data) {
+                                    if (data.message == 'Success') {
+                                        $('#myModal').modal('hide');
+                                        $('.modal-backdrop').remove();
+                                        $('#ForgotPassword')[0].reset();
+
+                                    } else {
+                                        $('#fpw').show();
+                                    }
+                                });
+                            }
+
+                        });
+
+
+
+
+
+
+
+
                     }
 
                 }
 
-                $(D).ready(function($) {
-                    function DisableBackButton() {
-                        window.history.forward()
-                    }
-                    DisableBackButton();
-                    window.onload = DisableBackButton;
-                    window.onpageshow = function(evt) {
-                        if (evt.persisted) DisableBackButton()
-                    }
-                    window.onunload = function() {
-                        void(0)
-                    }
 
+
+
+
+                $(D).ready(function($) {
                     $("input").focus(function() {
                         $('#error').hide();
+                    });
+
+                    $("input").focus(function() {
+                        $('#fpw').hide();
                     });
                     validator.call.setupFormValidation();
 

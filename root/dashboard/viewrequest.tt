@@ -1,20 +1,12 @@
 <div class="jumbotron">
 
-    <table class="display" cellspacing="0" width="100%" id="LeaveRequest" style="width:100%">
+  < table class = "display" cellspacing = "0" width = "100%" id = "LeaveRequest" style = "width:100%" >
 
-        <thead>
-            <tr>
+  <thead> < tr>
                 <td>Sl.no</td>
-                <td>Name</td>
-                <td>From date</td>
-                <td>To date</td>
-                <td>Message</td>
-                <td></td>
-            </tr>
-        </thead>
-        <tbody>
-            [% FOREACH request IN requests %]
-            <tr class="request_call" id='[% request.Counter %]'>
+  < td > Name </td> < td > From date </td> < td > To date </td> < td > Message </td> < td > </td> < /tr>
+        </ thead > <tbody> [
+    %FOREACH request IN requests %] < tr class="request_call" id='[% request.Counter %]'>
                 <td>
                     [% request.Counter %]
                 </td>
@@ -32,15 +24,14 @@
                     [% request.Message %]
                 </td>
                 <td>
-                    <button type="button" class="btn btn-info view_request" id='[%request.BatchId%]' name='[% request.BatchId %]'><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;View</button>
-                </td>
-            </tr>
+                    <button type="button" class = "btn btn-info view_request" id = '[%request.BatchId%]' name =
+      '[% request.BatchId %]' > <span class="glyphicon glyphicon-eye-open" aria-hidden="true"> <
+      /span>&nbsp;View</ button > </td> < /tr>
             [%END%]
 
-        </tbody>
-    </table>
+        </ tbody > </table>
 
-</div>
+      < /div>
 
 
 <div class="modal fade" id="viewreq" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
@@ -48,33 +39,24 @@
         <div class="modal-content" style="width: 466px;margin: auto;">
             <div class="modal-header" style="color:#428bca">
                 <button type="button" class="close" data-dismiss="modal">
-                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                </button>
-                <label>Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;</label>
-                <label class="modal-title" id="Empview"></label>
+                    <span aria-hidden="true">&times;</span > <span class="sr-only"> Close </span> < /button>
+                <label>Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;</label >
+      <label class="modal-title" id="Empview"> < /label>
                 <br>
-                <label>Message : &nbsp;</label>
-                <label class="modal-title" id="Empmsg"></label>
+                <label>Message : &nbsp;</label > <label class="modal-title" id="Empmsg"> < /label>
                 <br>
-            </div>
-            <div class="modal-body">
-                <table class="table">
-                    <tr class="list-group-item-info">
-                        <th class="leavelist">Date</th>
-                        <th class="leavelist">Status</th>
-                        <th class="leavelist">Select</th>
-                    </tr>
-                    <tbody id="viewreqbody"></tbody>
+            </div > <div class="modal-body"> < table class = "table" > <tr class="list-group-item-info"> < th class =
+      "leavelist" > Date </th> < th class = "leavelist" > Status </th> < th class =
+      "leavelist" > Select </th> < /tr>
+                    <tbody id="viewreqbody"></ tbody >
 
-                </table>
-            </div>
+      </table> < /div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info sendreq" id="acceptreq" style="background-color:#428bca" data-dismiss="modal"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Accept</button>
-                <button type="button" class="btn btn-warning sendreq" id="denyreq" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;Deny</button>
-            </div>
-        </div>
-    </div>
-</div>
+                <button type="button" class="btn btn-info sendreq" id="acceptreq" style="background-color:#428bca" data-dismiss="modal"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span
+      > &nbsp;
+      Accept </button> < button type = "button" class = "btn btn-warning sendreq" id = "denyreq" data-dismiss =
+      "modal" > <span class="glyphicon glyphicon-remove" aria-hidden="true"> < /span>&nbsp;Deny</ button > </div> <
+      /div>
+    </div > </div>
 
-
-<script type="text/javascript" src="assets/newjs/viewrequest.js"></script>
+      < script type = "text/javascript" src = "assets/newjs/viewrequest.js" > </script>

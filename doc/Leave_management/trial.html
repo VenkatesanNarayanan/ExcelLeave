@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<script>
+			function call()
+			{
+				var date=document.getElementById('date').value;
+				var date2=document.getElementById('date2').value;
+				var day = date.split("-");
+				var d1 = new Date(day[0],day[1],day[2]);
+				var d2 = new Date(2014,03,03);
+				if(d2 > d1)
+				{
+					alert("Less date");
+				}
+				else
+				{
+					alert("greate date");
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<input type="TEXT" id="date"/>
+		<input type="TEXT" id="date2" value='03-03-2014'/>
+		<button onclick="call();">call 03-03-2014</button>
+	</body>
+</html>

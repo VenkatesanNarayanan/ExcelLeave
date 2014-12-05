@@ -84,7 +84,5 @@
             $.ajax({
                 url: 'dashboard/logout',
                 type: 'POST',
-            }).done(function(data) {
-                //$('body').html(data);
             });
         });

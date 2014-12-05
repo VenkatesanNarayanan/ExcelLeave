@@ -28,6 +28,9 @@
             },
             status: {
                 required: true,
+            },
+            manager: {
+                required: true,
             }
 
         },
@@ -46,6 +49,7 @@
         var doj = document.getElementById("doj").value;
         var role = document.getElementById("role").value;
         var status = document.getElementById("status").value;
+        var mid = $('#manager').find('option:selected').attr('id');
 
         $.ajax({
             url: 'dashboard/employeeupdate',
@@ -58,6 +62,7 @@
                 dateofjoining: doj,
                 role: role,
                 status: status,
+                managerid: mid,
             },
         }).done(function(responseText) {
             $.ajax({

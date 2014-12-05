@@ -2,6 +2,7 @@ package ExcelLeave::Controller::Login;
 use Moose;
 use namespace::autoclean;
 use Digest::MD5;
+use Session::Token;
 use Data::Dumper;
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -24,7 +25,7 @@ Catalyst Controller.
 sub index : Path : Args(0)
 {
     my ($self, $c) = @_;
-     $c->stash->{error} = 1;
+    $c->stash->{error} = 1;
     if (defined $c->request->params->{password}) {
         my $ctx = Digest::MD5->new;
         $ctx->add($c->request->params->{password});
@@ -36,6 +37,7 @@ sub index : Path : Args(0)
 
                     "Email"    => $c->request->params->{'email'},
                     "Password" => $Password,
+                    "Status"   => 'Active',
                 }
             )
           )
@@ -48,7 +50,6 @@ sub index : Path : Args(0)
         $c->stash->{error} = 0;
     }
     $c->forward('View::TT');
-
 }
 
 sub tokencheck : Path : Args(1)
@@ -56,12 +57,53 @@ sub tokencheck : Path : Args(1)
     my ($self, $c, $token) = @_;
     $c->stash->{token} = $token;
     my $user = $c->model('Leave::Employee')->search({-and => [Token => $token, Status => "Inactive"]});
-    print "\n\nnumber of Records is :", $user->count, "\n";
     $c->stash->{tokenvalidate} = "valid";
     if ($user->count == 0) {
         $c->stash->{tokenvalidate} = "invalid";
     }
     $c->forward('View::TT');
+}
+
+sub forgotpassword : Local
+{
+    my ($self, $c) = @_;
+    my $Employee = $c->model('Leave::Employee')->search(
+        {Email => $c->req->params->{email}},
+        {
+            columns => [qw/EmployeeId FirstName Email/],
+        }
+    );
+
+    if ($Employee->count == 1) {
+        my $eid        = $Employee->next;
+        my $EmployeeId = $eid->EmployeeId;
+        my $token      = Session::Token->new->get;
+        $Employee->update(
+            {
+                Status    => 'Inactive',
+                Token     => $token,
+                UpdatedBy => $EmployeeId,
+                UpdatedOn => $c->forward('/dashboard/CurrentDate'),
+            }
+        );
+
+        my $esubject = "Activate yourself to ExcelLeave System !!";
+        my $email    = 'ExcelLeave@exceleron.com';
+        my $content  = "Hai "
+          . $eid->FirstName
+          . ",\n\n\tClick on following link to activate your account in ExcelLeave System.\n\n\tlogin/"
+          . $token
+          . "\n\nThank You,\n..................\nExcelLeave System,\nExceleron Software (India).";
+
+        my @args = ($email, $eid->Email, $esubject, $content);
+        $c->stash->{message} = 'Success';
+        $c->forward('/dashboard/ExcelLeaveMailing', \@args);
+    }
+    else {
+        $c->stash->{message} = 'Fail';
+    }
+
+    $c->forward('View::JSON');
 }
 
 =encoding utf8

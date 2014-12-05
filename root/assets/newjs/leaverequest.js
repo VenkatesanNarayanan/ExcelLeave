@@ -1,11 +1,3 @@
-    function leaveupdate() {
-        $.ajax({
-            url: 'dashboard/leavesleft',
-            type: 'POST',
-        }).done(function(res) {
-            $("#leaves_left").html(res.TotalPersonalLeaves);
-        });
-    }
     var year = (new Date).getFullYear();
     $(function() {
         $("#fromdate").datepicker({
@@ -35,13 +27,14 @@
         });
     });
 
-    function LeaveDetails() {
+    $('#leavesubmit').click(function(event) {
 
         var datereg = /^\d{4}[-]\d{2}[-]\d{2}$/;
         var fromdate = document.getElementById("fromdate").value;
         var todate = document.getElementById("todate").value;
         var leavemessage = document.getElementById("leavemessage").value;
         if (datereg.test(fromdate) == true && datereg.test(todate) == true && leavemessage != "") {
+            event.preventDefault();
             $.ajax({
                 url: 'dashboard/leaverequesthandler',
                 type: 'POST',
@@ -52,6 +45,13 @@
                 },
             }).done(function(responseText) {
                 $('#leaveapply')[0].reset();
+                $.ajax({
+                    url: 'dashboard/leavesleft',
+                    type: 'POST',
+                }).done(function(res) {
+                    $("#leaves_left").html(res.TotalPersonalLeaves);
+                });
+
                 if (responseText.lstatus == "Success") {
                     $("#ErrorMessage").html("Leave Request is submitted");
                     $("#leaves_left").html(resposeText.apl);
@@ -61,7 +61,8 @@
             });
 
         } else {
-            var message = ""
+            event.preventDefault();
+            var message = "";
             if (datereg.test(fromdate) == false) {
                 message += "*Invalid from date\n";
             }
@@ -72,5 +73,6 @@
                 message += "*Invalid message\n";
             }
             $("#ErrorMessage").html(message);
+            return false;
         }
-    }
+    });

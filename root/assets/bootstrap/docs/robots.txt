@@ -1,9 +1,6 @@
----
----
+--- ---
 
-# www.robotstxt.org/
+  # www.robotstxt.org/
 
-# Allow crawling of all content
-User-agent: *
-Disallow:
-Sitemap: {{ site.url }}/sitemap.xml
+  # Allow crawling of all content
+  User-agent : *Disallow : Sitemap : {{site . url}} /sitemap.xml

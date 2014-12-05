@@ -9,13 +9,14 @@
 
 	var TotalRows;
 	var CancelledRows;
+	var bid;
 
 	function leavecall() {
 	    TotalRows = 0;
 	    CancelledRows = 0;
 	    var e = window.event,
 	        btn = e.target || e.srcElement;
-	    var bid = btn.name;
+	    bid = btn.name;
 	    $.ajax({
 	        url: 'dashboard/LeaveStatusHandle',
 	        type: 'POST',
@@ -24,21 +25,23 @@
 	        },
 	    }).done(function(res) {
 	        var list = "";
-	        $.each(res.leavecollection, function(i, x) {
-	            $("#Empview").html(x.FirstName + " " + x.LastName);
-	            $("#Empmsg").html(x.Message);
-	            TotalRows++;
-	            list += "<tr>";
-	            list += "<td class=" + "leavelist" + ">" + x.LeaveDate + "</td>";
-	            list += "<td class=" + "leavelist" + ">" + x.LeaveStatus + "</td>";
-	            if (x.LeaveStatus == 'Cancelled' || x.LeaveStatus == 'Denied') {
-	                list += "<td class=" + "leavelist" + "><input disabled type=" + "checkbox" + " class=" + "lcheck" + " id=" + x.LeaveId + " onchange=" + "callcheck();" + "></td>";
-	                CancelledRows++;
-	            } else {
-	                list += "<td class=" + "leavelist" + "><input type=" + "checkbox" + " class=" + "lcheck" + " id=" + x.LeaveId + " onchange=" + "callcheck();" + " checked></td>";
-	            }
-	            list += "</tr>";
-	        });
+	        if (res) {
+	            $.each(res.leavecollection, function(i, x) {
+	                $("#Empview").html(x.FirstName + " " + x.LastName);
+	                $("#Empmsg").html(x.Message);
+	                TotalRows++;
+	                list += "<tr>";
+	                list += "<td class=" + "leavelist" + ">" + x.LeaveDate + "</td>";
+	                list += "<td class=" + "leavelist" + ">" + x.LeaveStatus + "</td>";
+	                if (x.LeaveStatus == 'Cancelled' || x.LeaveStatus == 'Denied' || x.Status < 0) {
+	                    list += "<td class=" + "leavelist" + "><input disabled type=" + "checkbox" + " class=" + "lcheck" + " id=" + x.LeaveId + " onchange=" + "callcheck();" + "></td>";
+	                    CancelledRows++;
+	                } else {
+	                    list += "<td class=" + "leavelist" + "><input type=" + "checkbox" + " class=" + "lcheck" + " id=" + x.LeaveId + " onchange=" + "callcheck();" + " checked></td>";
+	                }
+	                list += "</tr>";
+	            });
+	        }
 	        $("#viewreqbody").html(list);
 
 	        if (TotalRows == CancelledRows) {
@@ -85,7 +88,8 @@
 	        url: 'dashboard/leavestatus',
 	        type: 'POST',
 	        data: {
-	            cancelrequest: cancelrequest
+	            cancelrequest: cancelrequest,
+	            bid: bid,
 	        },
 	    }).done(function(data) {
 	        $("#leaves_left").html(data.AvailablePL);

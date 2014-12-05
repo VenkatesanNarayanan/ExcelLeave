@@ -1,25 +1,9 @@
-<ul class="list-group">
-    [% FOREACH leave IN leaveslist %]
-    [% IF leave.Counter % 2 != 0 %]
-    <li class="list-group-item list-group-item-info" style="height:50px;">
-        [% ELSE %]
-        <li class="list-group-item list-group-item-warning" style="height:50px;">
-            [% END %]
-            <p id="[%leave.LeaveId%]date" style="float:left;width:40%;">
-                [% leave.LeaveDate %]
-            </p>
-            <p id="[%leave.LeaveId%]status" style="float:left;width:40%;">
-                [% leave.LeaveStatus %]
-            </p>
+<script src='assets/newjs/fullcalendar.min.js'> < /script>
+<script>
+    $('#calendar').fullCalendar({
+        editable: true,
+        eventLimit: true,
+        eventSources: [% messages %],
+    });
+</script > <div id="calendar"> < /div>
 
-            [% IF leave.LeaveStatus == 'Cancelled' or leave.LeaveStatus=='Denied' %]
-            <button type="button" class="btn btn-info" style="float:left;width:20%;" disabled id='[%leave.LeaveId%]'>Cancel</button>
-            [%ELSE%]
-            <button type="button" class="btn btn-info" style="float:left;width:20%;" id='[%leave.LeaveId%]'>Cancel</button>
-            [%END%]
-        </li>
-        [% END %]
-</ul>
-
-
-<script type="text/javascript" src="assets/newjs/home.js"></script>

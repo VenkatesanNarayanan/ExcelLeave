@@ -1,92 +1,79 @@
-<div class="jumbotron">
-    <form class="form-horizontal" role="form" id="updateemployeeform">
-        [% FOREACH emp IN empdetails %]
-        <div class="form-group">
-            <label class="col-lg-3 control-label">Employee id:</label>
-            <div class="col-lg-8" style="width:400px">
-                <input class="form-control" placeholder="Employee Id" value='[% emp.EmployeeId %]' type="text" id="employeeid" name="employeeid" disabled>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-lg-3 control-label">First name:</label>
-            <div class="col-lg-8" style="width:400px">
-                <input class="form-control" placeholder="First Name" value='[% emp.FirstName %]' type="text" id="fname" name="fname">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-lg-3 control-label">Last name:</label>
-            <div class="col-lg-8" style="width:400px">
-                <input class="form-control" placeholder="Last Name" value='[% emp.LastName %]' type="text" id="lname" name="lname">
-            </div>
-        </div>
+<div class="jumbotron"> < form class = "form-horizontal" role = "form" id = "updateemployeeform" > [
+    %FOREACH emp IN empdetails %] < div class =
+      "form-group" > <label class="col-lg-3 control-label"> Employee id : </label> < div class = "col-lg-8" style =
+      "width:400px" >
+<input class="form-control" placeholder="Employee Id" value='[% emp.EmployeeId %]' type="text" id="employeeid" name="employeeid" disabled>
+      < /div>
+        </div > <div class="form-group"> < label class = "col-lg-3 control-label" > First name : </label> < div class =
+      "col-lg-8" style =
+      "width:400px" >
+<input class="form-control" placeholder="First Name" value='[% emp.FirstName %]' type="text" id="fname" name="fname">
+      < /div>
+        </div > <div class="form-group"> < label class = "col-lg-3 control-label" > Last name : </label> < div class =
+      "col-lg-8" style =
+      "width:400px" >
+<input class="form-control" placeholder="Last Name" value='[% emp.LastName %]' type="text" id="lname" name="lname">
+      < /div>
+        </div >
 
-        <div class="form-group">
-            <label class="col-lg-3 control-label">Email:</label>
-            <div class="col-lg-8" style="width:400px">
-                <input class="form-control" placeholder="Email" type="text" id="email" value='[% emp.Email %]' name="email">
-            </div>
-        </div>
+      <div class="form-group"> < label class = "col-lg-3 control-label" > Email : </label> < div class =
+      "col-lg-8" style =
+      "width:400px" >
+      <input class="form-control" placeholder="Email" type="text" id="email" value='[% emp.Email %]' name="email"> <
+      /div>
+        </div >
 
-        <div class="form-group">
-            <label class="col-md-3 control-label">Date of Joining:</label>
-            <div class="col-md-8" style="width:400px">
-                <input class="form-control" type="text" readonly='true' id="doj" name="doj" value='[% emp.DateOfJoining %]'>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-3 control-label">Role:</label>
-            <div class="col-md-8">
+      <div class="form-group"> < label class = "col-md-3 control-label" > Date of Joining : </label> < div class =
+      "col-md-8" style =
+      "width:400px" >
+      <input class="form-control" type="text" readonly='true' id="doj" name="doj" value='[% emp.DateOfJoining %]'> <
+      /div>
+        </div > <div class="form-group"> < label class = "col-md-3 control-label" > Role : </label> < div class =
+      "col-md-8" >
 
-                <select style="height:30px;width:150px;" id="role" name="role">
+      <select style="height:30px;width:250px;" id="role" name="role">
 
-                    [% FOREACH role IN roles %]
-                    [% IF role.RoleName == emp.RoleName %]
-                    <option selected>
-                        [% role.RoleName %]
-                    </option>
+      [
+        %FOREACH role IN roles %][
+          %IF role . RoleName == emp . RoleName %] < option selected > [
+              %role . RoleName %] < /option>
                     [% ELSE %]
                     <option>
                         [% role.RoleName %]
-                    </option>
-                    [% END %]
-                    [% END %]
+                    </option > [%END %][%END %] </select>
+
+                < /div>
+        </div > <div class="form-group"> < label class = "col-md-3 control-label" > Status : </label> < div class =
+                "col-md-8" >
+
+                <select style="height:30px;width:250px;" id="status" name="status"> [%IF emp . Status == 'Active' %]
+                <option selected> Active </option> [%ELSE %] <option> Active </option> [%END %]
+                [%IF emp . Status == 'Inactive' %] <option selected> Inactive </option> [%ELSE %]
+                <option> Inactive </option> [%END %][%IF emp . Status == 'Disabled' %]
+                <option selected> Disabled </option> [%ELSE %] <option> Disabled </option> [%END %]
                 </select>
 
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-3 control-label">Status:</label>
-            <div class="col-md-8">
+                < /div>
+        </div > <div class="form-group"> < label class = "col-md-3 control-label" > Manager : </label> < div class =
+                "col-md-8" >
 
-                <select style="height:30px;width:150px;" id="status" name="status">
-                    [% IF emp.Status == 'Active'%]
-                    <option selected>Active</option>
-                    [% ELSE %]
-                    <option>Active</option>
-                    [% END %]
-                    [% IF emp.Status == 'Inactive'%]
-                    <option selected>Inactive</option>
-                    [% ELSE %]
-                    <option>Inactive</option>
-                    [% END %]
-                    [% IF emp.Status == 'Disabled'%]
-                    <option selected>Disabled</option>
-                    [% ELSE %]
-                    <option>Disabled</option>
-                    [% END %]
-                </select>
+                <select style="height:30px;width:250px;" id="manager" name="manager"> [
+                  %FOREACH manager IN managerslist %][
+                    %IF emp . ManagerId == manager . EmployeeId %] < option id = '[%manager.EmployeeId%]' selected > [
+                        %manager . FirstName %] & nbsp;
+                          [
+                            %manager . LastName %] < /option>
+                    [%ELSE%]
+                    <option id='[%manager.EmployeeId%]'>
+                        [%manager.FirstName%]&nbsp;
+                        [%manager.LastName%]
+                    </option > [%END %][%END %] </select>
 
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-3 control-label"></label>
-            <div class="col-md-8">
-                <input class="btn btn-primary" value="Update" type="submit">
-            </div>
-        </div>
-        [% END %]
-    </form>
+                              < /div>
+        </div > <div class="form-group"> < label class = "col-md-3 control-label" > </label> < div class =
+                              "col-md-8" > <input class="btn btn-primary" value="Update" type="submit"> < /div>
+        </div > [%END %] </form>
 
-</div>
+                              < /div>
 
-<script type="text/javascript" src="assets/newjs/updateemployee.js"></script>
+<script type="text/ javascript " src=" assets / newjs / updateemployee . js "></script>
