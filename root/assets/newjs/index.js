@@ -1,4 +1,33 @@
-        Display();
+	$('#changepassword').on('hide.bs.modal', function() {
+		 var validator = $("#ChangePasswordForm").validate();
+		 validator.resetForm();
+	});        
+
+	$("#updatepassword").click(function()
+	{
+	$("#ChangePasswordForm").validate({
+ 		rules: {
+			
+ 			oldpassword: {
+ 					required: true,
+ 					minlength: 6
+ 				   },
+ 			newpassword: {
+ 					required: true,
+ 					minlength: 6
+ 				   },
+ 			reenter: {
+ 					required: true,
+					 equalTo: "#newpassword"
+ 				}
+ 			},
+ 			submitHandler: function(form) {
+				changepassword();		
+				},
+			});
+	});
+
+	Display();
 
         function Display() {
 
@@ -51,8 +80,6 @@
             var oldpassword = document.getElementById("oldpassword").value;
             var newpassword = document.getElementById("newpassword").value;
             var reentered = document.getElementById("reenter").value;
-            if (newpassword.length >= 6 && reentered.length >= 6) {
-                if (newpassword == reentered) {
                     $.ajax({
                         url: 'dashboard/changepassword',
                         data: {
@@ -72,12 +99,6 @@
                             $('#ChangePasswordForm')[0].reset();
                         }
                     });
-                } else {
-                    $("#PasswordChangeError").html("*Password miss matched");
-                }
-            } else {
-                $("#PasswordChangeError").html("*Password should have atleast 6 characters");
-            }
         }
 
         $('#logout').click(function() {

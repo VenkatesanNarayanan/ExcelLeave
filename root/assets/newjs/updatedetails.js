@@ -1,11 +1,15 @@
     $('#example').dataTable({
         "iDisplayLength": 5
     });
-
-    $('.empdetails').click(function() {
+	var viewbtnid;
+$('#example').delegate('.empdetails', 'click', function() {
+	    viewbtnid = $(this).attr('id');
+	    updateemployee();
+	});
+    function updateemployee() {
         var employee = [];
         var counter = 0;
-        $(this).find("td").each(function() {
+        $('#'+viewbtnid).find("td").each(function() {
             employee[counter++] = $(this).html();
         });
         $.ajax({
@@ -17,7 +21,7 @@
             $("#maincontent").html(responseText);
         });
 
-    });
+    };
 
     function AddNewEmp() {
         $.ajax({

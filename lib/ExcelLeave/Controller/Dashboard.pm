@@ -555,7 +555,6 @@ sub updatedetailsform : Local
     ) foreach @empcollection;
     my $mang = $c->forward('managerlist');
     $c->stash->{managerslist} = $mang;
-    print Dumper $c->stash->{managerslist};
     $c->forward('View::TT');
 }
 

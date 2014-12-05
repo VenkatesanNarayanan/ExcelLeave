@@ -84,6 +84,7 @@
 
                 <select style="height:30px;width:250px;" id="manager" name="manager">
                     [% FOREACH manager IN managerslist %]
+		    [% IF emp.EmployeeId != manager.EmployeeId %]
                     [% IF emp.ManagerId == manager.EmployeeId %]
                     <option id='[%manager.EmployeeId%]' selected>
                         [%manager.FirstName%]&nbsp;
@@ -96,6 +97,7 @@
                     </option>
                     [%END%]
                     [%END%]
+		    [%END%]
                 </select>
 
             </div>
