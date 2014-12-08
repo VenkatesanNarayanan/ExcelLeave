@@ -66,58 +66,65 @@ sub ExcelLeaveMailing : Local
 
 sub index : Path
 {
-    my ($self, $c) = @_;
-    my $employeeid = $c->user->EmployeeId;
-    my $username   = $c->user->FirstName;
-    $c->stash->{ProfileDetails} = $c->model('Leave::Employee')->search({EmployeeId => $employeeid});
+	my ($self, $c) = @_;
 
-    my @allemployee = $c->model('Leave::Employee')->search(
-        {EmployeeId => $employeeid},
-        {
-            join      => 'role',
-            '+select' => ["role.RoleName"],
-            '+as'     => ["RoleName"],
-        }
-    );
-    foreach (@allemployee) {
-        $c->stash->{Role} = $_->get_column('RoleName');
-    }
+	if ($c->user) {
+		my $employeeid = $c->user->EmployeeId;
+		my $username   = $c->user->FirstName; 
+		$c->stash->{ProfileDetails} = $c->model('Leave::Employee')->search({EmployeeId => $employeeid});
 
-    $c->stash->{uname} = $username;
+		my @allemployee = $c->model('Leave::Employee')->search(
+			{EmployeeId => $employeeid},
+			{
+				join      => 'role',
+				'+select' => ["role.RoleName"],
+				'+as'     => ["RoleName"],
+			}
+		);
+		foreach (@allemployee) {
+			$c->stash->{Role} = $_->get_column('RoleName');
+		}
 
-    my @holidaylist = $c->model('Leave::OfficialHolidays')->search({});
-    my $count       = 1;
-    push(
-        @{$c->stash->{holidayslist}},
-        {
-            Count           => $count++,
-            HolidayDate     => $_->HolidayDate,
-            HolidayOccasion => $_->HolidayOccasion,
-        }
-    ) foreach @holidaylist;
+		$c->stash->{uname} = $username;
 
-    my @empcollection = $c->model('Leave::LeaveRequest')->search({EmployeeId => $employeeid});
+		my @holidaylist = $c->model('Leave::OfficialHolidays')->search({});
+		my $count       = 1;
+		push(
+			@{$c->stash->{holidayslist}},
+			{
+				Count           => $count++,
+				HolidayDate     => $_->HolidayDate,
+				HolidayOccasion => $_->HolidayOccasion,
+			}
+		) foreach @holidaylist;
 
-    my $counter = 1;
-    push(
-        @{$c->stash->{leavelist}},
-        {
-            Counter     => $counter++,
-            LeaveId     => $_->LeaveId,
-            LeaveDate   => $_->LeaveDate,
-            LeaveStatus => $_->LeaveStatus,
-        }
-    ) foreach @empcollection;
+		my @empcollection = $c->model('Leave::LeaveRequest')->search({EmployeeId => $employeeid});
 
-    my @totalleaves = $c->model('Leave::EmployeeLeave')->search({EmployeeId => $employeeid});
-    foreach my $var (@totalleaves) {
-        $c->stash->{TotalPersonalLeaves} = $var->AvailablePersonalLeaves;
-    }
-    my @priorleaves = $c->model('Leave::SystemConfig')->search({ConfigKey => 'LeaveRequestPrior'});
-    foreach my $var (@priorleaves) {
-        $c->stash->{LeaveRequestPrior} = $var->ConfigValue;
-    }
-    $c->forward('View::TT');
+		my $counter = 1;
+		push(
+			@{$c->stash->{leavelist}},
+			{
+				Counter     => $counter++,
+				LeaveId     => $_->LeaveId,
+				LeaveDate   => $_->LeaveDate,
+				LeaveStatus => $_->LeaveStatus,
+			}
+		) foreach @empcollection;
+
+		my @totalleaves = $c->model('Leave::EmployeeLeave')->search({EmployeeId => $employeeid});
+		foreach my $var (@totalleaves) {
+			$c->stash->{TotalPersonalLeaves} = $var->AvailablePersonalLeaves;
+		}
+		my @priorleaves = $c->model('Leave::SystemConfig')->search({ConfigKey => 'LeaveRequestPrior'});
+		foreach my $var (@priorleaves) {
+			$c->stash->{LeaveRequestPrior} = $var->ConfigValue;
+		}
+		$c->forward('View::TT');
+	}
+	else
+	{
+		$c->res->redirect( "/login" );
+	}
 
 }
 
