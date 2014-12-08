@@ -123,8 +123,6 @@ sub index : Path
 	}
 	else
 	{
-		#	$c->response->body('Page not found');
-		#$c->response->status(404);
 		$c->res->redirect( "/login" );
 	}
 
