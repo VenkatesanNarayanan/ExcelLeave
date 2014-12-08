@@ -124,7 +124,31 @@ sub index : Path
 sub leaverequest : Local
 {
     my ($self, $c) = @_;
-    $c->forward('View::TT');
+ 	my $employeeid=$c->user->EmployeeId;
+	my $leavehash;
+	
+	my @leavecollectionhash = $c->model('Leave::LeaveRequest')->search({
+		-and =>[
+				EmployeeId => $employeeid,
+						],
+		});
+	
+	my $string="";
+	foreach(@leavecollectionhash)
+	{
+		if(exists $leavehash->{$employeeid}->{$_->LeaveDate})
+		{
+		$string .= $leavehash->{$employeeid}->{$_->LeaveDate};
+		}
+		else
+		{
+			$leavehash->{$employeeid}->{$_->LeaveDate}=$_->LeaveStatus;
+		}
+	}
+	print Dumper $string;
+    print Dumper $leavehash;
+
+   $c->forward('View::TT');
 }
 
 sub leaverequesthandler : Local
@@ -137,7 +161,7 @@ sub leaverequesthandler : Local
     my @empl = $c->model('Leave::EmployeeLeave')->search({EmployeeId => $employeeid});
     my $apl;
 
-    my @fromdate = split('-', $c->req->params->{fromdate});
+	my @fromdate = split('-', $c->req->params->{fromdate});
     my @todate   = split('-', $c->req->params->{todate});
     my $start = DateTime->new(year => $fromdate[0], month => $fromdate[1], day => $fromdate[2]);
     my $end   = DateTime->new(year => $todate[0],   month => $todate[1],   day => $todate[2]);

@@ -7,9 +7,9 @@ __PACKAGE__->config(
     schema_class => 'ExcelLeave::Schema',
     
     connect_info => {
-        dsn => 'dbi:Pg:database=work',
-        user => 'dharma',
-        password => 'dharmu',
+        dsn => 'dbi:Pg:database=trial',
+        user => '',
+        password => '',
 	quote_field_names => "0",
 	quote_char => "\"",
 	name_sep => ".",
