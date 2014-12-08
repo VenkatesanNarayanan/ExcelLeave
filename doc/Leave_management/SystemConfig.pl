@@ -14,9 +14,9 @@ use Email::MIME;
 use Email::Sender::Simple qw(sendmail);
 
 
-my $dsn = "dbi:Pg:database=work";
-my $username = "dharma";
-my $password = "dharmu";
+my $dsn = "dbi:Pg:database=trial";
+my $username = "";
+my $password = "";
 
 my  $dbh = DBI->connect( $dsn, $username, $password, { RaiseError => 1 } );
 
@@ -29,8 +29,8 @@ my  $query = q!drop table if exists "OfficialHolidays" !;
 		"HolidayOccasion" varchar(150)  NOT NULL,
 		"CreatedBy" varchar(20)  NOT NULL,
 		"CreatedOn" date  NOT NULL,
-		"UpdatedBy" varchar(20)  NOT NULL,
-		"UpdatedOn" date  NOT NULL) !;
+		"UpdatedBy" varchar(20) NULL,
+		"UpdatedOn" date  NULL) !;
 
 	$dbh->do("$query");
 	print "New table OfficialHolidays Created\n";
@@ -44,8 +44,8 @@ my  $query = q!drop table if exists "OfficialHolidays" !;
 		"RoleName" varchar(20)  NOT NULL,
 		"CreatedBy" varchar(20)  NOT NULL,
 		"CreatedOn" date  NOT NULL,
-		"UpdatedBy" varchar(20)  NOT NULL,
-		"UpdatedOn" date  NOT NULL
+		"UpdatedBy" varchar(20) NULL,
+		"UpdatedOn" date NULL
 		)!;
 	$dbh->do("$query");
 	print "New table Role Created\n";
@@ -64,7 +64,7 @@ my  $query = q!drop table if exists "OfficialHolidays" !;
 		"EmployeeId" SERIAL PRIMARY KEY,
 		"FirstName" varchar(30)  NOT NULL,
 		"LastName" varchar(30)  NOT NULL,
-		"DateOfJoing" date  NOT NULL,
+		"DateOfJoining" date  NOT NULL,
 		"Email" varchar(100)  NOT NULL,
 		"Password" varchar(100)  NOT NULL,
 		"RoleId" int references "Role"("RoleId"),
@@ -87,8 +87,8 @@ my  $query = q!drop table if exists "OfficialHolidays" !;
 		"ManagerEmployeeId" int  references "Employee"("EmployeeId"),
 		"CreatedBy" varchar(20)  NOT NULL,
 		"CreatedOn" date  NOT NULL,
-		"UpdatedBy" varchar(20)  NOT NULL,
-		"UpdatedOn" date  NOT NULL
+		"UpdatedBy" varchar(20) NULL,
+		"UpdatedOn" date NULL
 		)!;
 	$dbh->do("$query");
 
@@ -104,8 +104,8 @@ my  $query = q!drop table if exists "OfficialHolidays" !;
 		"AvailablePersonalLeaves" int  NOT NULL,
 		"CreatedBy" varchar(20)  NOT NULL,
 		"CreatedOn" date  NOT NULL,
-		"UpdatedBy" varchar(20)  NOT NULL,
-		"UpdatedOn" date  NOT NULL
+		"UpdatedBy" varchar(20) NULL,
+		"UpdatedOn" date NULL
 		)!;
 	$dbh->do("$query");
 	
@@ -123,8 +123,8 @@ my  $query = q!drop table if exists "OfficialHolidays" !;
 		"Message" varchar(100)  NOT NULL,
 		"CreatedBy" varchar(20)  NOT NULL,
 		"CreatedOn" date  NOT NULL,
-		"UpdatedBy" varchar(20)  NOT NULL,
-		"UpdatedOn" date  NOT NULL
+		"UpdatedBy" varchar(20) NULL,
+		"UpdatedOn" date NULL
 		)!;
 	$dbh->do("$query");
 	
@@ -148,8 +148,8 @@ my  $query = q!drop table if exists "OfficialHolidays" !;
 		"LeaveStatus" "LeaveStatus" default 'Pending',
 		"CreatedBy" varchar(20)  NOT NULL,
 		"CreatedOn" date  NOT NULL,
-		"UpadatedBy" varchar(20)  NOT NULL,
-		"UpdatedOn" date  NOT NULL)!;
+		"UpdatedBy" varchar(20) NULL,
+		"UpdatedOn" date NULL)!;
 	$dbh->do("$query");
 	print "New table LeaveRequest Created\n";
 	
@@ -168,6 +168,7 @@ my  $query = q!drop table if exists "OfficialHolidays" !;
 	$query=q!insert into "Role"("RoleName","CreatedBy","CreatedOn","UpdatedBy","UpdatedOn") values('Adminstrator','System',current_date,'System',current_date)!;
 	$dbh->do("$query");
 
+		my $count=1;
 
 		while ( my $array_ref = $simple->fetch ) 
 		{
@@ -190,9 +191,11 @@ my  $query = q!drop table if exists "OfficialHolidays" !;
 					my $password = $ctx->hexdigest;
 
 
-					$query=q!insert into "Employee"("FirstName","LastName","DateOfJoing","RoleId","Email","Password","CreatedBy","CreatedOn")values('!.$array_ref->[1].q!','!.$array_ref->[2].q!','!.$array_ref->[3].q!','1','!.$array_ref->[4].q!','!.$password.q!','System',current_date)!;
+					$query=q!insert into "Employee"("FirstName","LastName","DateOfJoining","RoleId","Email","Password","CreatedBy","CreatedOn")values('!.$array_ref->[1].q!','!.$array_ref->[2].q!','!.$array_ref->[3].q!','1','!.$array_ref->[4].q!','!.$password.q!','System',current_date)!;
 					$dbh->do($query);
-
+					 $query=q!insert into "EmployeeLeave"("EmployeeId","AvailablePersonalLeaves","CreatedBy","CreatedOn")values('!.$count.q!','18','!.$count.q!',current_date)!;
+					$dbh->do($query);
+					 $count++;
 					my $token = Session::Token->new->get;
 					$query=q!update "Employee" set "Token"='!.$token.q!' where "Email"='!.$array_ref->[4].q!'!;
 					$dbh->do($query);
@@ -200,7 +203,7 @@ my  $query = q!drop table if exists "OfficialHolidays" !;
 					my $content="Hi ".$array_ref->[1]." ,\n For your account activation click on this link \n /login/".$token."\nRegards\nExceleron India\n";
 					my $message = Email::MIME->create(
 						header_str => [
-							From    => 'dharma@dharma-exceleron',
+							From    => 'ExcelLeave@exceleron.com',
 							To      => $array_ref->[4],
 							Subject => 'Message from System',
 						],
