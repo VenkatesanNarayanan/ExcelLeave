@@ -2,15 +2,14 @@ package ExcelLeave::Model::Leave;
 
 use strict;
 use base 'Catalyst::Model::DBIC::Schema';
-use excelleave_databasesetup;
 
 __PACKAGE__->config(
     schema_class => 'ExcelLeave::Schema',
     
     connect_info => {
-        dsn => $dsnvalue,
-        user => $usernamevalue,
-        password => $passwordvalue,
+        dsn => '',
+        user => '',
+        password => '',
 	quote_field_names => "0",
 	quote_char => "\"",
 	name_sep => ".",
