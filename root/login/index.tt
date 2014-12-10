@@ -59,7 +59,7 @@
 
     <div id="page-wrap">
         <div id="content">
-            <form action="/login" method="post" id="register-form" novalidate="novalidate">
+            <form action="login/" method="post" id="register-form" novalidate="novalidate">
                 <h2>User login</h2>
                 <div id="form-content">
                     <fieldset>
