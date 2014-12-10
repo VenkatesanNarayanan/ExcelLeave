@@ -7,6 +7,7 @@
 use strict;
 use Parse::CSV;
 use DBI;
+use excelleave_databasesetup;
 
 my $simple = Parse::CSV->new(
 	file => $ARGV[0],
