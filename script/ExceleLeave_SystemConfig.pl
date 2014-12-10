@@ -12,11 +12,11 @@ use Digest::MD5;
 use Parse::CSV;
 use Email::MIME;
 use Email::Sender::Simple qw(sendmail);
+use excelleave_databasesetup;
 
-
-my $dsn = "dbi:Pg:database=trial";
-my $username = "";
-my $password = "";
+my $dsn = $dsnvalue;
+my $username = $usernamevalue;
+my $password = $passwordvalue;
 
 my  $dbh = DBI->connect( $dsn, $username, $password, { RaiseError => 1 } );
 

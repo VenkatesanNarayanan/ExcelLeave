@@ -12,9 +12,9 @@ my $simple = Parse::CSV->new(
 	file => $ARGV[0],
 );
 
-my $dsn = "dbi:Pg:database=trial";
-my $username = "";
-my $password = "";
+my $dsn = $dsnvalue;
+my $username = $usernamevalue;
+my $password = $passwordvalue;
 
 my  $dbh = DBI->connect( $dsn, $username, $password, { RaiseError => 1 } );
 my $query=q!delete from "OfficialHolidays"!;
