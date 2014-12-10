@@ -298,9 +298,7 @@ sub home : Local
 {
     my ($self, $c) = @_;
     my $employeeid = $c->user->EmployeeId;
-    my $colors     = [
-        qw/#8B3A3A#FFDAB9 #000000 #708090 #6495ED #0000CD #8B8682 #B452CD #8F8F8F #9B30FF #E3E3E3 #2E8B57 #00FF00 #FFD700 #CD5C5C #B22222 #FF4500 #FF00FF #8B5742 #8B5A00/
-    ];
+    my @colors     = qw/#8B3A3A#FFDAB9 #000000 #708090 #6495ED #0000CD #8B8682 #B452CD #8F8F8F #9B30FF #E3E3E3 #2E8B57 #00FF00 #FFD700 #CD5C5C #B22222 #FF4500 #FF00FF #8B5742 #8B5A00/;
     my @leaveslist = $c->model('Leave::LeaveRequest')->search(
         {},
         {
@@ -344,7 +342,7 @@ sub home : Local
                 }
             );
         }
-        push(@{$calendar}, {events => $leavedisplay, color => $colors->[$colorcount++]});
+        push(@{$calendar}, {events => $leavedisplay, color => $colors[$colorcount++]});
         $leavedisplay = [];
     }
 
