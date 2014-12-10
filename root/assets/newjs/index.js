@@ -51,7 +51,7 @@
             var current = "#home";
 
             $.ajax({
-                url: 'dashboard/home',
+                url: '/dashboard/home',
                 type: 'POST',
             }).done(function(responseText) {
                 $("#maincontent").html(responseText);
@@ -59,7 +59,7 @@
 
             $(".menubar").click(function() {
                 id = $(this).attr('id');
-                var path = "dashboard/" + id;
+                var path = "/dashboard/" + id;
                 $.ajax({
                     url: path,
                     type: 'POST',
