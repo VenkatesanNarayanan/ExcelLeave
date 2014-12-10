@@ -12,11 +12,11 @@ use Digest::MD5;
 use Parse::CSV;
 use Email::MIME;
 use Email::Sender::Simple qw(sendmail);
+use excelleave_databasesetup;
 
-
-my $dsn = "dbi:Pg:database=trial";
-my $username = "";
-my $password = "";
+my $dsn = $dsnvalue;
+my $username = $usernamevalue;
+my $password = $passwordvalue;
 
 my  $dbh = DBI->connect( $dsn, $username, $password, { RaiseError => 1 } );
 
@@ -194,6 +194,10 @@ my  $query = q!drop table if exists "OfficialHolidays" !;
 					$query=q!insert into "Employee"("FirstName","LastName","DateOfJoining","RoleId","Email","Password","CreatedBy","CreatedOn")values('!.$array_ref->[1].q!','!.$array_ref->[2].q!','!.$array_ref->[3].q!','1','!.$array_ref->[4].q!','!.$password.q!','System',current_date)!;
 					$dbh->do($query);
 					 $query=q!insert into "EmployeeLeave"("EmployeeId","AvailablePersonalLeaves","CreatedBy","CreatedOn")values('!.$count.q!','18','!.$count.q!',current_date)!;
+					$dbh->do($query);
+					 $query=q!insert into "EmployeeManager"("EmployeeId","ManagerEmployeeId","CreatedBy","CreatedOn")values('!.$count.q!','!.$count.q!,'!.$count.q!',current_date)!;
+
+					 print $query,"\n\n";
 					$dbh->do($query);
 					 $count++;
 					my $token = Session::Token->new->get;

@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-    <link href="../assets/site-demos.css" rel="stylesheet">
-    <link href="../assets/navbar.css" rel="stylesheet">
-    <script type="text/javascript" src="../assets/jquery.js"></script>
-    <script type="text/javascript" src="../assets/jquery.validate.js"></script>
-    <script type="text/javasrcipt" src="../assets/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="../assets/additional-methods.min.js"></script>
-    <link href="../assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/site-demos.css" rel="stylesheet">
+    <link href="/assets/navbar.css" rel="stylesheet">
+    <script type="text/javascript" src="/assets/jquery.js"></script>
+    <script type="text/javascript" src="/assets/jquery.validate.js"></script>
+    <script type="text/javasrcipt" src="/assets/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/assets/additional-methods.min.js"></script>
+    <link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>

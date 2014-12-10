@@ -242,11 +242,11 @@
         </div>
     </div>
 
-    <script src="assets/bootstrap.min.js"></script>
-    <link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/jquery-ui.css">
-    <script src="assets/jquery-ui.js"></script>
-    <script src="assets/newjs/index.js"></script>
+    <script src="/assets/bootstrap.min.js"></script>
+    <link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/jquery-ui.css">
+    <script src="/assets/jquery-ui.js"></script>
+    <script src="/assets/newjs/index.js"></script>
 
 </body>
 
