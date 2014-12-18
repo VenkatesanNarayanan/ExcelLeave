@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# ==========================================================================#
+# bin/excelleave                  ExcelLeave init script                    #
+# --------------------------------------------------------------------------#
+# Copyright (C) 2014 Exceleron Software, LLC.								#
+# Author: Sheeju Alex <sheeju@exceleron.com>                                #
+# ==========================================================================#
+
+
+NAME=excelleave
+PAMS_WWW_ENGINE='HTTP::Prefork'
+PAMS_WWW_ROOT=/home/sheeju/projects/ExcelLeave
+PAMS_WWW_SERVER=excelleave_server.pl
+PAMS_WWW_PORT=3000
+case "$1" in
+	start)
+	cd $PAMS_WWW_ROOT/script
+	nohup ./$PAMS_WWW_SERVER -p $PAMS_WWW_PORT -d >> /tmp/excelleave_$PAMS_WWW_PORT.log &
+    echo $! > /tmp/excelleave_$PAMS_WWW_PORT.pid
+	;;
+	stop)
+    kill $(cat /tmp/excelleave_$PAMS_WWW_PORT.pid)
+    rm /tmp/excelleave_$PAMS_WWW_PORT.pid
+	/bin/sleep 5
+	;;
+	restart)
+	cd $PAMS_WWW_ROOT/bin
+	./$NAME stop
+	/bin/sleep 5
+	./$NAME start
+	;;
+	*)
+	echo "Usage: $PAMS_WWW_ROOT/bin/$NAME {start|stop|restart}"
+	exit 1
+	;;
+esac
+
+exit 0
