@@ -1,0 +1,31 @@
+/* User can customise the css properties of ListPicker controls using this css file*/
+/* Note:- Don't change the class names */
+.lp_root {
+}
+.lp_height{
+	/*height : 100px;*/
+}
+.lp_selectlistdiv{
+	float:left;
+}
+.lp_list{
+	height:inherit; 
+	width:250px;
+}
+.lp_buttondiv {
+	float : left;
+	position:relative;
+	margin-right:10px;
+	margin-left :10px;
+}
+.lp_choosebuttondiv{
+  	position: absolute;
+    	top : 25%;
+}
+.lp_choosebutton{}
+.lp_unchoosebuttondiv{
+	position:relative;
+	top : 60%;
+}
+.lp_unchoosebutton{}
+.lp_selectedlistdiv {} 

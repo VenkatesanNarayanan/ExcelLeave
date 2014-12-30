@@ -56,17 +56,15 @@
 </head>
 
 <body>
-
     <div id="page-wrap">
         <div id="content">
-            <form action="login/" method="post" id="register-form" novalidate="novalidate">
+            <form action="/login" method="post" id="register-form" novalidate="novalidate">
                 <h2>User login</h2>
                 <div id="form-content">
                     <fieldset>
                         <div class="fieldgroup">
                             <label for="email">Email</label>
                             <input type="text" class="input-block-level" id="email" name="email">
-
                         </div>
                         <div class="fieldgroup">
                             <label for="password">Password</label>
@@ -114,7 +112,5 @@
     </div>
     <script src="/assets/bootstrap.min.js"></script>
     <link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
 </body>
-
 </html>

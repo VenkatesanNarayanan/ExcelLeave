@@ -1203,7 +1203,7 @@ select {
 
 select[multiple],
 select[size] {
-  height: auto;
+ /* height: auto;*/
 }
 
 select:focus,

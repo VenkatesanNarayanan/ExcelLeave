@@ -1,33 +1,29 @@
-    $('#example').dataTable({
-        "iDisplayLength": 5
-    });
-	var viewbtnid;
-$('#example').delegate('.empdetails', 'click', function() {
-	    viewbtnid = $(this).attr('id');
-	    updateemployee();
+	$('#example').dataTable({
+		"iDisplayLength": 5
 	});
-    function updateemployee() {
-        var employee = [];
-        var counter = 0;
-        $('#'+viewbtnid).find("td").each(function() {
-            employee[counter++] = $(this).html();
-        });
-        $.ajax({
-            url: 'dashboard/updatedetailsform',
-            data: {
-                employeeid: employee[0],
-            }
-        }).done(function(responseText) {
-            $("#maincontent").html(responseText);
-        });
 
-    };
+	var viewbtnid;
+	$('#example').delegate('.empdetails', 'click', function() {
+		viewbtnid = $(this).attr('id');
+		updateemployee();
+	});
+	function updateemployee() {
+		$.ajax({
+			url: 'dashboard/updatedetailsform',
+			data: {
+				employeeid: viewbtnid,
+			}
+		}).done(function(responseText) {
+			$("#maincontent").html(responseText);
+		});
 
-    function AddNewEmp() {
-        $.ajax({
-            url: 'dashboard/addemployee',
-        }).done(function(responseText) {
-            $("#maincontent").html(responseText);
-        });
+	};
 
-    }
+	function AddNewEmp() {
+		$.ajax({
+			url: 'dashboard/addemployee',
+		}).done(function(responseText) {
+			$("#maincontent").html(responseText);
+		});
+
+	}
