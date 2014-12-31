@@ -106,8 +106,10 @@
         </div>
         <div class="form-group">
             <label class="col-md-3 control-label"></label>
-            <div class="col-md-8">
-                <input class="btn btn-primary" value="Update" type="submit">
+			<div class="col-md-8">
+
+				<button class="btn btn-primary" type="submit" style="margin-right:20px">Update</button>
+				<button type="button" class="btn btn-primary" id="btn_back">Back</button>
             </div>
         </div>
         [% END %]

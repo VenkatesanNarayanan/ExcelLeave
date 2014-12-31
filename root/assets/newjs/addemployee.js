@@ -1,6 +1,7 @@
 $(function() {
 	$("#doj").datepicker({
-		dateFormat: 'yy-mm-dd'
+		dateFormat: 'yy-mm-dd',
+		maxDate:0
 	});
 
 	$("#div_managerlist").ListPicker({

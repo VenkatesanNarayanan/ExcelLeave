@@ -53,9 +53,11 @@
                 });
 
                 if (responseText.lstatus == "Success") {
+$("#ErrorMessage").css('color','#3366CC');
                     $("#ErrorMessage").html("Leave Request is submitted");
                     $("#leaves_left").html(resposeText.apl);
                 } else {
+				$("#ErrorMessage").css('color','#FF0000');
                     $("#ErrorMessage").html("Applied leaves is more than available leaves");
                 }
             });

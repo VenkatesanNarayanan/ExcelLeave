@@ -63,6 +63,21 @@ $("#updateemployeeform").validate({
 	},
 });
 
+$('#btn_back').click(function()
+{
+	$.ajax({
+		url: 'dashboard/updatedetailsform',
+		type: 'POST',
+	}).done(function(responseText) {
+		$.ajax({
+			url: 'dashboard/updatedetails',
+		}).done(function(responseText) {
+			$("#maincontent").html(responseText);
+		});
+	}
+	)
+});
+
 function callme() {
 	var employeeid = document.getElementById("employeeid").value;
 	var fname = document.getElementById("fname").value;
