@@ -22,5 +22,5 @@ make_schema_at(
 		moniker_parts		=> [qw(name)],
 		naming                  => 'preserve',
 	},
-	['dbi:Pg:dbname=ExcelLeave', 'venkatesan', '1774', {'quote_char' => '"', 'quote_field_names' => '0', 'name_sep' => '.'}],
+	['dbi:Pg:dbname=ExcelLeave', 'pavan', '1234', {'quote_char' => '"', 'quote_field_names' => '0', 'name_sep' => '.'}],
 );
