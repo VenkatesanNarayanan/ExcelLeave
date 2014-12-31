@@ -262,30 +262,33 @@ sub leaverequesthandler : Local
         $c->stash->{apl} = $apl;
 
         my @EmpManager = $c->model('Leave::EmployeeManager')->search({EmployeeId => $employeeid});
-        my $ManagerId;
+        my @ManagerIds;
         foreach (@EmpManager) {
-            $ManagerId = $_->ManagerEmployeeId;
+          push(@ManagerIds , $_->ManagerEmployeeId);
         }
 
-        my @ManagerDetail = $c->model('Leave::Employee')->search({EmployeeId => $ManagerId});
-        foreach (@ManagerDetail) {
-            $ManagerEmailId = $_->Email;
-            $ManagerName    = $_->FirstName;
-        }
+		foreach my $managerid  (@ManagerIds)
+		{
+			my  @ManagerDetail = $c->model('Leave::Employee')->search({EmployeeId => $managerid});
+			foreach (@ManagerDetail) {
+				$ManagerEmailId = $_->Email;
+				$ManagerName    = $_->FirstName;
+			}
 
-        my $esubject = "Leave request login to ExcelLeave System !!";
-        my $content  = "Hai "
-          . $ManagerName
-          . ",\n\n\t"
-          . $user
-          . " have applied for leave From "
-          . $c->req->params->{fromdate} . " To "
-          . $c->req->params->{todate}
-          . "\n\tWith reason : "
-          . $c->req->params->{message}
-          . "\n\nRegards,\n..................\nExcelLeave System,\nExceleron Software (India).";
+			my $esubject = "Leave request login to ExcelLeave System !!";
+			my $content  = "Hai "
+			. $ManagerName
+			. ",\n\n\t"
+			. $user
+			. " have applied for leave From "
+			. $c->req->params->{fromdate} . " To "
+			. $c->req->params->{todate}
+			. "\n\tWith reason : "
+			. $c->req->params->{message}
+			. "\n\nRegards,\n..................\nExcelLeave System,\nExceleron Software (India).";
 
-        ExcelLeaveMailing('ExcelLeave@exceleron.com', $ManagerEmailId, $esubject, $content);
+			ExcelLeaveMailing('ExcelLeave@exceleron.com', $ManagerEmailId, $esubject, $content);
+		}
         $c->stash->{lstatus} = "Success";
     }
     else {
@@ -631,20 +634,28 @@ sub managerlist : Local
     );
 
     my %managerslist;
-    foreach (@managers) {
-        push(@{$c->stash->{managerslist}}, $_->EmployeeId . ")" . $_->FirstName . " " . $_->LastName);
-        $managerslist{$_->EmployeeId} = $_->FirstName . " " . $_->LastName;
+	my $employeeid = $c->req->params->{employeeid} || 0;
+	my $manager;
+    foreach  $manager (@managers) {
+		if($manager->EmployeeId != $employeeid)
+		{	
+			push(@{$c->stash->{managerslist}}, $manager->EmployeeId . ")" . $manager->FirstName . " " . $manager->LastName);
+			$managerslist{$manager->EmployeeId} = $manager->FirstName . " " . $manager->LastName;
+		}
     }
 
-    if (defined $c->req->params->{employeeid}) {
+    if ($employeeid != 0) {
+
         my @managers = $c->model('Leave::EmployeeManager')->search(
             {
-                'me.EmployeeId' => $c->req->params->{employeeid}
-            },
+                'me.EmployeeId' => $employeeid         
+		 	},
         );
 
-        push(@{$c->stash->{managersselected}}, $_->ManagerEmployeeId . ")" . $managerslist{$_->ManagerEmployeeId})
-          foreach @managers;
+        foreach $manager (@managers) 
+		{
+				push(@{$c->stash->{managersselected}}, $manager->ManagerEmployeeId . ")" . $managerslist{$manager->ManagerEmployeeId});
+		}
     }
 
     $c->forward('View::JSON');
