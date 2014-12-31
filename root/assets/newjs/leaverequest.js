@@ -1,5 +1,14 @@
     var year = (new Date).getFullYear();
+	var array_leavestaken;
     $(function() {
+
+		$.ajax({
+			url: 'dashboard/exclude_leavedays',
+			type: 'POST',
+		}).done(function (data) {
+			array_leavestaken = data.invalid_leave;	
+		});
+
         $("#fromdate").datepicker({
             dateFormat: 'yy-mm-dd',
             beforeShowDay: $.datepicker.noWeekends,
@@ -9,7 +18,11 @@
             numberOfMonths: 2,
             onClose: function(selectedDate) {
                 $("#todate").datepicker("option", "minDate", selectedDate);
-            }
+            },
+			beforeShowDay: function(date){
+				var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+				return [ array_leavestaken.indexOf(string) == -1 ]
+			} 
         });
     });
 
@@ -23,7 +36,12 @@
             numberOfMonths: 2,
             onClose: function(selectedDate) {
                 $("#fromdate").datepicker("option", selectedDate);
-            }
+            },
+			beforeShowDay: function(date){
+				var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+				return [ array_leavestaken.indexOf(string) == -1 ]
+			} 
+
         });
     });
 
