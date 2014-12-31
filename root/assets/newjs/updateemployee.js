@@ -1,76 +1,102 @@
-    $(function() {
-        $("#doj").datepicker({
-            dateFormat: 'yy-mm-dd'
-        });
-    });
+$(function() {
+	$("#doj").datepicker({
+		dateFormat: 'yy-mm-dd'
+	});
 
-    $("#updateemployeeform").validate({
-        rules: {
-            fname: {
-                required: true,
-                lettersonly: true
-            },
-            lname: {
-                required: true,
-                lettersonly: true
-            },
-            email: {
-                required: true,
-                email: true
-            },
+	$("#div_managerlist").ListPicker({
+		height : 130,
+		width : 164,
+	}); 
 
-            doj: {
-                required: true,
-            },
+	getmanagerlist();
 
-            role: {
-                required: true,
-            },
-            status: {
-                required: true,
-            },
-            manager: {
-                required: true,
-            }
+});
 
-        },
+function getmanagerlist()
+{
+	var empid = $('#employeeid').val();
+	$.ajax({
+		url: 'dashboard/managerlist',
+		type: 'POST',
+		data: { employeeid : empid}, 
+
+	}).done(function(responseText) {
+		$('#div_managerlist').ListPicker('option',{optionlist : responseText.managerslist }); 
+		$('#div_managerlist').ListPicker('option',{selectedlist : responseText.managersselected }); 
+	}); 
+}
+
+$("#updateemployeeform").validate({
+	rules: {
+		fname: {
+			required: true,
+			lettersonly: true
+		},
+		lname: {
+			required: true,
+			lettersonly: true
+		},
+		email: {
+			required: true,
+			email: true
+		},
+
+		doj: {
+			required: true,
+		},
+
+		role: {
+			required: true,
+		},
+		status: {
+			required: true,
+		},
+		manager: {
+			required: true,
+		}
+
+	},
 
 
-        submitHandler: function(form) {
-            callme();
-        },
-    });
+	submitHandler: function(form) {
+		callme();
+	},
+});
 
-    function callme() {
-        var employeeid = document.getElementById("employeeid").value;
-        var fname = document.getElementById("fname").value;
-        var lname = document.getElementById("lname").value;
-        var email = document.getElementById("email").value;
-        var doj = document.getElementById("doj").value;
-        var role = document.getElementById("role").value;
-        var status = document.getElementById("status").value;
-        var mid = $('#manager').find('option:selected').attr('id');
+function callme() {
+	var employeeid = document.getElementById("employeeid").value;
+	var fname = document.getElementById("fname").value;
+	var lname = document.getElementById("lname").value;
+	var email = document.getElementById("email").value;
+	var doj = document.getElementById("doj").value;
+	var role = document.getElementById("role").value;
+	var status = document.getElementById("status").value;
+	var mid =  new Array;
+	var list  = $('#div_managerlist').ListPicker('getchooseditems');
+	$.each(list, function(index,value){
+		mid.push(value);
+	}); 
 
-        $.ajax({
-            url: 'dashboard/employeeupdate',
-            type: 'POST',
-            data: {
-                employeeid: employeeid,
-                fname: fname,
-                lname: lname,
-                email: email,
-                dateofjoining: doj,
-                role: role,
-                status: status,
-                managerid: mid,
-            },
-        }).done(function(responseText) {
-            $.ajax({
-                url: 'dashboard/updatedetails',
+	$.ajax({
+		url: 'dashboard/employeeupdate',
+		type: 'POST',
+		data: {
+			employeeid: employeeid,
+			fname: fname,
+			lname: lname,
+			email: email,
+			dateofjoining: doj,
+			role: role,
+			status: status,
+			managerid: mid,
+		},
+	}).done(function(responseText) {
+		$.ajax({
+			url: 'dashboard/updatedetails',
 
-            }).done(function(responseText) {
-                $("#maincontent").html(responseText);
-            });
+		}).done(function(responseText) {
+			$("#maincontent").html(responseText);
+		});
 
-        });
-    }
+	});
+}

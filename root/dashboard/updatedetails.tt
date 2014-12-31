@@ -14,7 +14,7 @@
         </thead>
         <tbody>
             [% FOREACH emp IN details %]
-            <tr class="empdetails" id='[% emp.EmployeeId %]'>
+            <tr>
                 <td>
                     [% emp.EmployeeId %]
                 </td>
@@ -33,7 +33,12 @@
                 <td>
                     [% emp.RoleName%]
                 </td>
-                <td><span class="glyphicon glyphicon-pencil"></span>
+				<td>
+				[% IF emp.EmployeeId == currentuser %]
+                <span class="glyphicon glyphicon-lock" data-toggle="tooltip" data-placement="top" title="Admin can't edit his own details"></span>
+				[% ELSE %]
+                <span id='[% emp.EmployeeId %]' class="glyphicon glyphicon-pencil empdetails" ></span>
+				[% END %]
                 </td>
             </tr>
             [% END %]

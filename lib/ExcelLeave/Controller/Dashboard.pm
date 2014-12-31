@@ -69,96 +69,94 @@ sub ExcelLeaveMailing : Local
 
 sub index : Path
 {
-	my ($self, $c) = @_;
+    my ($self, $c) = @_;
 
-	if ($c->user) {
-		my $employeeid = $c->user->EmployeeId;
-		my $username   = $c->user->FirstName; 
-		$c->stash->{ProfileDetails} = $c->model('Leave::Employee')->search({EmployeeId => $employeeid});
+    if ($c->user) {
+        my $employeeid = $c->user->EmployeeId;
+        my $username   = $c->user->FirstName;
+        $c->stash->{ProfileDetails} = $c->model('Leave::Employee')->search({EmployeeId => $employeeid});
 
-		my @allemployee = $c->model('Leave::Employee')->search(
-			{EmployeeId => $employeeid},
-			{
-				join      => 'role',
-				'+select' => ["role.RoleName"],
-				'+as'     => ["RoleName"],
-			}
-		);
-		foreach (@allemployee) {
-			$c->stash->{Role} = $_->get_column('RoleName');
-		}
+        my @allemployee = $c->model('Leave::Employee')->search(
+            {EmployeeId => $employeeid},
+            {
+                join      => 'role',
+                '+select' => ["role.RoleName"],
+                '+as'     => ["RoleName"],
+            }
+        );
+        foreach (@allemployee) {
+            $c->stash->{Role} = $_->get_column('RoleName');
+        }
 
-		$c->stash->{uname} = $username;
+        $c->stash->{uname} = $username;
 
-		my @holidaylist = $c->model('Leave::OfficialHolidays')->search({});
-		my $count       = 1;
-		push(
-			@{$c->stash->{holidayslist}},
-			{
-				Count           => $count++,
-				HolidayDate     => $_->HolidayDate,
-				HolidayOccasion => $_->HolidayOccasion,
-			}
-		) foreach @holidaylist;
+        my @holidaylist = $c->model('Leave::OfficialHolidays')->search({});
+        my $count       = 1;
+        push(
+            @{$c->stash->{holidayslist}},
+            {
+                Count           => $count++,
+                HolidayDate     => $_->HolidayDate,
+                HolidayOccasion => $_->HolidayOccasion,
+            }
+        ) foreach @holidaylist;
 
-		my @empcollection = $c->model('Leave::LeaveRequest')->search({EmployeeId => $employeeid});
+        my @empcollection = $c->model('Leave::LeaveRequest')->search({EmployeeId => $employeeid});
 
-		my $counter = 1;
-		push(
-			@{$c->stash->{leavelist}},
-			{
-				Counter     => $counter++,
-				LeaveId     => $_->LeaveId,
-				LeaveDate   => $_->LeaveDate,
-				LeaveStatus => $_->LeaveStatus,
-			}
-		) foreach @empcollection;
+        my $counter = 1;
+        push(
+            @{$c->stash->{leavelist}},
+            {
+                Counter     => $counter++,
+                LeaveId     => $_->LeaveId,
+                LeaveDate   => $_->LeaveDate,
+                LeaveStatus => $_->LeaveStatus,
+            }
+        ) foreach @empcollection;
 
-		my @totalleaves = $c->model('Leave::EmployeeLeave')->search({EmployeeId => $employeeid});
-		foreach my $var (@totalleaves) {
-			$c->stash->{TotalPersonalLeaves} = $var->AvailablePersonalLeaves;
-		}
-		my @priorleaves = $c->model('Leave::SystemConfig')->search({ConfigKey => 'LeaveRequestPrior'});
-		foreach my $var (@priorleaves) {
-			$c->stash->{LeaveRequestPrior} = $var->ConfigValue;
-		}
-		$c->forward('View::TT');
-	}
-	else
-	{
-		$c->res->redirect( "/login" );
-	}
+        my @totalleaves = $c->model('Leave::EmployeeLeave')->search({EmployeeId => $employeeid});
+        foreach my $var (@totalleaves) {
+            $c->stash->{TotalPersonalLeaves} = $var->AvailablePersonalLeaves;
+        }
+        my @priorleaves = $c->model('Leave::SystemConfig')->search({ConfigKey => 'LeaveRequestPrior'});
+        foreach my $var (@priorleaves) {
+            $c->stash->{LeaveRequestPrior} = $var->ConfigValue;
+        }
+        $c->forward('View::TT');
+    }
+    else {
+        $c->res->redirect("/login");
+    }
 
 }
 
 sub leaverequest : Local
 {
     my ($self, $c) = @_;
- 	my $employeeid=$c->user->EmployeeId;
-	my $leavehash;
-	
-	my @leavecollectionhash = $c->model('Leave::LeaveRequest')->search({
-		-and =>[
-				EmployeeId => $employeeid,
-						],
-		});
-	
-	my $string="";
-	foreach(@leavecollectionhash)
-	{
-		if(exists $leavehash->{$employeeid}->{$_->LeaveDate})
-		{
-		$string .= $leavehash->{$employeeid}->{$_->LeaveDate};
-		}
-		else
-		{
-			$leavehash->{$employeeid}->{$_->LeaveDate}=$_->LeaveStatus;
-		}
-	}
-	print Dumper $string;
+    my $employeeid = $c->user->EmployeeId;
+    my $leavehash;
+
+    my @leavecollectionhash = $c->model('Leave::LeaveRequest')->search(
+        {
+            -and => [
+                EmployeeId => $employeeid,
+            ],
+        }
+    );
+
+    my $string = "";
+    foreach (@leavecollectionhash) {
+        if (exists $leavehash->{$employeeid}->{$_->LeaveDate}) {
+            $string .= $leavehash->{$employeeid}->{$_->LeaveDate};
+        }
+        else {
+            $leavehash->{$employeeid}->{$_->LeaveDate} = $_->LeaveStatus;
+        }
+    }
+    print Dumper $string;
     print Dumper $leavehash;
 
-   $c->forward('View::TT');
+    $c->forward('View::TT');
 }
 
 sub leaverequesthandler : Local
@@ -171,7 +169,7 @@ sub leaverequesthandler : Local
     my @empl = $c->model('Leave::EmployeeLeave')->search({EmployeeId => $employeeid});
     my $apl;
 
-	my @fromdate = split('-', $c->req->params->{fromdate});
+    my @fromdate = split('-', $c->req->params->{fromdate});
     my @todate   = split('-', $c->req->params->{todate});
     my $start = DateTime->new(year => $fromdate[0], month => $fromdate[1], day => $fromdate[2]);
     my $end   = DateTime->new(year => $todate[0],   month => $todate[1],   day => $todate[2]);
@@ -301,7 +299,8 @@ sub home : Local
 {
     my ($self, $c) = @_;
     my $employeeid = $c->user->EmployeeId;
-    my @colors     = qw/#8B3A3A#FFDAB9 #000000 #708090 #6495ED #0000CD #8B8682 #B452CD #8F8F8F #9B30FF #E3E3E3 #2E8B57 #00FF00 #FFD700 #CD5C5C #B22222 #FF4500 #FF00FF #8B5742 #8B5A00/;
+    my @colors =
+      qw/#8B3A3A#FFDAB9 #000000 #708090 #6495ED #0000CD #8B8682 #B452CD #8F8F8F #9B30FF #E3E3E3 #2E8B57 #00FF00 #FFD700 #CD5C5C #B22222 #FF4500 #FF00FF #8B5742 #8B5A00/;
     my @leaveslist = $c->model('Leave::LeaveRequest')->search(
         {},
         {
@@ -430,6 +429,7 @@ sub updatedetails : Local
         }
     ) foreach @collected;
 
+    $c->stash->{currentuser} = $c->user->EmployeeId;
     $c->forward('View::TT');
 
 }
@@ -439,8 +439,7 @@ sub newemployee : Local
     my ($self, $c) = @_;
     my $employeeid = $c->user->EmployeeId;
     my $email      = $c->user->Email;
-
-    my $Token = Session::Token->new->get;
+    my $Token      = Session::Token->new->get;
 
     my @chars = ("A" .. "Z", "a" .. "z", '1' .. '9');
     my $RandomPassword;
@@ -482,16 +481,28 @@ sub newemployee : Local
     );
 
     my $empid = $eid->next;
+    my @managers;
+    if (ref($c->req->params->{'managerid[]'}) eq 'ARRAY') {
+        @managers = @{$c->req->params->{'managerid[]'}};
+    }
+    else {
+        push(@managers, $c->req->params->{'managerid[]'});
+    }
+    my $manager;
+    foreach $manager (@managers) {
+        if ($manager =~ /^(\d+)\)/) {
 
-    $c->model('Leave::EmployeeManager')->create(
-        {
-            EmployeeId        => $empid->EmployeeId,
-            ManagerEmployeeId => $c->req->params->{managerid},
-            CreatedBy         => $employeeid,
-            CreatedOn         => CurrentDate(),
+            my $managerid = $1;
+            $c->model('Leave::EmployeeManager')->create(
+                {
+                    EmployeeId        => $empid->EmployeeId,
+                    ManagerEmployeeId => $managerid,
+                    CreatedBy         => $employeeid,
+                    CreatedOn         => CurrentDate(),
+                }
+            );
         }
-    );
-
+    }
     my $esubject = "Activate yourself to ExcelLeave System !!";
     my $content  = "Hi "
       . $c->req->params->{fname}
@@ -520,18 +531,16 @@ sub newemployee : Local
     my @employeelist = $c->model('Leave::Employee')->search({Email => $c->req->params->{email}});
 
     foreach (@employeelist) {
-	my $pl;
+        my $pl;
         my @doj = split("-", $_->DateOfJoining);
-	my $current_year = DateTime->now(time_zone => 'Asia/Kolkata')->year();
-	if ($doj[0] < $current_year)
-	{
-		$pl = 18;
-	}
-	else
-	{
-        	$pl = $c->stash->{TotalPersonalLeaves} / 12;
-        	$pl = int($pl * (12 - $doj[1]));
-	}
+        my $current_year = DateTime->now(time_zone => 'Asia/Kolkata')->year();
+        if ($doj[0] < $current_year) {
+            $pl = 18;
+        }
+        else {
+            $pl = $c->stash->{TotalPersonalLeaves} / 12;
+            $pl = int($pl * (12 - $doj[1]));
+        }
 
         $c->model('Leave::EmployeeLeave')->create(
             {
@@ -544,7 +553,6 @@ sub newemployee : Local
             }
         );
     }
-
     $c->forward('View::JSON');
 
 }
@@ -561,8 +569,8 @@ sub addemployee : Local
         }
     ) foreach @collected;
 
-    my $mang = $c->forward('managerlist');
-    $c->stash->{managerslist} = $mang;
+    #my $mang = $c->forward('managerlist');
+    #$c->stash->{managerslist} = $mang;
     $c->forward('View::TT');
 }
 
@@ -583,9 +591,9 @@ sub updatedetailsform : Local
             'me.EmployeeId' => $c->req->params->{employeeid}
         },
         {
-            join      => [qw/role employee_manager_employees/],
-            '+select' => [qw/role.RoleName employee_manager_employees.ManagerEmployeeId/],
-            '+as'     => [qw/RoleName ManagerEmployeeId/],
+            join      => [qw/role/],
+            '+select' => [qw/role.RoleName/],
+            '+as'     => [qw/RoleName/],
         }
     );
 
@@ -599,18 +607,19 @@ sub updatedetailsform : Local
             DateOfJoining => $_->DateOfJoining,
             Status        => $_->Status,
             RoleName      => $_->get_column('RoleName'),
-            ManagerId     => $_->get_column('ManagerEmployeeId'),
         }
     ) foreach @empcollection;
-    my $mang = $c->forward('managerlist');
-    $c->stash->{managerslist} = $mang;
+
+    #my $mang = $c->forward('managerlist');
+    #$c->stash->{managerslist} = $mang;
     $c->forward('View::TT');
 }
 
 sub managerlist : Local
 {
     my ($self, $c) = @_;
-    my @managers = $c->model('Leave::Employee')->search(
+    my $currentuser = $c->user->EmployeeId;
+    my @managers    = $c->model('Leave::Employee')->search(
         {
             'role.RoleName' => {'in', [qw/Manager Adminstrator/]},
         },
@@ -621,27 +630,32 @@ sub managerlist : Local
         }
     );
 
-    my $managerslist;
-    push(
-        @{$managerslist},
-        {
-            EmployeeId => $_->EmployeeId,
-            FirstName  => $_->FirstName,
-            LastName   => $_->LastName,
-        }
-    ) foreach @managers;
+    my %managerslist;
+    foreach (@managers) {
+        push(@{$c->stash->{managerslist}}, $_->EmployeeId . ")" . $_->FirstName . " " . $_->LastName);
+        $managerslist{$_->EmployeeId} = $_->FirstName . " " . $_->LastName;
+    }
 
-    return $managerslist;
+    if (defined $c->req->params->{employeeid}) {
+        my @managers = $c->model('Leave::EmployeeManager')->search(
+            {
+                'me.EmployeeId' => $c->req->params->{employeeid}
+            },
+        );
 
+        push(@{$c->stash->{managersselected}}, $_->ManagerEmployeeId . ")" . $managerslist{$_->ManagerEmployeeId})
+          foreach @managers;
+    }
+
+    $c->forward('View::JSON');
 }
 
 sub employeeupdate : Local
 {
     my ($self, $c) = @_;
-    my $employeeid = $c->user->EmployeeId;
-
-    my $user = $c->model('Leave::Employee')->search({EmployeeId => $c->req->params->{employeeid}});
-    my @roleid = $c->model('Leave::Role')->search({RoleName => $c->req->params->{role}});
+    my $currentuser = $c->user->EmployeeId;
+    my $user        = $c->model('Leave::Employee')->search({EmployeeId => $c->req->params->{employeeid}});
+    my @roleid      = $c->model('Leave::Role')->search({RoleName => $c->req->params->{role}});
     my $id;
 
     foreach my $var (@roleid) {
@@ -655,19 +669,45 @@ sub employeeupdate : Local
             DateOfJoining => $c->req->params->{dateofjoining},
             RoleId        => $id,
             Status        => $c->req->params->{status},
-            UpdatedBy     => $employeeid,
+            UpdatedBy     => $currentuser,
             UpdatedOn     => CurrentDate(),
         }
     );
+    my @managers;
+    if (ref($c->req->params->{'managerid[]'}) eq 'ARRAY') {
+        @managers = @{$c->req->params->{'managerid[]'}};
+    }
+    else {
+        push(@managers, $c->req->params->{'managerid[]'});
+    }
+    my $employeeid = $c->req->params->{employeeid};
+    my ($createdby, $createdon);
+    if (my $emp = $user->next) {
+        $createdby = $emp->CreatedBy;
+        $createdon = $emp->CreatedOn;
+    }
+    my @managerids;
+    foreach my $manager (@managers) {
+        if ($manager =~ /^(\d+)\)/) {
+            push(@managerids, $1);
+        }
+    }
 
     my $empl = $c->model('Leave::EmployeeManager')->search({EmployeeId => $c->req->params->{employeeid}});
-    $empl->update(
-        {
-            ManagerEmployeeId => $c->req->params->{managerid},
-            UpdatedBy         => $employeeid,
-            UpdatedOn         => CurrentDate(),
-        }
-    );
+    $empl->delete if ($empl);
+
+    foreach my $managerid (@managerids) {
+        $c->model('Leave::EmployeeManager')->create(
+            {
+                EmployeeId        => $employeeid,
+                ManagerEmployeeId => $managerid,
+                CreatedBy         => $createdby,
+                CreatedOn         => $createdon,
+                UpdatedBy         => $currentuser,
+                UpdatedOn         => CurrentDate(),
+            }
+        );
+    }
     $c->forward('View::JSON');
 }
 
