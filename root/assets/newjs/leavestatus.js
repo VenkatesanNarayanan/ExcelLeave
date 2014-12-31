@@ -3,19 +3,19 @@
 		  "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 4] } ] 
 	});
 	var viewbtnid;
-	$('#LeaveStatus').delegate('.view_request', 'click', function() {
+	$('#LeaveStatus').delegate('.view_request', 'click', function(e) {
 	    viewbtnid = $(this).attr('id');
-	    leavecall();
+	    leavecall(e);
 	});
 
 	var TotalRows;
 	var CancelledRows;
 	var bid;
 
-	function leavecall() {
+	function leavecall(e) {
 	    TotalRows = 0;
 	    CancelledRows = 0;
-	    var e = window.event,
+	//    var e = window.event,
 	        btn = e.target || e.srcElement;
 	    bid = btn.name;
 	    $.ajax({
