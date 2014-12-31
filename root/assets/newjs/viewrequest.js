@@ -96,6 +96,7 @@
 		        }
 
 		    });
+
 		    $.ajax({
 		        url: 'dashboard/requestview',
 		        type: 'POST',
