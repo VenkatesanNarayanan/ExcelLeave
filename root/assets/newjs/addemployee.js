@@ -57,29 +57,32 @@ $(function() {
 		var role  = document.getElementById("role").value;
 		var mid   = new Array;
 		var list  = $('#div_managerlist').ListPicker('getchooseditems');
-		$.each(list, function(index,value){
-			mid.push(value);
-		});
-		$.ajax({
-			url: 'dashboard/newemployee',
-			type: 'POST',
-			data: {
-				fname: fname,
-				lname: lname,
-				email: email,
-				dateofjoining: doj,
-				role: role,
-				managerid: mid,
-			},
-		}).done(function(responseText) {
-			$.ajax({
-				url: 'dashboard/updatedetails',
-				type: 'POST',
-			}).done(function(responseText) {
-				$("#maincontent").html(responseText);
+		if(list.length > 0)
+		{
+			$.each(list, function(index,value){
+				mid.push(value);
 			});
+			$.ajax({
+				url: 'dashboard/newemployee',
+				type: 'POST',
+				data: {
+					fname: fname,
+					lname: lname,
+					email: email,
+					dateofjoining: doj,
+					role: role,
+					managerid: mid,
+				},
+			}).done(function(responseText) {
+				$.ajax({
+					url: 'dashboard/updatedetails',
+					type: 'POST',
+				}).done(function(responseText) {
+					$("#maincontent").html(responseText);
+				});
 
-		});
+			});
+		}
 	}
 
 });

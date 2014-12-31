@@ -274,7 +274,7 @@ sub leaverequesthandler : Local
 				$ManagerEmailId = $_->Email;
 				$ManagerName    = $_->FirstName;
 			}
-
+			$c->log->info("~~~~~~~~~~~~~~~~~~~~~~".$ManagerEmailId);
 			my $esubject = "Leave request login to ExcelLeave System !!";
 			my $content  = "Hai "
 			. $ManagerName
@@ -287,10 +287,15 @@ sub leaverequesthandler : Local
 			. $c->req->params->{message}
 			. "\n\nRegards,\n..................\nExcelLeave System,\nExceleron Software (India).";
 
-			ExcelLeaveMailing('ExcelLeave@exceleron.com', $ManagerEmailId, $esubject, $content);
-		}
-        $c->stash->{lstatus} = "Success";
-    }
+			my $contenttype = "text/plain";
+			my $email    = 'ExcelLeave@exceleron.com';
+			my @args =  ($contenttype, $email, $ManagerEmailId, $esubject, $content);
+			$c->forward('/dashboard/ExcelLeaveMailing', \@args);
+
+
+	}
+	$c->stash->{lstatus} = "Success";
+}
     else {
         $c->stash->{lstatus} = "Invalid";
     }
@@ -509,19 +514,16 @@ sub newemployee : Local
     my $esubject = "Activate yourself to ExcelLeave System !!";
     my $content  = "Hi "
       . $c->req->params->{fname}
-	  #     . ",\n\n\tClick on following link to activate your account in ExcelLeave System.\n\n\tlogin/"
-       .',<br> <p>  We are happy to inform that your account has been created in ExcelLeave System<p><a href="http://10.10.10.46:3000/login/'
+	  .',<br> <p>  We are happy to inform that your account has been created in ExcelLeave System<p><a href="http://10.10.10.46:3000/login/'
 	  . $Token
-
 	  . '"> <button> Click me </button></a>'
 	  . "<br><br>\n\nThank You,<br>ExcelLeave System,\n<br>Exceleron Software (India).";
 
 
 
-	    my $contenttype = 'text/html';
+	my $contenttype = 'text/html';
 	my @args =	( $contenttype,'ExcelLeave@exceleron.com', $c->req->params->{email}, $esubject, $content);
 	$c->forward('ExcelLeaveMailing', \@args);
-	#ExcelLeaveMailing( $contenttype,'ExcelLeave@exceleron.com', $c->req->params->{email}, $esubject, $content);
 
     my @totalleaves = $c->model('Leave::SystemConfig')->search({ConfigKey => 'TotalPersonalLeaves'});
     foreach my $var (@totalleaves) {
@@ -645,16 +647,18 @@ sub managerlist : Local
     }
 
     if ($employeeid != 0) {
+		
 
         my @managers = $c->model('Leave::EmployeeManager')->search(
             {
                 'me.EmployeeId' => $employeeid         
 		 	},
         );
-
+		
         foreach $manager (@managers) 
 		{
-				push(@{$c->stash->{managersselected}}, $manager->ManagerEmployeeId . ")" . $managerslist{$manager->ManagerEmployeeId});
+			$c->log->info(Dumper $manager);
+			push(@{$c->stash->{managersselected}}, $manager->ManagerEmployeeId . ")" . $managerslist{$manager->ManagerEmployeeId});
 		}
     }
 
@@ -1033,8 +1037,12 @@ sub requestview : Local
         }
     }
 
-    $MailContent .= "\nRegards,\n..................\nExcelLeave System \nExceleron Software(India).";
-    ExcelLeaveMailing('ExcelLeave@exceleron.com', $to_mailid, $esubject, $MailContent);
+	$MailContent .= "\nRegards,\n..................\nExcelLeave System \nExceleron Software(India).";
+	my $contenttype = "text/plain";
+	my @args =  ($contenttype, 'ExcelLeave@exceleron.com', $to_mailid, $esubject, $MailContent);
+	$c->stash->{message} = 'Success';
+	$c->forward('/dashboard/ExcelLeaveMailing', \@args);
+
     my $BatchUpdateDetails = $c->model('Leave::LeaveRequestBatch')->search(
         {
             BatchId => $c->req->params->{batch_id},
