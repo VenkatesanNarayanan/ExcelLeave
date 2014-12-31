@@ -4,7 +4,7 @@
             dateFormat: 'yy-mm-dd',
             beforeShowDay: $.datepicker.noWeekends,
             defaultDate: "+0d",
-            maxDate: new Date(year, 11, 31),
+            maxDate: new Date(year+1, 11, 31),
             minDate: "+1d",
             numberOfMonths: 2,
             onClose: function(selectedDate) {
@@ -19,7 +19,7 @@
             beforeShowDay: $.datepicker.noWeekends,
             defaultDate: "+4d",
             changeMonth: true,
-            maxDate: new Date(year, 11, 31),
+            maxDate: new Date(year+1, 11, 31),
             numberOfMonths: 2,
             onClose: function(selectedDate) {
                 $("#fromdate").datepicker("option", selectedDate);

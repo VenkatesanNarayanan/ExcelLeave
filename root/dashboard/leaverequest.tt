@@ -1,18 +1,26 @@
 <div class="jumbotron">
     <form role="form" id="leaveapply" style="width:500px;margin:auto" onSubmit="return LeaveDetails();">
-        <div class="form-group">
+		<div class="form-group">
+
+			 <div class="row">
             <label>From Date</label>
             <label style="margin-left:250px;">To Date</label>
-            <br>
-            <input type="text" class="form-control" readonly='true' id="fromdate" style="float:left;width:200px;">
-            <input type="text" class="form-control" readonly='true' id="todate" style="width:200px;margin-left:320px;">
-        </div>
+			<br>
 
-        <div class="form-group">
-            <label>Message</label>
-            <textarea class="form-control" rows="5" maxlength="130" style="width:520px;" id="leavemessage"></textarea>
-        </div>
-        <button type="submit" id="leavesubmit" class="btn btn-default">Submit</button>
+		</div>
+
+		<div class="row">
+			<input type="text" class="form-control" readonly='true' id="fromdate" style="float:left;width:200px;">
+			<input type="text" class="form-control" readonly='true' id="todate" style="width:200px;margin-left:320px;">
+		</div>
+		<div>
+			<br/>
+			<div class="form-group">
+				<label>Message</label>
+				<br/>
+				<textarea class="form-control" rows="5" maxlength="130" style="width:500px;" id="leavemessage"></textarea>
+			</div>
+			<button type="submit" id="leavesubmit" class="btn btn-default">Submit</button>
         <br>
         <br>
         <label id="ErrorMessage" style="color:red !important;"></label>

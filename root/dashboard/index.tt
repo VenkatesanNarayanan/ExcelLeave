@@ -203,44 +203,46 @@
         </div>
     </div>
 
-    <div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">Change password</h4>
-                </div>
-                <div class="modal-body">
-                    <form role="form" id="ChangePasswordForm" style="width:500px;margin:auto">
-                        <div class="form-group">
-                            <label>Enter your current password :</label>
-                            <input type="password" class="form-control" id="oldpassword" name="oldpassword">
-                        </div>
-			<br>
-                        <div class="form-group">
-                            <label>Enter new password :</label>
-                            <input type="password" class="form-control" id="newpassword" name="newpassword">
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <label>Re-Enter password:</label>
-                            <input type="password" class="form-control" id="reenter" name="reenter">
-                        </div>
+	<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Change password</h4>
+				</div>
+				<div class="modal-body">
+					<form role="form" id="ChangePasswordForm" style="width:500px;margin:auto">
+						<div class="form-group">
+							<label>Current password </label>
+							<br/>
+							<input type="password" class="form-control" id="oldpassword" name="oldpassword">
+						</div>
+						<br/>
+						<div class="form-group">
+							<label> New password </label>
+							<br/>
+							<input type="password" class="form-control" id="newpassword" name="newpassword">
+						</div>
+						<br/>
+						<div class="form-group">
+							<label>Confirm New Password </label>
+							<br/>
+							<input type="password" class="form-control" id="reenter" name="reenter">
+						</div>
 
-                        <br>
-                        <label id="PasswordChangeError" style="color:red !important;"></label>
-                        <br>
-                    
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="updatepassword">Save changes</button>
-                </div>
-		</form>
-            </div>
-        </div>
-    </div>
+						<br>
+						<label id="PasswordChangeError" style="color:red !important;"></label>
+						<br>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary" id="updatepassword">Save changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 
     <script src="/assets/bootstrap.min.js"></script>
     <link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">

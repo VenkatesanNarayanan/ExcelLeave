@@ -44,16 +44,18 @@ sub EncryptPassword
 
 sub ExcelLeaveMailing : Local
 {
+	my($self,$c);
     if (scalar(@_) > 4) {
-        shift(@_);
-        shift(@_);
+        $self = shift(@_);
+        $c = shift(@_);
     }
-    my ($fromeid, $toeid, $esubject, $content) = @_;
+    my ($contenttype,$fromeid, $toeid, $esubject, $content) = @_;
     my $message = Email::MIME->create(
         header_str => [
             From    => $fromeid,
             To      => $toeid,
             Subject => $esubject,
+
         ],
         attributes => {
             encoding => 'quoted-printable',
@@ -61,6 +63,7 @@ sub ExcelLeaveMailing : Local
         },
         body_str => $content,
     );
+	$message->content_type_set($contenttype);
     sendmail($message);
 }
 
@@ -490,13 +493,21 @@ sub newemployee : Local
     );
 
     my $esubject = "Activate yourself to ExcelLeave System !!";
-    my $content  = "Hai "
+    my $content  = "Hi "
       . $c->req->params->{fname}
-      . ",\n\n\tClick on following link to activate your account in ExcelLeave System.\n\n\tlogin/"
-      . $Token
-      . "\n\nRegards,\n..................\nExcelLeave System,\nExceleron Software (India).";
+	  #     . ",\n\n\tClick on following link to activate your account in ExcelLeave System.\n\n\tlogin/"
+       .',<br> <p>  We are happy to inform that your account has been created in ExcelLeave System<p><a href="http://10.10.10.46:3000/login/'
+	  . $Token
 
-    ExcelLeaveMailing('ExcelLeave@exceleron.com', $c->req->params->{email}, $esubject, $content);
+	  . '"> <button> Click me </button></a>'
+	  . "<br><br>\n\nThank You,<br>ExcelLeave System,\n<br>Exceleron Software (India).";
+
+
+
+	    my $contenttype = 'text/html';
+	my @args =	( $contenttype,'ExcelLeave@exceleron.com', $c->req->params->{email}, $esubject, $content);
+	$c->forward('ExcelLeaveMailing', \@args);
+	#ExcelLeaveMailing( $contenttype,'ExcelLeave@exceleron.com', $c->req->params->{email}, $esubject, $content);
 
     my @totalleaves = $c->model('Leave::SystemConfig')->search({ConfigKey => 'TotalPersonalLeaves'});
     foreach my $var (@totalleaves) {

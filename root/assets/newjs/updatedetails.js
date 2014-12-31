@@ -1,5 +1,6 @@
     $('#example').dataTable({
-        "iDisplayLength": 5
+        "iDisplayLength": 5,
+		  "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 6 ] } ] 
     });
 	var viewbtnid;
 $('#example').delegate('.empdetails', 'click', function() {

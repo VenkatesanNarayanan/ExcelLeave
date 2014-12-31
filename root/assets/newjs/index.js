@@ -3,6 +3,11 @@
 		 validator.resetForm();
 	});        
 
+
+	$('input').focus(function() {
+		$('#PasswordChangeError').html("");
+	});
+
 	$("#updatepassword").click(function()
 	{
 	$("#ChangePasswordForm").validate({

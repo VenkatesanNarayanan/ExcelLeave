@@ -1,5 +1,6 @@
 	var oTable = $('#LeaveStatus').dataTable({
 	    "iDisplayLength": 5,
+		  "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 4] } ] 
 	});
 	var viewbtnid;
 	$('#LeaveStatus').delegate('.view_request', 'click', function() {

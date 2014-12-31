@@ -1,10 +1,11 @@
 		var oTable = $('#LeaveRequest').dataTable({
 		    "iDisplayLength": 5,
+			"aoColumnDefs": [ { "bSortable": false, "aTargets": [ 5] } ] 
 		});
 		var viewbtnid;
-		$('#LeaveRequest').delegate('.view_request', 'click', function() {
+		$('#LeaveRequest').delegate('.view_request', 'click', function(e) {
 		    viewbtnid = $(this).attr('id');
-		    leavecall();
+		    leavecall(e);
 		});
 
 		var checked = 0;
@@ -12,11 +13,11 @@
 		var eid;
 		var bid;
 
-		function leavecall() {
+		function leavecall(e) {
 		    $('#denyreq').prop('disabled', false);
 		    checked = 0;
 		    unchecked = 0;
-		    var e = window.event,
+		   // var e = window.event,
 		        btn = e.target || e.srcElement;
 		    bid = btn.name;
 		    $.ajax({
