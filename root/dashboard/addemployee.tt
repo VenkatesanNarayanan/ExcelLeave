@@ -26,8 +26,8 @@
         </div>
         <div class="form-group">
             <label class="col-md-3 control-label">Role:</label>
-            <div class="col-md-8">
-                <select style="height:30px;width:250px;" id="role" name="role">
+			<div class="col-md-8">
+               <select style="height:30px;width:250px;" id="role" name="role">
                     [% FOREACH role IN roles %]
                     [% IF role.RoleName == 'Employee' %]
                     <option selected>
@@ -39,31 +39,35 @@
                     </option>
                     [% END %]
                     [% END %]
-                </select>
-            </div>
+				</select>
+			</div>
         </div>
         <div class="form-group">
             <label class="col-md-3 control-label">Manager :</label>
             <div class="col-md-8">
 
-                <select style="height:30px;width:250px;" id="manager" name="manager">
+				<div id="div_managerlist">
+				</div>
+                <!--select style="height:30px;width:250px;" id="manager" name="manager">
                     [% FOREACH manager IN managerslist %]
                     <option id='[%manager.EmployeeId%]'>
                         [%manager.FirstName%]&nbsp;
                         [%manager.LastName%]
                     </option>
                     [%END%]
-                </select>
+                </select-->
 
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div class="col-md-8">
-                <input class="btn btn-primary" value="Submit" type="submit" id="addemployee_btn">
+                <input class="btn btn-primary" value="Submit" type="submit" id="addemployee_btn"/>
             </div>
         </div>
     </form>
 </div>
+<link href='/assets/ListPicker.css' rel='stylesheet'>
+<script type="text/javascript" src="/assets/ListPicker.js"></script>
 
 <script type="text/javascript" src="/assets/newjs/addemployee.js"></script>

@@ -3,17 +3,30 @@
 
 <head>
     <title>ExcelLeave</title>
+
+   
+
+
     <link rel="shortcut icon" href="/assets/images/icon.png">
     <link href="/assets/site-demos.css" rel="stylesheet">
     <link href="/assets/navbar.css" rel="stylesheet">
     <link href="/assets/jquery.dataTables.css" rel="stylesheet">
     <link href='/assets/css/fullcalendar.css' rel='stylesheet'>
+    <link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/jquery-ui.css">
     <link href='/assets/css/fullcalendar.print.css' rel='stylesheet' media='print' />
-    <script src='/assets/newjs/moment.min.js'></script>
+	
+	<script src='/assets/newjs/moment.min.js'></script>
     <script type="text/javascript" src="/assets/jquery.js"></script>
     <script type="text/javascript" src="/assets/jquery.validate.min.js"></script>
     <script type="text/javascript" src="/assets/jquery.dataTables.min.js"></script>
+	<script src="/assets/bootstrap.min.js"></script>
+    <script src="/assets/jquery-ui.js"></script>
+    <script src="/assets/newjs/index.js"></script>
     <script type="text/javascript" src="/assets/additional-methods.min.js"></script>
+
+    <link href='/assets/ListPicker.css' rel='stylesheet'>
+    <script type="text/javascript" src="/assets/ListPicker.js"></script>
     <style>
         .slno {
             width: 10%;
@@ -241,12 +254,6 @@
             </div>
         </div>
     </div>
-
-    <script src="/assets/bootstrap.min.js"></script>
-    <link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/jquery-ui.css">
-    <script src="/assets/jquery-ui.js"></script>
-    <script src="/assets/newjs/index.js"></script>
 
 </body>
 
