@@ -1,4 +1,5 @@
 $(function() {
+
 	$("#doj").datepicker({
 		dateFormat: 'yy-mm-dd',
 		maxDate:0
@@ -56,6 +57,7 @@ $(function() {
 		var doj   = document.getElementById("doj").value;
 		var role  = document.getElementById("role").value;
 		var mid   = new Array;
+		$('#list_error').text("");
 		var list  = $('#div_managerlist').ListPicker('getchooseditems');
 		if(list.length > 0)
 		{
@@ -83,6 +85,11 @@ $(function() {
 
 			});
 		}
+		else
+		{
+			$('#list_error').text("Manager list shoud not be empty");
+		}
+
 	}
 
 });

@@ -87,10 +87,13 @@ function callme() {
 	var role = document.getElementById("role").value;
 	var status = document.getElementById("status").value;
 	var mid =  new Array;
+	$('#list_error').text("");
 	var list  = $('#div_managerlist').ListPicker('getchooseditems');
-	$.each(list, function(index,value){
+	if(list.length > 0)
+	{
+/*	$.each(list, function(index,value){
 		mid.push(value);
-	}); 
+	}); */
 
 	$.ajax({
 		url: 'dashboard/employeeupdate',
@@ -103,7 +106,7 @@ function callme() {
 			dateofjoining: doj,
 			role: role,
 			status: status,
-			managerid: mid,
+			managerid: list,
 		},
 	}).done(function(responseText) {
 		$.ajax({
@@ -114,4 +117,9 @@ function callme() {
 		});
 
 	});
+	}
+	else
+	{
+		$('#list_error').text("Manager list shoud not be empty");
+	}
 }
