@@ -13,49 +13,53 @@
 	var bid;
 
 	function leavecall(e) {
-	    TotalRows = 0;
-	    CancelledRows = 0;
-	//    var e = window.event,
-	        btn = e.target || e.srcElement;
-	    bid = btn.name;
-	    $.ajax({
-	        url: 'dashboard/LeaveStatusHandle',
-	        type: 'POST',
-	        data: {
-	            batchid: bid,
-	        },
-			}).done(function(res) {
-	        var list = "";
-	        if (res) {
-	            $.each(res.leavecollection, function(i, x) {
-	                $("#Empview").html(x.FirstName + " " + x.LastName);
-	                $("#Empmsg").html(x.Message);
-	                TotalRows++;
-	                list += "<tr>";
-	                list += "<td class=" + "leavelist" + ">" + x.LeaveDate + "</td>";
-	                list += "<td class=" + "leavelist" + ">" + x.LeaveStatus + "</td>";
-	                if (x.LeaveStatus == 'Cancelled' || x.LeaveStatus == 'Denied' || x.Status < 0) {
-	                    list += "<td class=" + "leavelist" + "><input disabled type=" + "checkbox" + " class=" + "lcheck" + " id=" + x.LeaveId + " onchange=" + "callcheck();" + "></td>";
-	                    CancelledRows++;
-	                } else {
-	                    list += "<td class=" + "leavelist" + "><input type=" + "checkbox" + " class=" + "lcheck" + " id=" + x.LeaveId + " onchange=" + "callcheck();" + " checked></td>";
-	                }
-	                list += "</tr>";
-	            });
-	        }
-	        $("#viewreqbody").html(list);
+		TotalRows = 0;
+		CancelledRows = 0;
+		btn = e.target || e.srcElement;
+		bid = btn.name;
+		$.ajax({
+			url: 'dashboard/LeaveStatusHandle',
+			type: 'POST',
+			data: {
+				batchid: bid
+			},
+			success:function(res) {
+				console.log(res);
+				var list = "";
+				if (res) {
+					$.each(res.leavecollection, function(i, x) {
+						$("#Empview").html(x.FirstName + " " + x.LastName);
+						$("#Empmsg").html(x.Message);
+						TotalRows++;
+						list += "<tr>";
+						list += '<td class="leavelist">' + x.LeaveDate + '</td>';
+						list += '<td class="leavelist">' + x.LeaveStatus + '</td>';
+						if (x.LeaveStatus == 'Cancelled' || x.LeaveStatus == 'Denied' || x.Status < 0) {
+							list += '<td class="leavelist"><input disabled type="checkbox" class="lcheck" id="' + x.LeaveId + '" onchange="callcheck();"></td>';
+							CancelledRows++;
+						} else {
+							list += '<td class="leavelist"><input type="checkbox" class="lcheck" id="' + x.LeaveId + '" onchange="callcheck();" checked></td>';
+						}
+						list += "</tr>";
+					});
+				}
+				$("#viewreqbody").html(list);
 
-	        if (TotalRows == CancelledRows) {
-	            $('#cancelselected').prop('disabled', true);
-	        } else {
-	            $('#cancelselected').prop('disabled', false);
-	        }
+				if (TotalRows == CancelledRows) {
+					$('#cancelselected').prop('disabled', true);
+				} else {
+					$('#cancelselected').prop('disabled', false);
+				}
 
-	        $("#viewreq").modal({
-	            "backdrop": "static"
-	        });
-	});
-}
+				$("#viewreq").modal({
+					"backdrop": "static"
+				});
+			},
+			error : function(data){
+				alert("Hello");
+			}
+		});
+		}
 
 
 	function callcheck() {
@@ -89,8 +93,8 @@
 	        type: 'POST',
 	        data: {
 	            cancelrequest: cancelrequest,
-	            bid: bid,
-	        },
+	            bid: bid
+	        }
 	    }).done(function(data) {
 	        $("#leaves_left").html(data.AvailablePL);
 	    });
