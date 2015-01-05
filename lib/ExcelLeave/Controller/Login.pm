@@ -57,6 +57,10 @@ sub tokencheck : Path : Args(1)
     my ($self, $c, $token) = @_;
     $c->stash->{token} = $token;
     my $user = $c->model('Leave::Employee')->search({-and => [Token => $token, Status => "Inactive"]});
+	if(my $u =$user->next)
+	{
+		$c->log->info(Dumper $u);
+	}
     $c->stash->{tokenvalidate} = "valid";
     if ($user->count == 0) {
         $c->stash->{tokenvalidate} = "invalid";

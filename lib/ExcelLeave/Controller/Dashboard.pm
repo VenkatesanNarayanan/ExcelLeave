@@ -183,9 +183,22 @@ sub leaverequesthandler : Local
     foreach (@empl) {
         $apl = $_->AvailablePersonalLeaves;
     }
-
+	
+	my @leavecollection_list = $c->model('Leave::LeaveRequest')->search(
+		{
+			EmployeeId => $employeeid,
+			LeaveStatus => ['Approved','Pending'],
+		},
+	)->all;
+	my %leavedays_taken; 
+	foreach(@leavecollection_list)
+	{
+		$leavedays_taken{$_->LeaveDate} = "";
+	}
+	
     while ($start <= $end) {
-        unless (exists $offcialsholidays{$start->ymd}) {
+		if((!exists $leavedays_taken{$start->ymd}) and (! exists $offcialsholidays{$start->ymd}))
+		{
             if ($start->day_of_week <= 5) {
                 $requesteddays++;
             }
@@ -232,7 +245,8 @@ sub leaverequesthandler : Local
         }
 
         while ($start <= $end) {
-            unless (exists $offcialsholidays{$start->ymd}) {
+           if((!exists $leavedays_taken{$start->ymd}) and (! exists $offcialsholidays{$start->ymd}))
+		   	{
                 if ($start->day_of_week <= 5) {
                     $c->model('Leave::LeaveRequest')->create(
                         {
@@ -274,7 +288,6 @@ sub leaverequesthandler : Local
 				$ManagerEmailId = $_->Email;
 				$ManagerName    = $_->FirstName;
 			}
-			$c->log->info("~~~~~~~~~~~~~~~~~~~~~~".$ManagerEmailId);
 			my $esubject = "Leave request login to ExcelLeave System !!";
 			my $content  = "Hai "
 			. $ManagerName
@@ -301,6 +314,27 @@ sub leaverequesthandler : Local
     }
 
     $c->forward('View::JSON');
+}
+
+sub exclude_leavedays : Local
+{
+	my ($self, $c) = @_;
+	my $employeeid = $c->user->EmployeeId;
+
+	my @leavecollectionhash = $c->model('Leave::LeaveRequest')->search(
+		{
+			EmployeeId => $employeeid,
+			LeaveStatus => ['Approved','Pending'],
+		},
+	)->all; 
+	my @leavedays_array; 
+	foreach(@leavecollectionhash)
+	{           
+		push(@leavedays_array,$_->LeaveDate);
+	}
+	$c->stash->{invalid_leave}= \@leavedays_array;
+
+	$c->forward('View::JSON');
 }
 
 sub home : Local
@@ -514,7 +548,7 @@ sub newemployee : Local
     my $esubject = "Activate yourself to ExcelLeave System !!";
     my $content  = "Hi "
       . $c->req->params->{fname}
-	  .',<br> <p>  We are happy to inform that your account has been created in ExcelLeave System<p><a href="http://10.10.10.46:3000/login/'
+	  .',<br> <p>  We are happy to inform that your account has been created in ExcelLeave System<p><a href="http://10.10.10.47:3000/login/'
 	  . $Token
 	  . '"> <button> Click me </button></a>'
 	  . "<br><br>\n\nThank You,<br>ExcelLeave System,\n<br>Exceleron Software (India).";
@@ -938,7 +972,7 @@ sub requestview : Local
     my $employeeid = $c->user->EmployeeId;
     my $leaves     = 0;
 
-    if (exists $c->req->params->{"acceptreq[]"}) {
+	#if (exists $c->req->params->{"acceptreq[]"}) {
         if (ref($c->req->params->{"acceptreq[]"}) eq 'ARRAY') {
             print "hello acceptreq ARRAY\n";
             foreach (@{$c->req->params->{"acceptreq[]"}}) {
@@ -963,8 +997,8 @@ sub requestview : Local
                 }
             );
         }
-    }
-    else {
+		#}
+		#else {
         if (ref($c->req->params->{"denyreq[]"}) eq 'ARRAY') {
 
             print "hello denyreq ARRAY\n";
@@ -992,7 +1026,7 @@ sub requestview : Local
                 }
             );
         }
-    }
+		# }
     my $leavesleft = $c->model('Leave::EmployeeLeave')->search(
         {
             EmployeeId => $c->req->params->{employeeid},

@@ -7,9 +7,9 @@ __PACKAGE__->config(
     schema_class => 'ExcelLeave::Schema',
     
     connect_info => {
-        dsn => 'dbi:Pg:dbname=ExcelLeave',
-        user => '',
-        password => '',
+        dsn => 'dbi:Pg:dbname=myapp',
+        user => 'girish',
+        password => 'girish',
 	quote_field_names => "0",
 	quote_char => "\"",
 	name_sep => ".",
