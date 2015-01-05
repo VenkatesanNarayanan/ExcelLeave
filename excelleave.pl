@@ -13,5 +13,6 @@
 			array_datatypes   => "1",
 		},
 	},
+	baseurl => 'http://localhost:3000'
 }
 
