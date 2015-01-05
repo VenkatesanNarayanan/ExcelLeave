@@ -615,8 +615,6 @@ sub updatedetailsform : Local
         }
     ) foreach @empcollection;
 
-    #my $mang = $c->forward('managerlist');
-    #$c->stash->{managerslist} = $mang;
     $c->forward('View::TT');
 }
 
@@ -657,7 +655,6 @@ sub managerlist : Local
 		
         foreach $manager (@managers) 
 		{
-			$c->log->info(Dumper $manager);
 			push(@{$c->stash->{managersselected}}, $manager->ManagerEmployeeId . ")" . $managerslist{$manager->ManagerEmployeeId});
 		}
     }
