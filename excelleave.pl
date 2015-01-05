@@ -5,8 +5,8 @@
 		cursor_class => "DBIx::Class::Cursor::Cached",
 		connect_info => {
 			dsn               => "dbi:Pg:database=ExcelLeave",
-			user              => "venkatesan",
-			password          => "1774",
+			user              => "staging",
+			password          => "staging",
 			quote_field_names => "0",
 			quote_char        => "\"",
 			name_sep          => ".",
