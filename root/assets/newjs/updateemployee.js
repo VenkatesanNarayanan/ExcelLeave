@@ -22,8 +22,6 @@ function getmanagerlist()
 
 	}).done(function(responseText) {
 		$('#div_managerlist').ListPicker('option',{optionlist : responseText.managerslist }); 
-		
-		console.log(responseText.managersselected);
 		$('#div_managerlist').ListPicker('option',{selectedlist : responseText.managersselected }); 
 	}); 
 }

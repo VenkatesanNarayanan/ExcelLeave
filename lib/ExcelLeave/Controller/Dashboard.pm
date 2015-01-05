@@ -288,7 +288,6 @@ sub leaverequesthandler : Local
 				$ManagerEmailId = $_->Email;
 				$ManagerName    = $_->FirstName;
 			}
-			$c->log->info("~~~~~~~~~~~~~~~~~~~~~~".$ManagerEmailId);
 			my $esubject = "Leave request login to ExcelLeave System !!";
 			my $content  = "Hai "
 			. $ManagerName

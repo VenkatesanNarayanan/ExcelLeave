@@ -58,20 +58,9 @@
 
 			});
 
-
-
-
-
-
-
-
 		}
 
 	}
-
-
-
-
 
 	$(D).ready(function($) {
 		$("input").focus(function() {
