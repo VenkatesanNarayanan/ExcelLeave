@@ -99,7 +99,7 @@ sub forgotpassword : Local
         my $content  = "Hi " . $eid->FirstName
 
           # . ",\n\n\tClick on following link to activate your account in ExcelLeave System.\n\n\tlogin/"
-          . ',<br> <p> We got a request to change your Exceleron Library password.To change your password, click the bellow link.<p><a href="'
+          . ',<br> <p> We got a request to change your ExcelLeave password.To change your password, click the bellow link.<p><a href="'
           . $link . '">'
           . $link . '</a>'
          . "<br><br>\n\nThank You,<br>ExcelLeave System,\n<br>Exceleron Software (India).";
