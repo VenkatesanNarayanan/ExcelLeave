@@ -71,7 +71,7 @@
                 });
 
                 if (responseText.lstatus == "Success") {
-				$("#ErrorMessage").css('color','#3366CC');
+					$("#ErrorMessage").css('color','#3366CC');
                     $("#ErrorMessage").html("Leave Request is submitted");
                     $("#leaves_left").html(responseText.apl);
                 } else {

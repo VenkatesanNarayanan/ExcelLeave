@@ -23,7 +23,7 @@
 			<button type="submit" id="leavesubmit" class="btn btn-default">Submit</button>
         <br>
         <br>
-        <label id="ErrorMessage" style="color:red !important;"></label>
+        <label id="ErrorMessage" style="color:red"></label>
     </form>
 </div>
 
