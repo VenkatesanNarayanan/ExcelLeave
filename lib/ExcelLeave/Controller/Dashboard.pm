@@ -333,8 +333,7 @@ sub home : Local
 {
     my ($self, $c) = @_;
     my $employeeid = $c->user->EmployeeId;
-    my @colors =
-      qw/#8B3A3A#FFDAB9 #000000 #708090 #6495ED #0000CD #8B8682 #B452CD #8F8F8F #9B30FF #E3E3E3 #2E8B57 #00FF00 #FFD700 #CD5C5C #B22222 #FF4500 #FF00FF #8B5742 #8B5A00/;
+    my @colors = qw/#8B3A3A#FFDAB9 #000000 #708090 #6495ED #0000CD #8B8682 #B452CD #8F8F8F #9B30FF #E3E3E3 #2E8B57 #00FF00 #FFD700 #CD5C5C #B22222 #FF4500 #FF00FF #8B5742 #8B5A00/;
     my @leaveslist = $c->model('Leave::LeaveRequest')->search(
         {},
         {
@@ -419,6 +418,7 @@ sub changepassword : Local
         my $currentpassword = $c->user->Password;
         $user = $c->model('Leave::Employee')->search({EmployeeId => $employeeid});
         my $encryptedoldpassword = EncryptPassword($c->req->params->{oldpassword});
+		$c->log->info($currentpassword." ".$encryptedoldpassword);
         if ($encryptedoldpassword eq $currentpassword) {
             my $tokencheck = $user->update(
                 {
@@ -428,7 +428,6 @@ sub changepassword : Local
                 }
             );
             $c->stash->{PasswordStatus} = "Success";
-            $c->res->redirect($c->uri_for_action('login/index'));
         }
         else {
             $c->stash->{PasswordStatus} = "fail";
@@ -543,14 +542,9 @@ sub newemployee : Local
     my $esubject     = "Activate yourself to ExcelLeave System !!";
     my $content      = "Hi "
       . $c->req->params->{fname}
-<<<<<<< HEAD
       . ',<br> <p>  We are happy to inform that your account has been created in ExcelLeave System<p><a href="'
       . $link
-=======
-      . ',<br> <p>  We are happy to inform that your account has been created in ExcelLeave System<p><a href="http://10.10.10.47:3000/login/'
-      . $Token
->>>>>>> fd1bc549210508910cdf3d77c2d6cbaa1e0b87e9
-      . '"> <button> Click me </button></a>'
+     . '"> <button> Click me </button></a>'
       . "<br><br>\n\nThank You,<br>ExcelLeave System,\n<br>Exceleron Software (India).";
 
     my $contenttype = 'text/html';

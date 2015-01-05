@@ -91,6 +91,7 @@ function changepassword() {
 			newpassword: newpassword
 		},
 	}).done(function(responseText) {
+		console.log(responseText);
 		if (responseText.PasswordStatus == "Success") {
 			$('#changepassword').modal('hide');
 			$('body').removeClass('modal-open');
