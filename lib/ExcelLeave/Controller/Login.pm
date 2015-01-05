@@ -102,7 +102,7 @@ sub forgotpassword : Local
           . ',<br> <p> We got a request to change your Exceleron Library password.To change your password, click the bellow link.<p><a href="'
           . $link . '">'
           . $link . '</a>'
-          . "<br><br>\n\nThank You,<br>ExcelLeave System,\n<br>Exceleron Software (India).";
+         . "<br><br>\n\nThank You,<br>ExcelLeave System,\n<br>Exceleron Software (India).";
 
         my $contenttype = 'text/html';
         my @args = ($contenttype, $email, $eid->Email, $esubject, $content);

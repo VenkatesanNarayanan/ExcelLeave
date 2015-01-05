@@ -1,6 +1,9 @@
 		var oTable = $('#LeaveRequest').dataTable({
 		    "iDisplayLength": 5,
-			"aoColumnDefs": [ { "bSortable": false, "aTargets": [ 5] } ] 
+		    "aoColumnDefs": [{
+		        "bSortable": false,
+		        "aTargets": [5]
+		    }]
 		});
 		var viewbtnid;
 		$('#LeaveRequest').delegate('.view_request', 'click', function(e) {
@@ -17,8 +20,8 @@
 		    $('#denyreq').prop('disabled', false);
 		    checked = 0;
 		    unchecked = 0;
-		   // var e = window.event,
-		        btn = e.target || e.srcElement;
+		    // var e = window.event,
+		    btn = e.target || e.srcElement;
 		    bid = btn.name;
 		    $.ajax({
 		        url: 'dashboard/viewrequest',

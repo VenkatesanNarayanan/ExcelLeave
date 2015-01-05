@@ -1,6 +1,9 @@
 	var oTable = $('#LeaveStatus').dataTable({
 	    "iDisplayLength": 5,
-		  "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 4] } ] 
+	    "aoColumnDefs": [{
+	        "bSortable": false,
+	        "aTargets": [4]
+	    }]
 	});
 	var viewbtnid;
 	$('#LeaveStatus').delegate('.view_request', 'click', function(e) {
@@ -15,8 +18,8 @@
 	function leavecall(e) {
 	    TotalRows = 0;
 	    CancelledRows = 0;
-	//    var e = window.event,
-	        btn = e.target || e.srcElement;
+	    //    var e = window.event,
+	    btn = e.target || e.srcElement;
 	    bid = btn.name;
 	    $.ajax({
 	        url: 'dashboard/LeaveStatusHandle',
@@ -56,7 +59,6 @@
 	        });
 	    });
 	}
-
 
 
 	function callcheck() {

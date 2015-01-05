@@ -412,8 +412,7 @@ sub changepassword : Local
             }
         );
         $c->stash->{PasswordStatus} = "Success";
-        $c->log->info("~~~~~~~~~~~~~~~~~~~~~~~~");
-        $c->res->redirect($c->uri_for_action('login/index'));
+       $c->res->redirect($c->uri_for_action('login/index'));
     }
     else {
         my $employeeid      = $c->user->EmployeeId;
@@ -544,8 +543,13 @@ sub newemployee : Local
     my $esubject     = "Activate yourself to ExcelLeave System !!";
     my $content      = "Hi "
       . $c->req->params->{fname}
+<<<<<<< HEAD
       . ',<br> <p>  We are happy to inform that your account has been created in ExcelLeave System<p><a href="'
       . $link
+=======
+      . ',<br> <p>  We are happy to inform that your account has been created in ExcelLeave System<p><a href="http://10.10.10.47:3000/login/'
+      . $Token
+>>>>>>> fd1bc549210508910cdf3d77c2d6cbaa1e0b87e9
       . '"> <button> Click me </button></a>'
       . "<br><br>\n\nThank You,<br>ExcelLeave System,\n<br>Exceleron Software (India).";
 
