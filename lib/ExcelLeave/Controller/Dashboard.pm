@@ -153,8 +153,6 @@ sub leaverequest : Local
             $leavehash->{$employeeid}->{$_->LeaveDate} = $_->LeaveStatus;
         }
     }
-    print Dumper $string;
-    print Dumper $leavehash;
 
     $c->forward('View::TT');
 }
@@ -420,7 +418,6 @@ sub changepassword : Local
             }
         );
         $c->stash->{PasswordStatus} = "Success";
-        print Dumper $user;
         $c->res->redirect($c->uri_for_action('login/index'));
     }
     else {
@@ -1124,7 +1121,6 @@ sub LeaveStatusHandle : Local
         );
     }
 
-    print Dumper $c->stash->{leavecollection};
     $c->forward('View::JSON');
 
 }
