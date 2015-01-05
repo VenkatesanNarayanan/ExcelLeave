@@ -13,6 +13,6 @@
 			array_datatypes   => "1",
 		},
 	},
-	baseurl => 'http://localhost:3000'
+	baseurl => 'http://dev01.blr.exceleron.in:8000'
 }
 
