@@ -90,15 +90,19 @@ sub forgotpassword : Local
             }
         );
 
+        my $excel_config = $c->read_config;
+        $c->log->debug(Dumper $excel_config);
+        my $hostname = $excel_config->{'baseurl'};
         my $esubject = "Activate yourself to ExcelLeave System !!";
         my $email    = 'ExcelLeave@exceleron.com';
+        my $link     = "$hostname/login/$token";
         my $content  = "Hi " . $eid->FirstName
 
           # . ",\n\n\tClick on following link to activate your account in ExcelLeave System.\n\n\tlogin/"
-          . ',<br> <p> We got a request to change your Exceleron Library password.To change your password,click the button.<p><a href="http://10.10.10.46:3000/login/'
-          . $token
-          . '"> <button> Click me </button></a>'
-          . "<br><br>\n\nThank You,<br>ExcelLeave System,\n<br>Exceleron Software (India).";
+          . ',<br> <p> We got a request to change your Exceleron Library password.To change your password, click the bellow link.<p><a href="'
+          . $link . '">'
+          . $link . '</a>'
+         . "<br><br>\n\nThank You,<br>ExcelLeave System,\n<br>Exceleron Software (India).";
 
         my $contenttype = 'text/html';
         my @args = ($contenttype, $email, $eid->Email, $esubject, $content);

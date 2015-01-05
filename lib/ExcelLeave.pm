@@ -26,6 +26,9 @@ use Catalyst qw/
   Session::State::Cookie
   /;
 extends 'Catalyst';
+use Config::Any;
+use Data::Dumper;
+use File::Spec::Functions;
 
 our $VERSION = '0.01';
 
@@ -61,6 +64,24 @@ __PACKAGE__->config->{'Plugin::Authentication'} = {
 
 # Start the application
 __PACKAGE__->setup();
+
+
+sub read_config {
+	my  $c = shift;
+	my $project_dir = exists($ENV{EXCELLEAVE_ROOT}) ? $ENV{EXCELLEAVE_ROOT} : "$FindBin::Bin/../";
+	my $file = catfile($project_dir, 'excelleave.pl');
+
+	my $config = Config::Any->load_files(
+		{   
+			files   => [$file],
+			use_ext => 1,
+		}   
+	);
+	$c->log->debug("REd config");
+	return $config->[0]{$file};
+#	$c->{config_data} =  $config->[0]{$file};
+#	$c->log->debug(Dumper $c->{config_data});
+}
 
 =encoding utf8
 
