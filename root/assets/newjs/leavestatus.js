@@ -24,7 +24,7 @@
 	        data: {
 	            batchid: bid,
 	        },
-			success : function(res) {
+			}).done(function(res) {
 	        var list = "";
 	        if (res) {
 	            $.each(res.leavecollection, function(i, x) {
@@ -54,12 +54,8 @@
 	        $("#viewreq").modal({
 	            "backdrop": "static"
 	        });
-	    },
-		error : function(error) {
-			alert("Error fetching data");
-		}
-	}
-
+	});
+}
 
 
 	function callcheck() {
