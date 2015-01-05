@@ -549,7 +549,7 @@ sub newemployee : Local
     my $esubject = "Activate yourself to ExcelLeave System !!";
     my $content  = "Hi "
       . $c->req->params->{fname}
-	  .',<br> <p>  We are happy to inform that your account has been created in ExcelLeave System<p><a href="http://10.10.10.46:3000/login/'
+	  .',<br> <p>  We are happy to inform that your account has been created in ExcelLeave System<p><a href="http://10.10.10.47:3000/login/'
 	  . $Token
 	  . '"> <button> Click me </button></a>'
 	  . "<br><br>\n\nThank You,<br>ExcelLeave System,\n<br>Exceleron Software (India).";
