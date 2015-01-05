@@ -57,10 +57,9 @@ sub tokencheck : Path : Args(1)
     my ($self, $c, $token) = @_;
     $c->stash->{token} = $token;
     my $user = $c->model('Leave::Employee')->search({-and => [Token => $token, Status => "Inactive"]});
-	if(my $u =$user->next)
-	{
-		$c->log->info(Dumper $u);
-	}
+    if (my $u = $user->next) {
+        $c->log->info(Dumper $u);
+    }
     $c->stash->{tokenvalidate} = "valid";
     if ($user->count == 0) {
         $c->stash->{tokenvalidate} = "invalid";
@@ -93,16 +92,16 @@ sub forgotpassword : Local
 
         my $esubject = "Activate yourself to ExcelLeave System !!";
         my $email    = 'ExcelLeave@exceleron.com';
-        my $content  = "Hi "
-          . $eid->FirstName
-		  # . ",\n\n\tClick on following link to activate your account in ExcelLeave System.\n\n\tlogin/"
-		  .',<br> <p> We got a request to change your Exceleron Library password.To change your password,click the button.<p><a href="http://10.10.10.46:3000/login/'
+        my $content  = "Hi " . $eid->FirstName
+
+          # . ",\n\n\tClick on following link to activate your account in ExcelLeave System.\n\n\tlogin/"
+          . ',<br> <p> We got a request to change your Exceleron Library password.To change your password,click the button.<p><a href="http://10.10.10.46:3000/login/'
           . $token
-		  . '"> <button> Click me </button></a>'
+          . '"> <button> Click me </button></a>'
           . "<br><br>\n\nThank You,<br>ExcelLeave System,\n<br>Exceleron Software (India).";
 
-	    my $contenttype = 'text/html';
-        my @args =  ($contenttype, $email, $eid->Email, $esubject, $content);
+        my $contenttype = 'text/html';
+        my @args = ($contenttype, $email, $eid->Email, $esubject, $content);
         $c->stash->{message} = 'Success';
         $c->forward('/dashboard/ExcelLeaveMailing', \@args);
     }
